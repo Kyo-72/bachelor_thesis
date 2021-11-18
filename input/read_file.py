@@ -22,13 +22,18 @@ def convert_to_list(d,line):
     #ゲートの種類
     type_of_gate = gate[0][0]
     #ゲートの入出力の数
+    print(type_of_gate)
     num_of_io = int( gate[0][1] )
     #bit毎に文字列に変換する
 
     #Tゲート
     if(type_of_gate == "T"):
-        T_gate_bit = gate[1]
-        gate_list[ord(T_gate_bit) - ord("a")] = "T"
+        for i in range(1,num_of_io):
+            T_gate_bit = gate[i]
+            gate_list[ord(T_gate_bit) - ord("a")] = "T"
+            
+        T_gate_bit = gate[num_of_io][0]
+        gate_list[ord(T_gate_bit) - ord("a")] = "T"    
         
     elif(type_of_gate == "t"):
         
@@ -49,7 +54,7 @@ def convert_to_list(d,line):
             target_bit = gate[num_of_io][0]
             gate_list[ ord(target_bit) - ord("a")] = "t"
 
-        return gate_list
+    return gate_list
     
 
 def read_file(str):
@@ -65,7 +70,7 @@ def read_file(str):
     with open(str) as f:
         for line in f:
 
-            print(line)
+            
             
             if(".numvars" in line):
                d = int( line.split(" ")[1] ) 
@@ -84,6 +89,8 @@ def read_file(str):
                 circuit.append(gate_list)
 
     print(circuit)
+
+read_file("my_test1.txt")
 
 
                 
