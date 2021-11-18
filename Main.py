@@ -28,6 +28,8 @@ while(1):
     desired_output_set = [init_state]
     #ランダムな回路を作成
     random_circuit = generate_random.generate_random_circuit(n,d)
+
+    print(random_circuit)
     #回路から要求出力集合を得る
     desired_output_set = desired_output.desired_output(init_state,random_circuit)
 
