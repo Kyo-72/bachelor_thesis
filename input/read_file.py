@@ -22,7 +22,6 @@ def convert_to_list(d,line):
     #ゲートの種類
     type_of_gate = gate[0][0]
     #ゲートの入出力の数
-    print(type_of_gate)
     num_of_io = int( gate[0][1] )
     #bit毎に文字列に変換する
 
@@ -88,9 +87,9 @@ def read_file(str):
                 gate_list = convert_to_list(d,line)
                 circuit.append(gate_list)
 
-    print(circuit)
+    return circuit
 
-read_file("my_test1.txt")
+
 
 
                 

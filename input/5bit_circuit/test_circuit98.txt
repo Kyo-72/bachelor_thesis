@@ -1,0 +1,22 @@
+#my_test_circuit98
+.begin
+t2 a b 
+t2 d b 
+t2 b a 
+t2 c d 
+t2 c d 
+t2 c e 
+t2 a b 
+T1 d 
+t2 e d 
+t2 b a 
+T2 b e 
+t2 b a 
+t2 d e 
+T3 a b d 
+T1 a 
+t2 e c 
+t2 c b 
+t2 e b 
+t2 c a 
+.end

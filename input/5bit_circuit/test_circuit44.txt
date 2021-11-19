@@ -1,0 +1,22 @@
+#my_test_circuit44
+.begin
+T1 a 
+t2 b d 
+t2 d c 
+t2 b e 
+t2 b c 
+t2 d b 
+t2 b c 
+t2 d c 
+t2 a c 
+T2 b d 
+t2 d a 
+t2 d b 
+t2 e c 
+t2 c b 
+t2 e c 
+t2 c d 
+t2 c a 
+t2 c e 
+t2 d e 
+.end

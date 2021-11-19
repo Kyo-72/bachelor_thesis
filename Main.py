@@ -5,6 +5,7 @@ import time
 import generate_random
 import copy
 import desired_output
+from input import read_file
 
 
 
@@ -23,19 +24,24 @@ while(1):
     for i in range(n):
         x = (1<<i)
         init_state.append(x)
-
+    
     #要求出力集合
     desired_output_set = [init_state]
     #ランダムな回路を作成
-    random_circuit = generate_random.generate_random_circuit(n,d)
+    #random_circuit = generate_random.generate_random_circuit(n,d)
 
-    print(random_circuit)
+    #print(random_circuit)
+
+
+    #ファイルから回路を入力する
+    circuit = read_file.read_file("my_test1.txt")
+    
     #回路から要求出力集合を得る
-    desired_output_set = desired_output.desired_output(init_state,random_circuit)
+    desired_output_set = desired_output.desired_output(init_state,circuit)
 
     #分解前の回路を出力
-    x = logic.logical_state(init_state,random_circuit)
-    display.display_circuit(random_circuit,x)
+    x = logic.logical_state(init_state,circuit)
+    display.display_circuit(circuit,x)
     #要求出力集合を出力
     print(desired_output_set)
 
