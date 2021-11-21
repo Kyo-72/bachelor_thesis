@@ -2,10 +2,11 @@ import calc
 import logic
 import display
 import time
-import generate_random
 import copy
 import desired_output
-from input import read_file
+import read_file
+import read_file
+import os
 
 
 
@@ -17,9 +18,6 @@ while(1):
     if(n == 0):
         break
 
-    print("cnotの数を入力してください(0でプログラム終了):")
-    d = int(input())
-
     init_state = []
     for i in range(n):
         x = (1<<i)
@@ -27,14 +25,10 @@ while(1):
     
     #要求出力集合
     desired_output_set = [init_state]
-    #ランダムな回路を作成
-    #random_circuit = generate_random.generate_random_circuit(n,d)
-
-    #print(random_circuit)
-
-
+    os.chdir('/Users/DELL/ソースコード')
+    
     #ファイルから回路を入力する
-    circuit = read_file.read_file("my_test1.txt")
+    circuit = read_file.read_file("input/{}bit_circuit/circuit1.txt".format(n))
     
     #回路から要求出力集合を得る
     desired_output_set = desired_output.desired_output(init_state,circuit)
@@ -80,7 +74,7 @@ while(1):
         #出力を次の入力に更新
         input_list = x
 
-    print()
+    
     decomposed_circuit.pop(0)
     #出力の論理状態を取得
     x = logic.logical_state(init_state,decomposed_circuit)

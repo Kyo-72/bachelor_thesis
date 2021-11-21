@@ -1,0 +1,19 @@
+#my_test_circuit100
+.numvars 5
+.begin
+t2 e a 
+t2 c b 
+t2 a c 
+t2 b c 
+t2 d b 
+t2 d a 
+t2 c e 
+t2 c b 
+t2 c d 
+t2 e d 
+t2 a d 
+T1 d 
+t2 a b 
+t2 d b 
+t2 e a 
+.end
