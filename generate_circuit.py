@@ -4,15 +4,15 @@ import desired_output
 import os
 import shutil
 
-T_GATE_PROB = 6 #Tゲートが挿入されるまでのCNOTの数の期待値
-T_GATE_NUM = 2  #Tゲートの数
+T_GATE_PROB = 5 #Tゲートが挿入されるまでのCNOTの数の期待値
+T_GATE_NUM = 3  #Tゲートの数
 
 
-def generate_gate(n):
+def generate_gate(n,j,d):
     gate = []
     gate_type = random.randrange(T_GATE_PROB)
     #gate_typeが0ならTゲート
-    if(not gate_type):
+    if(not gate_type or j == d - 1):
         gate = generate_T_gate(n)
         
     #それ以外ならcnotゲート
@@ -171,7 +171,7 @@ for i in range(p):
     #file.write(".begin\n")
     #回路をd個生成する
     for j in range(d):
-        gate = generate_gate(n)
+        gate = generate_gate(n,j,d)
         if(gate != None):
             for g in gate:
                 file.write(str(g))

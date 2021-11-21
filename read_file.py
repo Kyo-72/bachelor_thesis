@@ -10,7 +10,7 @@ import os
 
 
 #例[[" ","c","t"],[" ","T"," "]]
-os.chdir('/Users/DELL/ソースコード/input')
+
 
 
 
@@ -63,6 +63,7 @@ def read_file(str):
     flag = 0
     #リスト形式でゲートを表現
     circuit = []
+    
     
 
     

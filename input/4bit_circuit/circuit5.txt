@@ -2,20 +2,18 @@
 .numvars 4
 .begin
 t2 d a 
-t2 a d 
-t2 b a 
-t2 d a 
-t2 c d 
 t2 b c 
-t2 b d 
-t2 a c 
-T1 c 
-t2 c d 
-t2 c a 
-T3 a b d 
-t2 c b 
-t2 b d 
 t2 a b 
-t2 d c 
+t2 a c 
+t2 c d 
 t2 a d 
+t2 d b 
+T2 a d 
+T2 b c 
+t2 b c 
+t2 c d 
+T2 c d 
+t2 d a 
+t2 c a 
+T1 a 
 .end
