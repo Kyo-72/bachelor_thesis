@@ -8,3 +8,4 @@ circuit6.txt | 13 | 9
 circuit7.txt | 13 | 13
 circuit8.txt | 12 | 12
 circuit9.txt | 15 | 15
+
