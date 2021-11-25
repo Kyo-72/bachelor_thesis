@@ -1,0 +1,6 @@
+ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間
+circuit1.txt | 17 | 21
+circuit10.txt | 13 | 24
+circuit2.txt | 12 | 35
+circuit3.txt | 13 | 41
+circuit4.txt | 17 | 37

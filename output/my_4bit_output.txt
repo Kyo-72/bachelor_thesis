@@ -1,3 +1,4 @@
+ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間
 circuit1.txt | 14 | 23
 circuit10.txt | 10 | 4
 circuit2.txt | 16 | 12
@@ -9,3 +10,5 @@ circuit7.txt | 13 | 13
 circuit8.txt | 12 | 12
 circuit9.txt | 15 | 15
 
+
+平均実行時間1.8066306829452514s
