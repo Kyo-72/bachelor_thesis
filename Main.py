@@ -26,7 +26,7 @@ def init_config(n):
 
     return init_state
 
-def 
+
 
 
 print("入力ビットの数を入力してください:")
