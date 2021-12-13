@@ -31,7 +31,7 @@ def one_bit_per_gate(vec,n,s):
        P = Or(P,P_vec[i])
 
     s.add(P)
-    #print(P)
+    
             
 
 def generate_output(f_vec,c_vec,t_vec,d,n):
@@ -42,7 +42,7 @@ def generate_output(f_vec,c_vec,t_vec,d,n):
             for j in range(n):
 
                 #コントロールビットとターゲットビットが隣接していれば制約を追加
-                if( abs(i - j) < 2):
+                if( abs(i - j) < 2 and i != j):
                     f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])
 
         

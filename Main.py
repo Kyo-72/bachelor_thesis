@@ -26,10 +26,17 @@ def init_config(n):
 
     return init_state
 
+def end_config(num_of_circuit,sum,n):
+    os.chdir("/Users/DELL/ソースコード/output")
+    with open("my_{}bit_output.txt".format(n),"a") as output:
+        output.write("\n\n平均実行時間{}s\n".format(sum/num_of_circuit))
+        
+    os.chdir("/Users/DELL/ソースコード")
 
 
 
-print("入力ビットの数を入力してください:")
+
+print("入力ビットの数を入力してください:",end="")
 n = int(input())
 #初期状態を設定
 init_state = init_config(n)
@@ -40,16 +47,20 @@ desired_output_set = [init_state]
 os.chdir('/Users/DELL/ソースコード')
 
 #テスト回路のリストを取得する
-test_list = os.listdir(path="input/{}bit_circuit".format(n))
+print("実験用回路のディレクトリ名を入力してください")
+dir_name = input()
+test_list = os.listdir(path="input/{}".format(dir_name))
 #実行時間の合計
 sum = 0
+#実行した回路の数
+num_of_circuit = 0;
 
 #ディレクトリ内の回路全て分解する
 for file_name in test_list:
 
 
     #テスト用回路のディレクトリ移動する
-    os.chdir('/Users/DELL/ソースコード/input/{}bit_circuit'.format(n))
+    os.chdir('/Users/DELL/ソースコード/input/{}'.format(dir_name))
     
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
@@ -106,6 +117,7 @@ for file_name in test_list:
     display.display_circuit(decomposed_circuit,x)
     #実行時間を計測
     process_time = time.time() - start
+    num_of_circuit += 1
     aggregate.aggregate_result(file_name,source_circuit,decomposed_circuit,n)
     sum += process_time
 
@@ -115,7 +127,7 @@ for file_name in test_list:
     print("所要時間:%ds"%process_time)
     
     
-
+end_config(num_of_circuit,sum,n)
 
 
 
