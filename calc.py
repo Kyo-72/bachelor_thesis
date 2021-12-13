@@ -40,8 +40,10 @@ def generate_output(f_vec,c_vec,t_vec,d,n):
         for i in range(n):
             f_vec[d + 1][i] = f_vec[d][i]
             for j in range(n):
-                
-                f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])
+
+                #コントロールビットとターゲットビットが隣接していれば制約を追加
+                if( abs(i - j) < 2):
+                    f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])
 
         
             
@@ -138,8 +140,8 @@ def calc(input_list,output_list,n):
         for i in range(d):
 
             
-            #NNA制約式の追加
-            nearest_neighbor(c_vec[i],t_vec[i],n,s)
+            #NNA制約式の追加(使わなくていいかも)
+            #nearest_neighbor(c_vec[i],t_vec[i],n,s)
             #同一ゲートはコントロールビットが一つしかない制約
             one_bit_per_gate(c_vec[i],n,s)
             one_bit_per_gate(t_vec[i],n,s)
