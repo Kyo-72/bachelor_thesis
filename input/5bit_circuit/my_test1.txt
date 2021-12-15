@@ -6,6 +6,7 @@
 .numvars 5
 .variables a b c d e
 .inputs 1 b c d e
+.output g g c d e
 .begin
 t2 a d
 t2 d b

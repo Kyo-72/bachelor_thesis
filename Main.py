@@ -65,6 +65,7 @@ for file_name in test_list:
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
     circuit = copy.copy(source_circuit)
+    print(circuit)
     #回路から要求出力集合を得る
     desired_output_set = desired_output.desired_output(init_state,circuit)
     #回路の最終的な論理状態を取得
@@ -101,7 +102,7 @@ for file_name in test_list:
             
         for bit in x:
             if(bit in output_list):
-                gate.append("T")
+                gate.append("□")
             else:
                 gate.append(" ")
 

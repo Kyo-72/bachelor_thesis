@@ -8,13 +8,14 @@ def logical_state(init_state,circuit):
 
     d = len(circuit)
     n = len(circuit[0])
+    print(n)
     x = copy.copy(init_state)
 
 
     for i in range(d):
         c_bit = -1;
         #iゲート目のコントロールビットを見つける
-        if "T" in circuit[i]:
+        if "c" not in circuit[i]:
             continue
         
         for j in range(n):

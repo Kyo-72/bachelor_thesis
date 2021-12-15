@@ -6,7 +6,11 @@ import os
 #"c"⇒コントロールビット
 #"t"⇒ターゲットビット
 #"T"⇒Tゲート
+#"†"⇒Tダガーゲート
+#"H"⇒Hゲート
 #"n"⇒NOTゲート
+#"g"⇒ガーベッジビット
+#"f"⇒要求出力ビット
 
 
 #例[[" ","c","t"],[" ","T"," "]]
@@ -47,7 +51,6 @@ def convert_to_list(d,line):
             #コントロールビットについてbit毎に文字列に変換
             for i in range(1,num_of_io):
                 controll_bit = gate[i]
-                print(ord(controll_bit) - ord("a"))
                 gate_list[ ord(controll_bit) - ord("a")] = "c"
 
             #最後の一ビットはターゲットビット
@@ -63,6 +66,7 @@ def read_file(str):
     flag = 0
     #リスト形式でゲートを表現
     circuit = []
+    kinds_of_output = []
     
     
 
@@ -74,7 +78,19 @@ def read_file(str):
             
             
             if(".numvars" in line):
-               d = int( line.split(" ")[1] ) 
+               d = int( line.split(" ")[1] )
+            #outputを読み込む
+            
+            if(".output" in line):
+                kinds_of_output = line.split(" ")[1:d + 1]
+                #改行文字を消去
+                kinds_of_output[d - 1] = kinds_of_output[d - 1].split("\n")[0]
+
+                #output_bitをより分かりやすく(c ⇒　out_c)
+                for i in range( len(kinds_of_output) ):
+                    if(kinds_of_output[i] != "g"):
+                        kinds_of_output[i] = "out_" + kinds_of_output[i]
+        
             #beginからゲートを読み始める(flag = 1)
             if(".begin" in line):
                 flag = 1
@@ -88,9 +104,11 @@ def read_file(str):
                 #ゲートをリストにする
                 gate_list = convert_to_list(d,line)
                 circuit.append(gate_list)
-
+                #ToDoゲートの最後の要求出力をリストの末尾にappendする
+              
+                
+    circuit.append(kinds_of_output) 
     return circuit
-
 
 
 

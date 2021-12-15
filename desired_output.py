@@ -4,6 +4,7 @@ import display
 
 def desired_output(init_state,circuit):
     d = len(circuit)
+    n = len(circuit[0])
     output_set = []
     
     
@@ -15,14 +16,16 @@ def desired_output(init_state,circuit):
         
         #最後のtゲートがあるdepth
         
-        #tゲートがあるビットの論理状態を要求出力集合へ
-        if "T" in gate:
-            #tゲートがあるビットを求める
-            idx = -1
-            t_gate_bit = []
-            for count in range(gate.count("T")):
-                idx = gate.index("T",idx + 1)
-                t_gate_bit.append(idx)
+        #cnotじゃないビットの論理状態を要求出力集合へ
+        if "c" not in gate:
+            #単位ゲートがあるビットを求める
+            gate_itr = []
+            #ゲートがある位置のindexを取る
+            print(gate)
+            for itr in range(n):
+                #なにかゲートがあるならイテレータに追加
+                if(gate[itr] != " " and gate[itr] != "g"):
+                    gate_itr.append(itr)
 
             
 
@@ -34,7 +37,7 @@ def desired_output(init_state,circuit):
             #tゲートがあるビットの論理状態を求め,要求出力集合へ
             set = []
             
-            for t in t_gate_bit:
+            for t in gate_itr:
                 set.append(x[t])
 
             
