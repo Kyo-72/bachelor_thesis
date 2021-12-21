@@ -18,7 +18,7 @@ def desired_output(init_state,circuit):
         
         #cnotじゃないビットの論理状態を要求出力集合へ
         if "c" not in gate:
-            #単位ゲートがあるビットを求める
+            #elementary量子ゲートがあるビットを求める
             gate_itr = []
             #ゲートがある位置のindexを取る
             print(gate)

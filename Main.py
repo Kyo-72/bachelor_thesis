@@ -37,7 +37,7 @@ def end_config(num_of_circuit,sum,n):
 
 
 print("入力ビットの数を入力してください:",end="")
-n = int(input())
+n = int(input())    
 #初期状態を設定
 init_state = init_config(n)
 
@@ -94,7 +94,7 @@ for file_name in test_list:
         for gate in circuit:
             decomposed_circuit.append(copy.copy(gate))
         
-        #要求出力が生成されているビットにTゲートをつなげる
+        #要求出力が生成されているビットにelementary量子ゲートをつなげる
         x = logic.logical_state(input_list,circuit)
         gate = []
         #最後はTゲートはつなげなくていい
@@ -102,9 +102,11 @@ for file_name in test_list:
             
         for bit in x:
             if(bit in output_list):
-                gate.append("□")
+                gate.append("T")
             else:
                 gate.append(" ")
+
+        
 
         decomposed_circuit.append(copy.copy(gate))
         #出力を次の入力に更新
@@ -115,7 +117,8 @@ for file_name in test_list:
     #出力の論理状態を取得
     x = logic.logical_state(init_state,decomposed_circuit)
     #回路を出力する
-    display.display_circuit(decomposed_circuit,x)
+    #display.display_circuit(decomposed_circuit,x)
+    print(decomposed_circuit)
     #実行時間を計測
     process_time = time.time() - start
     num_of_circuit += 1

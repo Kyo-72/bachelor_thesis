@@ -12,33 +12,53 @@ import os
 #"g"⇒ガーベッジビット
 #"f"⇒要求出力ビット
 
+elementary_gate_list = ["T","†","H","n"]
+
 
 #例[[" ","c","t"],[" ","T"," "]]
 
+def add_elementary_gate(type_of_gate,gate,n):
+    gate_list = [" " for i in range(n)]
+    for bit in gate:
+        gate_list[ord(bit) - ord("a")] = type_of_gate
+
+    return gate_list
 
 
 
-def convert_to_list(d,line):
-    gate_list = [" " for i in range(d)]
+
+def convert_to_list(n,line):
+    gate_list = [" " for i in range(n)]
     
-    #ファイルを区切りリストへ
+    #ファイルを区切りリスト
     gate = line.split(" ")
     #ゲートの種類
     type_of_gate = gate[0][0]
     #ゲートの入出力の数
     num_of_io = int( gate[0][1] )
+    #末尾の改行文字を処理
+    gate[num_of_io] = gate[num_of_io].split("\n")[0]
+
     #bit毎に文字列に変換する
 
-    #Tゲート
+    #1量子bitゲート
+
+    for g in elementary_gate_list:
+        if(type_of_gate == g):
+            gate_list = add_elementary_gate(g,gate[1:num_of_io + 1],n)
+    """
     if(type_of_gate == "T"):
         for i in range(1,num_of_io):
+            #Tゲートがあるビット(アルファベット)
             T_gate_bit = gate[i]
             gate_list[ord(T_gate_bit) - ord("a")] = "T"
             
         T_gate_bit = gate[num_of_io][0]
-        gate_list[ord(T_gate_bit) - ord("a")] = "T"    
+        gate_list[ord(T_gate_bit) - ord("a")] = "T" 
+
+    """   
         
-    elif(type_of_gate == "t"):
+    if(type_of_gate == "t"):
         
     #MCTゲート
 
@@ -78,13 +98,13 @@ def read_file(str):
             
             
             if(".numvars" in line):
-               d = int( line.split(" ")[1] )
+               n = int( line.split(" ")[1] )
             #outputを読み込む
             
             if(".output" in line):
-                kinds_of_output = line.split(" ")[1:d + 1]
+                kinds_of_output = line.split(" ")[1:n + 1]
                 #改行文字を消去
-                kinds_of_output[d - 1] = kinds_of_output[d - 1].split("\n")[0]
+                kinds_of_output[n - 1] = kinds_of_output[n - 1].split("\n")[0]
 
                 #output_bitをより分かりやすく(c ⇒　out_c)
                 for i in range( len(kinds_of_output) ):
@@ -102,7 +122,7 @@ def read_file(str):
 
                 gate_list = []
                 #ゲートをリストにする
-                gate_list = convert_to_list(d,line)
+                gate_list = convert_to_list(n,line)
                 circuit.append(gate_list)
                 #ToDoゲートの最後の要求出力をリストの末尾にappendする
               
