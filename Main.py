@@ -66,8 +66,11 @@ for file_name in test_list:
     source_circuit = read_file.read_file(file_name)
     circuit = copy.copy(source_circuit)
     print(circuit)
-    #回路から要求出力集合を得る
-    desired_output_set = desired_output.desired_output(init_state,circuit)
+    #回路からゲートの種類と要求出力集合を得る
+    ret = desired_output.desired_output(init_state,circuit)
+    kinds_of_gate = ret[0]
+    print(kinds_of_gate)
+    desired_output_set = ret[1]
     #回路の最終的な論理状態を取得
     x = logic.logical_state(init_state,circuit)
     #分解前の回路を出力
@@ -102,7 +105,7 @@ for file_name in test_list:
             
         for bit in x:
             if(bit in output_list):
-                gate.append("T")
+                gate.append(kinds_of_gate[block])
             else:
                 gate.append(" ")
 
@@ -117,7 +120,7 @@ for file_name in test_list:
     #出力の論理状態を取得
     x = logic.logical_state(init_state,decomposed_circuit)
     #回路を出力する
-    #display.display_circuit(decomposed_circuit,x)
+    display.display_circuit(decomposed_circuit,x)
     print(decomposed_circuit)
     #実行時間を計測
     process_time = time.time() - start

@@ -11,7 +11,7 @@ def display_circuit(circuit,x=None):
     
         for i in range(d):
         
-            print("―",end="")
+            print("ー",end="")
             gate = circuit[i][j]
             
             if(gate == "c"):
@@ -19,9 +19,11 @@ def display_circuit(circuit,x=None):
             elif(gate == "t"):
                 print("〇",end="")
             elif(gate == "T"):
-                print("□",end="")
+                print("Ｔ",end="")
+            elif(gate == "H"):
+                print("Ｈ",end="")
             else:
-                print("―",end="")
+                print("ー",end="")
 
         
         
