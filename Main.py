@@ -3,7 +3,7 @@ import logic
 import display
 import time
 import copy
-import desired_output
+import desired_output as desired_output
 import read_file
 import os
 import aggregate

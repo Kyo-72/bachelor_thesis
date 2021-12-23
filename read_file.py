@@ -35,6 +35,8 @@ def convert_to_list(n,line):
     #ゲートの種類
     type_of_gate = gate[0][0]
     #ゲートの入出力の数
+
+    
     num_of_io = int( gate[0][1] )
     #末尾の改行文字を処理
     gate[num_of_io] = gate[num_of_io].split("\n")[0]
@@ -46,17 +48,7 @@ def convert_to_list(n,line):
     for g in elementary_gate_list:
         if(type_of_gate == g):
             gate_list = add_elementary_gate(g,gate[1:num_of_io + 1],n)
-    """
-    if(type_of_gate == "T"):
-        for i in range(1,num_of_io):
-            #Tゲートがあるビット(アルファベット)
-            T_gate_bit = gate[i]
-            gate_list[ord(T_gate_bit) - ord("a")] = "T"
-            
-        T_gate_bit = gate[num_of_io][0]
-        gate_list[ord(T_gate_bit) - ord("a")] = "T" 
-
-    """   
+  
         
     if(type_of_gate == "t"):
         
@@ -88,11 +80,17 @@ def read_file(str):
     circuit = []
     kinds_of_output = []
     
+
+    
     
 
     
     #ファイルから一行ずつ読み込む
     with open(str) as f:
+        #TODO MCTゲート 分解
+        #TODO Toffoli分解
+        #TODO 並行処理出来るゲートを並列化
+        
         for line in f:
 
             

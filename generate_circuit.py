@@ -1,6 +1,6 @@
 import random
 import display
-import desired_output
+import desired_output as desired_output
 import os
 import shutil
 
