@@ -23,7 +23,7 @@ def display_circuit(circuit,x=None):
             elif(gate == "H"):
                 print("Ｈ",end="")
             elif(gate == "†"):
-                print("†",end="")
+                print("ｔ",end="")
             else:
                 print("ー",end="")
 

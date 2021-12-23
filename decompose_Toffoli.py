@@ -92,6 +92,6 @@ def decompose(file_name):
 
     return 0
 
-str = "input/revlib/ham7.txt"
+str = "input/toffoli/test.txt"
 #str += input()
 decompose(str)
