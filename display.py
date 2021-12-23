@@ -22,6 +22,8 @@ def display_circuit(circuit,x=None):
                 print("Ｔ",end="")
             elif(gate == "H"):
                 print("Ｈ",end="")
+            elif(gate == "†"):
+                print("†",end="")
             else:
                 print("ー",end="")
 

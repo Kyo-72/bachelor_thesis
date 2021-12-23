@@ -35,11 +35,13 @@ def convert_to_list(n,line):
     #ゲートの種類
     type_of_gate = gate[0][0]
     #ゲートの入出力の数
-
-    
     num_of_io = int( gate[0][1] )
     #末尾の改行文字を処理
-    gate[num_of_io] = gate[num_of_io].split("\n")[0]
+    try:
+        gate[num_of_io] = gate[num_of_io].split("\n")[0]
+    except IndexError:
+        print("index error occured")
+        print(line)
 
     #bit毎に文字列に変換する
 
@@ -81,15 +83,16 @@ def read_file(str):
     kinds_of_output = []
     
 
+    #TODO MCTゲート 分解
+    #TODO Toffoli分解
     
+    #TODO 優先順位 並行処理出来るゲートを並列化
     
 
     
     #ファイルから一行ずつ読み込む
     with open(str) as f:
-        #TODO MCTゲート 分解
-        #TODO Toffoli分解
-        #TODO 並行処理出来るゲートを並列化
+        
         
         for line in f:
 
