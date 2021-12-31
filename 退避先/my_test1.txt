@@ -1,0 +1,35 @@
+# Function: mytest1
+# Note: nothing
+# Used Library: remoteCNOT
+# This file have been made from pon 
+.version 1.0
+.numvars 5
+.variables a b c d e
+.inputs 1 b c d e
+.output g g c d e
+.begin
+t2 a d
+t2 d b
+t2 b d
+H1 d
+t2 e b
+H2 b d
+t2 c a
+t2 b d
+t2 a b
+t2 b e
+t2 c a
+H3 a d e
+t2 e a
+t2 d b
+t2 a c
+t2 b d
+t2 c e
+t2 a b
+T3 a c e
+t2 d a
+t2 a e
+t2 a c
+t2 c e
+T3 a c e
+.end

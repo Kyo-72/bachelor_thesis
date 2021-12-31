@@ -65,12 +65,10 @@ for file_name in test_list:
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
     circuit = copy.copy(source_circuit)
-    print(circuit)
     #回路からゲートの種類と要求出力集合を得る
-    ret = desired_output.desired_output(init_state,circuit)
-    kinds_of_gate = ret[0]
-    print(kinds_of_gate)
-    desired_output_set = ret[1]
+    subircuits_output_info = desired_output.desired_output(init_state,circuit)
+    kinds_of_gate = subircuits_output_info[0]
+    desired_output_set = subircuits_output_info[1]
     #回路の最終的な論理状態を取得
     x = logic.logical_state(init_state,circuit)
     #分解前の回路を出力

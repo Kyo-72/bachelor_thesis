@@ -37,7 +37,7 @@ def decompose(file_name):
     new_circuit = ""
     flag = 0
 
-    with open(str) as f:
+    with open(file_name) as f:
         
         
         for line in f:
@@ -76,22 +76,15 @@ def decompose(file_name):
                     continue
 
             #分解しない行はそのまま追加
-            print(line)
             new_circuit += line 
                     
 
 
             
 
-                
-                
-              
-                
-    with open(str,mode="w") as f:
+    with open(file_name,mode="w") as f:
         f.write(new_circuit)
 
     return 0
 
-str = "input/toffoli/test.txt"
-#str += input()
-decompose(str)
+decompose("input/my_test_circuit/ham7.txt")

@@ -8,7 +8,6 @@ def logical_state(init_state,circuit):
 
     d = len(circuit)
     n = len(circuit[0])
-    print(n)
     x = copy.copy(init_state)
 
 

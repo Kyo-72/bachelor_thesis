@@ -6,11 +6,12 @@ import os
 #"c"⇒コントロールビット
 #"t"⇒ターゲットビット
 #"T"⇒Tゲート
-#"†"⇒Tダガーゲート
+#"IT"⇒Tダガーゲート
 #"H"⇒Hゲート
 #"n"⇒NOTゲート
-#"g"⇒ガーベッジビット
+#"G"⇒ガーベッジビット
 #"f"⇒要求出力ビット
+#"out_*"⇒出力ビット
 
 elementary_gate_list = ["T","†","H","n"]
 
@@ -109,8 +110,17 @@ def read_file(str):
 
                 #output_bitをより分かりやすく(c ⇒　out_c)
                 for i in range( len(kinds_of_output) ):
-                    if(kinds_of_output[i] != "g"):
-                        kinds_of_output[i] = "out_" + kinds_of_output[i]
+                    kinds_of_output[i] = "out_" + kinds_of_output[i]
+
+            #garbageビットを読み取る
+            if(".garbage" in line):
+                garbage = line.split(" ")[1]
+                #末尾のnull文字消去
+                garbage = garbage.split("\n")[0]
+                
+                for i,g in enumerate(garbage):
+                    if(g == "1"):
+                        kinds_of_output[i] = "G"
         
             #beginからゲートを読み始める(flag = 1)
             if(".begin" in line):

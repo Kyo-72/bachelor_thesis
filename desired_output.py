@@ -2,7 +2,7 @@ import logic
 import copy
 import display
 
-elementary_gate_list = ["T","†","H","n"]
+elementary_gate_list = ["T","†","H","n","o"]
 
 def retrieve_gate_index(gate,kinds_of_gate):
 
@@ -12,7 +12,7 @@ def desired_output(init_state,circuit):
     d = len(circuit)
     n = len(circuit[0])
     output_set = []
-    gate_type = []
+    gate_type_list = []
     
     
     
@@ -22,44 +22,47 @@ def desired_output(init_state,circuit):
         gate = circuit[i]
         
         #elementary量子ビットの論理状態を要求出力集合へ
+        
+        gate_itr = []
+        gate_type = " "
+        #bitごとにelementaryゲートがないか探索
+        for index,bit in enumerate(gate):
+            #見つけたらgate_typeを更新
+            if(len(gate_itr) == 0):
+                for g in elementary_gate_list:
+                    if(bit[0] == g):
+                            gate_type = g
+                            gate_itr.append(index)
+                            break;
+            #見つかった後はgate_typeは確定
+            else:
+                if(bit[0] == gate_type):
+                    gate_itr.append(index)
 
-        for g in elementary_gate_list:
+        if(len(gate_itr) != 0):
+              
 
-
-            if g in gate:
-                gate_type.append(g)
-                #elementary量子ゲートがあるビットを求める
-                gate_itr = []
-                #ゲートがある位置のindexを取る
-                print(gate)
-                for itr in range(n):
-                    #ゲートがあるならイテレータに追加
-                    if(gate[itr] != " " and gate[itr] != "g"):
-                        gate_itr.append(itr)
-
-                
-
-                #ゲートまでの論理状態を取得
-                copy_circuit = copy.copy(circuit)
-                x = logic.logical_state(init_state,circuit[0:i])
-                
-                
-                #elementary量子ゲートがあるビットの論理状態を求め,要求出力集合へ
-                set = []
-                
-                for t in gate_itr:
-                    set.append(x[t])
-
-
-                
-                output_set.append(copy.copy(list(set)))
-                set.clear()
+            #ゲートまでの論理状態を取得
+            x = logic.logical_state(init_state,circuit[0:i])
             
+            
+            #elementary量子ゲートがあるビットの論理状態を求め,要求出力集合へ
+            set = []
+            
+            for t in gate_itr:
+                set.append(x[t])
+
+
+            
+            output_set.append(copy.copy(list(set)))
+            gate_type_list.append(gate_type)
+            set.clear()
+                
 
     
     
     
-    return gate_type,output_set
+    return gate_type_list,output_set
                 
                 
             
