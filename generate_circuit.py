@@ -3,6 +3,7 @@ import display
 import desired_output as desired_output
 import os
 import shutil
+import const
 
 T_GATE_PROB = 5 #Tゲートが挿入されるまでのCNOTの数の期待値
 T_GATE_NUM = 3  #Tゲートの数
@@ -34,13 +35,13 @@ def generate_T_gate(n):
     if(not num):
         return None
     
-    gate.insert(0,"T{}".format(num))
+    gate.insert(0,"{}{}".format(const.T_GATE,num))
             
     return gate
 
 def generate_cnot(n):
     gate = []
-    gate.append("t2")
+    gate.append("{}2".format(const.TARGET_BIT))
     #コントロールビットを決定
     c_bit = random.randrange(n)
     gate.append(c_bit)
@@ -91,7 +92,7 @@ def delete_redundant_gate(str,n):
 
                     #Tゲートの時
 
-                    if(gate_type == "T"):
+                    if(gate_type == const.T_GATE):
                         
                         #直前のゲートと重複していないかチェック
                         
@@ -99,15 +100,15 @@ def delete_redundant_gate(str,n):
                         for bit in gate[1:num_of_io + 1]:
                             
                             t_bit = int(bit)
-                            if(pre_gate[t_bit] == 'T'):
+                            if(pre_gate[t_bit] == const.T_GATE):
                                 gate.pop(gate.index(bit))
                                 delete += 1
                             else:
-                                pre_gate[t_bit] = 'T'
+                                pre_gate[t_bit] = const.T_GATE
                                 
 
                         if(num_of_io == delete):continue        
-                        gate[0] = "T{}".format(num_of_io - delete)
+                        gate[0] = "{}{}".format(const.T_GATE,num_of_io - delete)
 
                         
                         new_file.write(gate[0] + " ")

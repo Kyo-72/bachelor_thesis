@@ -1,4 +1,5 @@
 import display
+import const
 
 def convert_toffoli_into_cnot(line):
     #分解後のゲート群を入れる変数
@@ -13,19 +14,19 @@ def convert_toffoli_into_cnot(line):
     target_bit = bit[3][0]
 
     #Clifford+Tゲート群に分解
-    gates += "H1 {}\n".format(target_bit)
-    gates += "T3 {} {} {}\n".format(controll_bit[0],controll_bit[1],target_bit)
-    gates += "t2 {} {}\n".format(controll_bit[1],controll_bit[0])
-    gates += "t2 {} {}\n".format(target_bit,controll_bit[1])
-    gates += "t2 {} {}\n".format(controll_bit[0],target_bit)
-    gates += "†1 {}\n".format(controll_bit[1])
-    gates += "t2 {} {}\n".format(controll_bit[0],controll_bit[1])
-    gates += "†2 {} {}\n".format(controll_bit[0],controll_bit[1])
-    gates += "T1 {}\n".format(target_bit)
-    gates += "t2 {} {}\n".format(target_bit,controll_bit[1])
-    gates += "t2 {} {}\n".format(controll_bit[0],target_bit)
-    gates += "t2 {} {}\n".format(controll_bit[0],controll_bit[1])
-    gates += "H1 {}\n".format(target_bit)
+    gates += "{}1 {}\n".format(const.HADAMARD_GATE,target_bit)
+    gates += "{}3 {} {} {}\n".format(const.T_GATE,controll_bit[0],controll_bit[1],target_bit)
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[1],controll_bit[0])
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,target_bit,controll_bit[1])
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],target_bit)
+    gates += "{}1 {}\n".format(const.T_DAGGER_GATE,controll_bit[1])
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],controll_bit[1])
+    gates += "{}2 {} {}\n".format(const.T_DAGGER_GATE,controll_bit[0],controll_bit[1])
+    gates += "{}1 {}\n".format(const.T_GATE,target_bit)
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,target_bit,controll_bit[1])
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],target_bit)
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],controll_bit[1])
+    gates += "{}1 {}\n".format(const.HADAMARD_GATE,target_bit)
 
     return gates
 
@@ -60,7 +61,7 @@ def decompose(file_name):
                 #ゲートの入出力の数
                 num_of_io = int( gate[0][1] )
                 #MCT,NTCを分解する
-                if(type_of_gate == "t"):
+                if(type_of_gate == const.TARGET_BIT):
                     
                     #Toffoliゲート分解.
                     if(num_of_io == 3):

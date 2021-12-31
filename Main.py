@@ -7,6 +7,9 @@ import desired_output as desired_output
 import read_file
 import os
 import aggregate
+import const
+
+
 
 def inti_output(n):
     os.chdir("/Users/DELL/ソースコード/output")

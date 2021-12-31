@@ -1,8 +1,9 @@
 import logic
 import copy
 import display
+import const
 
-elementary_gate_list = ["T","†","H","n","o"]
+elementary_gate_list = [const.T_GATE,const.T_DAGGER_GATE,const.HADAMARD_GATE,const.OUTPUT]
 
 def retrieve_gate_index(gate,kinds_of_gate):
 
@@ -61,7 +62,8 @@ def desired_output(init_state,circuit):
 
     
     
-    
+    print("ここみて")
+    print(output_set)
     return gate_type_list,output_set
                 
                 

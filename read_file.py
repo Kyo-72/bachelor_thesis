@@ -1,19 +1,24 @@
 import os
+import const
 #read_file revliv形式の量子ゲート群をリストに変換.ファイル名を指定すると二次元リストで返す
+
+
 
 
 #" "⇒何もなし
 #"c"⇒コントロールビット
 #"t"⇒ターゲットビット
 #"T"⇒Tゲート
-#"IT"⇒Tダガーゲート
+#"R"⇒Tダガーゲート
 #"H"⇒Hゲート
 #"n"⇒NOTゲート
 #"G"⇒ガーベッジビット
 #"f"⇒要求出力ビット
 #"out_*"⇒出力ビット
 
-elementary_gate_list = ["T","†","H","n"]
+
+
+elementary_gate_list = [const.T_GATE,const.T_DAGGER_GATE,const.HADAMARD_GATE,const.OUTPUT]
 
 
 #例[[" ","c","t"],[" ","T"," "]]
@@ -53,7 +58,7 @@ def convert_to_list(n,line):
             gate_list = add_elementary_gate(g,gate[1:num_of_io + 1],n)
   
         
-    if(type_of_gate == "t"):
+    if(type_of_gate == const.TARGET_BIT):
         
     #MCTゲート
 
@@ -66,11 +71,11 @@ def convert_to_list(n,line):
             #コントロールビットについてbit毎に文字列に変換
             for i in range(1,num_of_io):
                 controll_bit = gate[i]
-                gate_list[ ord(controll_bit) - ord("a")] = "c"
+                gate_list[ ord(controll_bit) - ord("a")] = const.CONTROLL_BIT
 
             #最後の一ビットはターゲットビット
             target_bit = gate[num_of_io][0]
-            gate_list[ ord(target_bit) - ord("a")] = "t"
+            gate_list[ ord(target_bit) - ord("a")] = const.TARGET_BIT
 
     return gate_list
     
@@ -120,7 +125,7 @@ def read_file(str):
                 
                 for i,g in enumerate(garbage):
                     if(g == "1"):
-                        kinds_of_output[i] = "G"
+                        kinds_of_output[i] = const.GARBAGE_BIT
         
             #beginからゲートを読み始める(flag = 1)
             if(".begin" in line):

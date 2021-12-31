@@ -1,5 +1,6 @@
 #inputと回路から出力の論理状態を整数型リストで返す
 import copy
+import const
 
 def logical_state(init_state,circuit):
     #ゲートがないならinput_listを返す
@@ -18,7 +19,7 @@ def logical_state(init_state,circuit):
             continue
         
         for j in range(n):
-            if(circuit[i][j] == "c"):
+            if(circuit[i][j] == const.CONTROLL_BIT):
                 c_bit = j
         #iゲート目のターゲットビットにコントロールビットの論理状態をxorする
         for j in range(n):

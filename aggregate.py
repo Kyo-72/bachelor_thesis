@@ -1,9 +1,10 @@
 import os
+import const
 
 def count_cnot(circuit):
     res = 0
     for gate in circuit:
-        if("c" in gate):
+        if(const.CONTROLL_BIT in gate):
             res += 1
 
     return res
