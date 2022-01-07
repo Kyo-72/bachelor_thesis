@@ -1,5 +1,29 @@
 import display
 import const
+#ancillaにできるbitを探し,その中でターゲットビットとの距離が一番近い,ビットのindexを返す
+def search_for_ancilla(line,num_of_io):
+    gate = line.split(" ")[1:num_of_io + 1]
+    target_bit = int( gate[num_of_io].split("\n")[0] )
+    #ancillaにできるビットを探し,target_bitとの距離を入れる
+    ancilla = {}
+    for i,bit in enumerate(gate):
+        if(bit == const.EMPTY):
+            #target_bitとancillaの距離
+            distance = abs(i - target_bit)
+            ancilla[i] = distance
+    #distanceが小さい順にソート
+    ancilla = sorted(ancilla.items(), key=lambda x:x[1])
+
+    res = list( ancilla.keys() )
+    
+    #昇順で初めのkeyを返す
+    return res[0]
+
+def convert_mct_into_toffoli(line,num_of_io):
+    gates = ""
+    ancilla = search_for_ancilla(line,num_of_io)
+
+    return gates
 
 def convert_toffoli_into_cnot(line):
     #分解後のゲート群を入れる変数
