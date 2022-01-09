@@ -39,14 +39,6 @@ def end_config(num_of_circuit,sum,n):
 
 
 
-print("入力ビットの数を入力してください:",end="")
-n = int(input())    
-#初期状態を設定
-init_state = init_config(n)
-
-
-#要求出力集合
-desired_output_set = [init_state]
 os.chdir('/Users/DELL/ソースコード')
 
 #テスト回路のリストを取得する
@@ -68,6 +60,16 @@ for file_name in test_list:
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
     circuit = copy.copy(source_circuit)
+
+    #回路からビット数を読み込む
+    n = len(circuit[0])
+    print(n)
+
+    #初期状態を設定
+    init_state = init_config(n)
+    #要求出力集合
+    desired_output_set = [init_state]
+
     #回路からゲートの種類と要求出力集合を得る
     subircuits_output_info = desired_output.desired_output(init_state,circuit)
     kinds_of_gate = subircuits_output_info[0]
@@ -88,6 +90,7 @@ for file_name in test_list:
     #input_listの初期化
     input_list = init_state
     depth = 0
+    num_of_var = n;
     #要求集合に基づいて回路を分解する
     for block in range( len(desired_output_set )):
     
