@@ -1,4 +1,5 @@
 from z3 import *
+import const
 MAX_NUM_GATE = 50
 
 def nearest_neighbor(c_vec,t_vec,n,s):
@@ -61,25 +62,17 @@ def equal_desired_output(f_vec,output_list,n,d,s):
             
         s.add(P)
 
-      
-def display_gates(c_vec,t_vec,m,d,n):
-
-    for j in range(n):
+def ex_equal_desired_output(f_vec,output_list,n,d,s):
     
-        for i in range(d):
-        
-            print("―",end="")
-            
-        
-            C = m[ c_vec[i][j] ]
-            T = m[ t_vec[i][j] ]
-            if(C == True):
-                print("・",end="")
-            elif(T == True):
-                print("〇",end="")
-            else:
-                print("―",end="")
-        print("―")
+    i = 0
+    for output in output_list:
+        #0ならドントケア
+        if(output == 0):
+            continue
+        else:
+            #要求出力と出力が正しいかを判定
+            s.add(f_vec[d][output_list.index(output)] == output)
+
 
 def display_bool(c_vec,t_vec,m,d,n):
 
@@ -109,7 +102,7 @@ def convert_output(m,d,n,c_vec,t_vec):
                         
             
 
-def calc(input_list,output_list,n):
+def calc(input_list,output_list,n,num_of_var,gate_type):
 
     d = 0;
     #ゲート数200まで探索
@@ -127,11 +120,10 @@ def calc(input_list,output_list,n):
         c_vec = [[Bool("c_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)]
         t_vec = [[Bool("t_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)]
         #論理状態を表す変数
-        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),n) for j in range(n)] for i in range(d + 1)]
-
+        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),num_of_var) for j in range(n)] for i in range(d + 1)]
         for i in range(n):
         
-            f_vec[0][i] =  BitVecVal(input_list[i],n)
+            f_vec[0][i] =  BitVecVal(input_list[i],num_of_var)
         #z3-solver インスタンスの作成
         s = Solver()
 
@@ -150,7 +142,11 @@ def calc(input_list,output_list,n):
         #出力を生成
         generate_output(f_vec,c_vec,t_vec,d,n)
         #出力と要求出力の一致
-        equal_desired_output(f_vec,output_list,n,d,s)
+        
+        if(gate_type == const.HADAMARD_GATE):
+            ex_equal_desired_output(f_vec,output_list,n,d,s)
+        else:
+            equal_desired_output(f_vec,output_list,n,d,s)
         #for i in range(n):
             #print("%dline f_vec P :%s"%(i + 1,f_vec[d][i]) )
             

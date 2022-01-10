@@ -1,14 +1,26 @@
+NUM_OF_SPACE = 5
+
 import const
 
-#circuitと出力xを渡すと、回路を表示するプログラム
-def display_circuit(circuit,x=None):
+#circuitと出力outputを渡すと、回路を表示するプログラム
+def display_circuit(circuit,output=None,input=None):
     d = len(circuit)
     if(d == 0):
         return 0
     n = len(circuit[0])
+
+    print()
     
     
     for j in range(n):
+
+        if(input != None):
+            print("%d"%(input[j]),end="")
+            keta = len( str(input[j]) )
+            for k in range(NUM_OF_SPACE - keta):
+                print(" ",end="")
+
+            print(":",end="")
     
         for i in range(d):
         
@@ -30,8 +42,10 @@ def display_circuit(circuit,x=None):
 
         
         
-        if(x != None):
-            print(":%d"%(x[j]),end="")
+        if(output != None):
+            print(":%d"%(output[j]),end="")
 
         print()
+
+    print()
         

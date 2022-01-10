@@ -68,18 +68,20 @@ for file_name in test_list:
     #初期状態を設定
     init_state = init_config(n)
     #要求出力集合
-    desired_output_set = [init_state]
+    output_set = [init_state]
 
     #回路からゲートの種類と要求出力集合を得る
     subircuits_output_info = desired_output.desired_output(init_state,circuit)
-    kinds_of_gate = subircuits_output_info[0]
-    desired_output_set = subircuits_output_info[1]
+    gate_type = subircuits_output_info[0]
+    input_list = subircuits_output_info[1]
+    output_set = subircuits_output_info[2]
+    num_of_var = subircuits_output_info[3]
     #回路の最終的な論理状態を取得
     x = logic.logical_state(init_state,circuit)
     #分解前の回路を出力
     display.display_circuit(circuit,x)
     #要求出力集合を出力
-    print(desired_output_set)
+    print(output_set)
 
 
     #開始時間
@@ -87,37 +89,43 @@ for file_name in test_list:
 
     #分解後の回路
     decomposed_circuit = [[]]
-    #input_listの初期化
-    input_list = init_state
-    depth = 0
-    num_of_var = n;
     #要求集合に基づいて回路を分解する
-    for block in range( len(desired_output_set )):
+    for block in range( len(output_set) ):
     
         #部分的な回路を生成し,decoposed_circuitにつなげる
-        output_list = desired_output_set[block]
-        circuit = calc.calc(input_list,output_list,n)
-        display.display_circuit(circuit)
+        print(input_list[block])
+        circuit = calc.calc(input_list[block],output_set[block],n,num_of_var,gate_type[block])
+        
         for gate in circuit:
             decomposed_circuit.append(copy.copy(gate))
         
-        #要求出力が生成されているビットにelementary量子ゲートをつなげる
-        x = logic.logical_state(input_list,circuit)
-        gate = []
-        #最後はTゲートはつなげなくていい
         
-            
+        x = logic.logical_state(input_list[block],circuit)
+        gate = []
+        display.display_circuit(circuit,x,input_list[block])
+        
+        #要求出力が生成されているビットにelementary量子ゲートをつなげる
         for bit in x:
-            if(bit in output_list):
-                gate.append(kinds_of_gate[block])
+            if(bit in output_set[block]):
+                gate.append(gate_type[block])
             else:
                 gate.append(" ")
 
-        
-
+    
         decomposed_circuit.append(copy.copy(gate))
-        #出力を次の入力に更新
-        input_list = x
+
+        #Hゲートがない場合，出力を次の入力に更新
+        if(gate_type[block] != const.HADAMARD_GATE):
+            input_list[block + 1] = x
+        else:
+            for i,bit in enumerate(x):
+                #Hゲートがある場合，更新しなくていい
+                if(bit not in output_set[block]):
+                    #Hゲートがないbitは前回の回路の出力で更新
+                    input_list[block + 1][i] = bit
+                
+
+
 
 
     decomposed_circuit.pop(0)

@@ -23,7 +23,7 @@ def logical_state(init_state,circuit):
                 c_bit = j
         #iゲート目のターゲットビットにコントロールビットの論理状態をxorする
         for j in range(n):
-            if(circuit[i][j] == "t"):
+            if(circuit[i][j] == const.TARGET_BIT):
                 x[j] = x[c_bit] ^ x[j]
 
     return x
