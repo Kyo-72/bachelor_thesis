@@ -1,29 +1,52 @@
 import display
 import const
 #ancillaにできるbitを探し,その中でターゲットビットとの距離が一番近い,ビットのindexを返す
-def search_for_ancilla(line,num_of_io):
+def search_for_ancilla(line,num_of_io,n):
     gate = line.split(" ")[1:num_of_io + 1]
-    target_bit = int( gate[num_of_io].split("\n")[0] )
+    #コントロールビットを数字で取り出す
+    controll_bit = []
+    for bit in gate[0:num_of_io - 1]:
+        controll_bit.append(ord(bit) - ord('a'))
+
+    target_bit = ( ord(gate[num_of_io - 1].split("\n")[0]) - ord('a') )
     #ancillaにできるビットを探し,target_bitとの距離を入れる
     ancilla = {}
-    for i,bit in enumerate(gate):
-        if(bit == const.EMPTY):
+
+    for i in range(n):
+        if( (i not in controll_bit) and i != target_bit):
             #target_bitとancillaの距離
             distance = abs(i - target_bit)
             ancilla[i] = distance
     #distanceが小さい順にソート
-    ancilla = sorted(ancilla.items(), key=lambda x:x[1])
-
-    res = list( ancilla.keys() )
-    
+    print(ancilla)
+    ancilla = sorted(ancilla.items(), key=lambda x:x[1]) 
+    res = list(ancilla[0])
     #昇順で初めのkeyを返す
-    return res[0]
+    return chr( res[0] + ord('a') )
 
-def convert_mct_into_toffoli(line,num_of_io):
+def convert_mct_into_toffoli(line,num_of_io,n):
     gates = ""
-    ancilla = search_for_ancilla(line,num_of_io)
+    ancilla = search_for_ancilla(line,num_of_io,n)
+    print("ancilla:{}".format(ancilla))
+
+    bit = line.split(" ")
+    #controll_bit一つ目
+    a = bit[1]
+    #controll_bit二つ目
+    b = bit[2]
+    #controll_bit三つ目
+    c = bit[3]
+    #ターゲットビット
+    t = bit[4][0]
+
+    gates += "t3 {} {} {}\n".format(a,b,ancilla)
+    gates += "t3 {} {} {}\n".format(c,ancilla,t)
+    gates += "t3 {} {} {}\n".format(a,b,ancilla)
+    gates += "t3 {} {} {}\n".format(c,ancilla,t)
+    
 
     return gates
+
 
 def convert_toffoli_into_cnot(line):
     #分解後のゲート群を入れる変数
@@ -54,8 +77,7 @@ def convert_toffoli_into_cnot(line):
 
     return gates
 
-def convert_mct_into_toffoli(line,num_of_io):
-    return line
+
 
 def decompose(file_name):
     #分解後回路.最後にファイルに書き込む
@@ -75,6 +97,7 @@ def decompose(file_name):
                 flag = 1
             #endが来たら読み込み終了
             elif(".end" in line):
+                new_circuit += line 
                 break
             #flag = 1 ならゲートを読み込む
             elif(flag):
@@ -89,18 +112,14 @@ def decompose(file_name):
                     
                     #Toffoliゲート分解.
                     if(num_of_io == 3):
-                        new_circuit += convert_toffoli_into_cnot(line)
+                        line = convert_toffoli_into_cnot(line)
                     #MTCゲートをtoffoliに分解後,clifford+tゲート群に分解
                     elif(num_of_io > 3):
-                        line = convert_mct_into_toffoli(line,num_of_io)
+                        line = convert_mct_into_toffoli(line,num_of_io,n)
                         line = convert_toffoli_into_cnot(line)
-                    else:
-                        new_circuit += line
+                
 
-                    #分解後は元のゲートは追加しなくていい
-                    continue
-
-            #分解しない行はそのまま追加
+            #ゲートを追加
             new_circuit += line 
                     
 
@@ -112,4 +131,4 @@ def decompose(file_name):
 
     return 0
 
-decompose("input/my_test_circuit/ham7.txt")
+decompose("input/tmp/tmp.txt")
