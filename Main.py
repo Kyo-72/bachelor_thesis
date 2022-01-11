@@ -82,6 +82,7 @@ for file_name in test_list:
     display.display_circuit(circuit,x)
     #要求出力集合を出力
     print(output_set)
+    
 
 
     #開始時間
@@ -93,14 +94,19 @@ for file_name in test_list:
     for block in range( len(output_set) ):
     
         #部分的な回路を生成し,decoposed_circuitにつなげる
-        print(input_list[block])
+        print("今回の回路の入力{}".format( input_list[block] ) )
+        print("今回の回路の出力{}".format( output_set[block] ) )
         circuit = calc.calc(input_list[block],output_set[block],n,num_of_var,gate_type[block])
-        
+
         for gate in circuit:
             decomposed_circuit.append(copy.copy(gate))
         
-        
-        x = logic.logical_state(input_list[block],circuit)
+        if(len(circuit) != 0):
+            x = logic.logical_state(input_list[block],circuit)
+        else:
+        #部分回路内のCNOTゲートが0だったら出力はinputと同じ
+            x = input_list[block]
+
         gate = []
         display.display_circuit(circuit,x,input_list[block])
         
@@ -118,6 +124,7 @@ for file_name in test_list:
         if(gate_type[block] != const.HADAMARD_GATE):
             input_list[block + 1] = x
         else:
+            print(x)
             for i,bit in enumerate(x):
                 #Hゲートがある場合，更新しなくていい
                 if(bit not in output_set[block]):

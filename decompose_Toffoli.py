@@ -115,8 +115,15 @@ def decompose(file_name):
                         line = convert_toffoli_into_cnot(line)
                     #MTCゲートをtoffoliに分解後,clifford+tゲート群に分解
                     elif(num_of_io > 3):
-                        line = convert_mct_into_toffoli(line,num_of_io,n)
-                        line = convert_toffoli_into_cnot(line)
+                        gate = convert_mct_into_toffoli(line,num_of_io,n)
+                        gate = gate.split("\n")
+                        line = ""
+                        for g in gate[:-1]:
+                            g += "\n"
+                            print(g)
+                            line += convert_toffoli_into_cnot(g)
+                            
+
                 
 
             #ゲートを追加

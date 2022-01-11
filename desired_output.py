@@ -13,7 +13,7 @@ def desired_output(init_state,circuit):
     d = len(circuit)
     n = len(circuit[0])
     input_list = []
-    input_list.append(init_state)
+    input_list.append( copy.copy(init_state) )
     output_set = []
     gate_type_list = []
     pre_gate_depth = 0
@@ -51,7 +51,13 @@ def desired_output(init_state,circuit):
             #ゲートまでの論理状態を取得
             #部分回路だけに変更
             sub_circuit = circuit[pre_gate_depth:i]
-            x = logic.logical_state(init_state,sub_circuit)
+            
+            if( len(sub_circuit) != 0):
+                x = logic.logical_state(init_state,sub_circuit)
+            else:
+            #部分回路内にCNOTゲートがなければ
+                x = copy.copy( input_list[-1] )
+
             #今回の部分回路の末尾が何ゲート目かを保存
             pre_gate_depth = i + 1
             
