@@ -96,7 +96,7 @@ for file_name in test_list:
         #部分的な回路を生成し,decoposed_circuitにつなげる
         print("今回の回路の入力{}".format( input_list[block] ) )
         print("今回の回路の出力{}".format( output_set[block] ) )
-        circuit = calc.calc(input_list[block],output_set[block],n,num_of_var,gate_type[block])
+        circuit = calc.calc(input_list[block],copy.copy(output_set[block]),n,num_of_var,gate_type[block])
 
         for gate in circuit:
             decomposed_circuit.append(copy.copy(gate))
@@ -107,13 +107,18 @@ for file_name in test_list:
         #部分回路内のCNOTゲートが0だったら出力はinputと同じ
             x = input_list[block]
 
+        print("実際の出力{}".format(x))
+
         gate = []
         display.display_circuit(circuit,x,input_list[block])
         
         #要求出力が生成されているビットにelementary量子ゲートをつなげる
-        for bit in x:
+        for i,bit in enumerate(x):
             if(bit in output_set[block]):
-                gate.append(gate_type[block])
+                if(gate_type[block] == const.HADAMARD_GATE and output_set[block][i] < 0):
+                    gate.append(" ")
+                else:
+                    gate.append(gate_type[block])
             else:
                 gate.append(" ")
 

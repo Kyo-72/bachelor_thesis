@@ -63,15 +63,14 @@ def equal_desired_output(f_vec,output_list,n,d,s):
         s.add(P)
 
 def ex_equal_desired_output(f_vec,output_list,n,d,s):
-    
-    i = 0
+    #負の数の処理
+    for i in range(len(output_list)):
+        output_list[i] = abs(output_list[i])
+        
     for output in output_list:
-        #0ならドントケア
-        if(output == 0):
-            continue
-        else:
-            #要求出力と出力が正しいかを判定
-            s.add(f_vec[d][output_list.index(output)] == output)
+        
+        #要求出力と出力が正しいかを判定
+        s.add(f_vec[d][output_list.index(output)] == output)
 
 
 def display_bool(c_vec,t_vec,m,d,n):
