@@ -70,12 +70,10 @@ def desired_output(init_state,circuit):
                 for t in gate_itr:
                     set.append(x[t])
             else:
-            #Hゲートなら要求出力は順列(ドントケアを含む)
+            #Hゲートなら要求出力は順列(全て要求を満たす必要がある)
                 for i in range(len(x)):
-                    if(i in gate_itr):
-                        set.append(x[i])
-                    else:
-                        set.append(0)
+                    set.append(x[i])
+                    
 
             #ゲートタイプがHなら，入力に新たな変数を追加
             if(gate_type == const.HADAMARD_GATE):
