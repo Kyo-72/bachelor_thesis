@@ -1,4 +1,5 @@
 from z3 import *
+import const
 MAX_NUM_GATE = 50
 
 def nearest_neighbor(c_vec,t_vec,n,s):
@@ -31,7 +32,7 @@ def one_bit_per_gate(vec,n,s):
        P = Or(P,P_vec[i])
 
     s.add(P)
-    #print(P)
+    
             
 
 def generate_output(f_vec,c_vec,t_vec,d,n):
@@ -40,8 +41,10 @@ def generate_output(f_vec,c_vec,t_vec,d,n):
         for i in range(n):
             f_vec[d + 1][i] = f_vec[d][i]
             for j in range(n):
-                
-                f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])
+
+                #コントロールビットとターゲットビットが隣接していれば制約を追加
+                if( abs(i - j) < 2 and i != j):
+                    f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])
 
         
             
@@ -51,30 +54,24 @@ def equal_desired_output(f_vec,output_list,n,d,s):
     i = 0
     for output in output_list:
         
+        P = False
+        
+        for i in range(n):
+        
+            P = Or(P,(f_vec[d][i] == output) )
+            
+        s.add(P)
+
+def ex_equal_desired_output(f_vec,output_list,n,d,s):
+    #負の数の処理
+    for i in range(len(output_list)):
+        output_list[i] = abs(output_list[i])
+        
+    for output in output_list:
+        
         #要求出力と出力が正しいかを判定
         s.add(f_vec[d][output_list.index(output)] == output)
-            
-        
 
-      
-def display_gates(c_vec,t_vec,m,d,n):
-
-    for j in range(n):
-    
-        for i in range(d):
-        
-            print("―",end="")
-            
-        
-            C = m[ c_vec[i][j] ]
-            T = m[ t_vec[i][j] ]
-            if(C == True):
-                print("・",end="")
-            elif(T == True):
-                print("〇",end="")
-            else:
-                print("―",end="")
-        print("―")
 
 def display_bool(c_vec,t_vec,m,d,n):
 
@@ -104,7 +101,7 @@ def convert_output(m,d,n,c_vec,t_vec):
                         
             
 
-def calc(input_list,output_list,n):
+def calc(input_list,output_list,n,num_of_var,gate_type):
 
     d = 0;
     #ゲート数200まで探索
@@ -122,11 +119,10 @@ def calc(input_list,output_list,n):
         c_vec = [[Bool("c_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)]
         t_vec = [[Bool("t_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)]
         #論理状態を表す変数
-        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),n) for j in range(n)] for i in range(d + 1)]
-
+        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),num_of_var) for j in range(n)] for i in range(d + 1)]
         for i in range(n):
         
-            f_vec[0][i] =  BitVecVal(input_list[i],n)
+            f_vec[0][i] =  BitVecVal(input_list[i],num_of_var)
         #z3-solver インスタンスの作成
         s = Solver()
 
@@ -135,8 +131,8 @@ def calc(input_list,output_list,n):
         for i in range(d):
 
             
-            #NNA制約式の追加
-            nearest_neighbor(c_vec[i],t_vec[i],n,s)
+            #NNA制約式の追加(使わなくていいかも)
+            #nearest_neighbor(c_vec[i],t_vec[i],n,s)
             #同一ゲートはコントロールビットが一つしかない制約
             one_bit_per_gate(c_vec[i],n,s)
             one_bit_per_gate(t_vec[i],n,s)
@@ -145,7 +141,10 @@ def calc(input_list,output_list,n):
         #出力を生成
         generate_output(f_vec,c_vec,t_vec,d,n)
         #出力と要求出力の一致
-        equal_desired_output(f_vec,output_list,n,d,s)
+        
+        
+        ex_equal_desired_output(f_vec,output_list,n,d,s)
+        
         #for i in range(n):
             #print("%dline f_vec P :%s"%(i + 1,f_vec[d][i]) )
             

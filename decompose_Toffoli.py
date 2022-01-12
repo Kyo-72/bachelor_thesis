@@ -138,4 +138,7 @@ def decompose(file_name):
 
     return 0
 
-decompose("input/tmp/tmp.txt")
+print("ディレクトリ名を入力してください")
+dir = input()
+
+decompose("input/{}/{}.txt".format(dir,dir))

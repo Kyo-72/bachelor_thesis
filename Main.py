@@ -29,9 +29,9 @@ def init_config(n):
 
     return init_state
 
-def end_config(num_of_circuit,sum,n):
+def end_config(num_of_circuit,file_name,sum,n):
     os.chdir("/Users/DELL/ソースコード/output")
-    with open("my_{}bit_output.txt".format(n),"a") as output:
+    with open("my_{}.txt".format(file_name),"a") as output:
         output.write("\n\n平均実行時間{}s\n".format(sum/num_of_circuit))
         
     os.chdir("/Users/DELL/ソースコード")
@@ -40,7 +40,8 @@ def end_config(num_of_circuit,sum,n):
 
 
 os.chdir('/Users/DELL/ソースコード')
-
+print("手法選択(my_method : 0) (ex_method : 1) :")
+method = int( input() )
 #テスト回路のリストを取得する
 print("実験用回路のディレクトリ名を入力してください")
 dir_name = input()
@@ -149,7 +150,7 @@ for file_name in test_list:
     #実行時間を計測
     process_time = time.time() - start
     num_of_circuit += 1
-    aggregate.aggregate_result(file_name,source_circuit,decomposed_circuit,n)
+    aggregate.aggregate_result(file_name,source_circuit,decomposed_circuit,process_time)
     sum += process_time
 
 
@@ -158,7 +159,7 @@ for file_name in test_list:
     print("所要時間:%ds"%process_time)
     
     
-end_config(num_of_circuit,sum,n)
+end_config(num_of_circuit,file_name,sum,n)
 
 
 

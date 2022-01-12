@@ -1,16 +1,19 @@
-import ex_calc
+import ex_calc as calc
 import logic
 import display
 import time
 import copy
-import ex_desired_output
+import ex_desired_output as desired_output
 import read_file
 import os
-import ex_aggregate
+import aggregate
+import const
 
-def ex_inti_output(n):
+
+
+def inti_output(n):
     os.chdir("/Users/DELL/ソースコード/output")
-    with open("ex_{}bit_output.txt".format(n),"w") as output:
+    with open("my_{}bit_output.txt".format(n),"w") as output:
         output.write("ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間\n")
         
     os.chdir("/Users/DELL/ソースコード")
@@ -19,57 +22,66 @@ def init_config(n):
 
 
     init_state = []
-    ex_inti_output(n)
+    inti_output(n)
     for i in range(n):
         x = (1<<i)
         init_state.append(x)
 
     return init_state
-#平均実行時間を出力
+
 def end_config(num_of_circuit,sum,n):
     os.chdir("/Users/DELL/ソースコード/output")
-    with open("ex_{}bit_output.txt".format(n),"a") as output:
+    with open("my_{}bit_output.txt".format(n),"a") as output:
         output.write("\n\n平均実行時間{}s\n".format(sum/num_of_circuit))
         
     os.chdir("/Users/DELL/ソースコード")
 
 
-print("入力ビットの数を入力してください:")
-n = int(input())
-#初期状態を設定
-init_state = init_config(n)
-
-#総実行時間
-sum = 0
-#実行回路数
-num_of_circuit = 0
 
 
-#要求出力集合
-desired_output_set = [init_state]
 os.chdir('/Users/DELL/ソースコード')
-
+print("手法選択(my_method : 0) (ex_method : 1) :")
 #テスト回路のリストを取得する
-test_list = os.listdir(path="input/{}bit_circuit".format(n))
+print("実験用回路のディレクトリ名を入力してください")
+dir_name = input()
+test_list = os.listdir(path="input/{}".format(dir_name))
+#実行時間の合計
+sum = 0
+#実行した回路の数
+num_of_circuit = 0;
 
 #ディレクトリ内の回路全て分解する
 for file_name in test_list:
 
 
     #テスト用回路のディレクトリ移動する
-    os.chdir('/Users/DELL/ソースコード/input/{}bit_circuit'.format(n))
+    os.chdir('/Users/DELL/ソースコード/input/{}'.format(dir_name))
     
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
     circuit = copy.copy(source_circuit)
-    #回路から要求出力集合を得る
-    desired_output_set = ex_desired_output.desired_output(init_state,circuit)
+
+    #回路からビット数を読み込む
+    n = len(circuit[0])
+    print(n)
+
+    #初期状態を設定
+    init_state = init_config(n)
+    #要求出力集合
+    output_set = [init_state]
+
+    #回路からゲートの種類と要求出力集合を得る
+    subircuits_output_info = desired_output.desired_output(init_state,circuit)
+    gate_type = subircuits_output_info[0]
+    output_set = subircuits_output_info[1]
+    num_of_var = subircuits_output_info[2]
     #回路の最終的な論理状態を取得
-    x = logic.logical_state(init_state,circuit)
+    x = logic.logical_state(copy.copy(init_state),circuit)
     #分解前の回路を出力
     display.display_circuit(circuit,x)
     #要求出力集合を出力
-    print(desired_output_set)
+    print(output_set)
+    
 
 
     #開始時間
@@ -77,34 +89,54 @@ for file_name in test_list:
 
     #分解後の回路
     decomposed_circuit = [[]]
-    #input_listの初期化
-    input_list = init_state
-    depth = 0
     #要求集合に基づいて回路を分解する
-    for block in range( len(desired_output_set )):
+    for block in range( len(output_set) ):
     
         #部分的な回路を生成し,decoposed_circuitにつなげる
-        output_list = desired_output_set[block]
-        circuit = ex_calc.calc(input_list,output_list,n)
-        display.display_circuit(circuit)
+        print("今回の回路の入力{}".format( init_state ) )
+        print("今回の回路の出力{}".format( output_set[block] ) )
+        circuit = calc.calc(copy.copy(init_state),copy.copy(output_set[block]),n,num_of_var,gate_type[block])
+
         for gate in circuit:
             decomposed_circuit.append(copy.copy(gate))
         
-        #要求出力が生成されているビットにTゲートをつなげる
-        x = logic.logical_state(input_list,circuit)
+        if(len(circuit) != 0):
+            x = logic.logical_state(copy.copy(init_state),circuit)
+        else:
+        #部分回路内のCNOTゲートが0だったら出力はinputと同じ
+            x = copy.copy(init_state)
+
+        print("実際の出力{}".format(x))
+
         gate = []
-        #最後はTゲートはつなげなくていい
+        display.display_circuit(circuit,x,copy.copy(init_state))
         
-            
-        for bit in x:
-            if(bit in output_list):
-                gate.append("T")
+        #単一量子ゲートをつなげる
+        for i,bit in enumerate(x):
+            if(bit in output_set[block]):
+                if(output_set[block][i] < 0):
+                    gate.append(" ")
+                else:
+                    gate.append(gate_type[block])
             else:
                 gate.append(" ")
 
+    
         decomposed_circuit.append(copy.copy(gate))
-        #出力を次の入力に更新
-        input_list = x
+
+        #Hゲートがない場合，出力を次の入力に更新
+        # if(gate_type[block] != const.HADAMARD_GATE):
+        #     input_list[block + 1] = x
+        # else:
+        #     print(x)
+        #     for i,bit in enumerate(x):
+        #         #Hゲートがある場合，更新しなくていい
+        #         if(bit not in output_set[block]):
+        #             #Hゲートがないbitは前回の回路の出力で更新
+        #             input_list[block + 1][i] = bit
+                
+
+
 
 
     decomposed_circuit.pop(0)
@@ -112,18 +144,20 @@ for file_name in test_list:
     x = logic.logical_state(init_state,decomposed_circuit)
     #回路を出力する
     display.display_circuit(decomposed_circuit,x)
-    #時間を計測
+    print(decomposed_circuit)
+    #実行時間を計測
     process_time = time.time() - start
-    sum += process_time
     num_of_circuit += 1
-    ex_aggregate.ex_aggregate_result(file_name,source_circuit,decomposed_circuit,n)
+    aggregate.aggregate_result(file_name,source_circuit,decomposed_circuit,n)
+    sum += process_time
+
+
+
 
     print("所要時間:%ds"%process_time)
-
+    
+    
 end_config(num_of_circuit,sum,n)
-    
-    
-
 
 
 
