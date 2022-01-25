@@ -126,7 +126,7 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
         #z3-solver インスタンスの作成
         s = Solver()
 
-        
+        #このループ　関数内でええやん
         #ゲートごとに制約を追加
         for i in range(d):
 

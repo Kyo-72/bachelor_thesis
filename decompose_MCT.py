@@ -1,14 +1,14 @@
 import display
 import const
 #ancillaにできるbitを探し,その中でターゲットビットとの距離が一番近い,ビットのindexを返す
-def search_for_ancilla(line,num_of_io,n):
+def search_for_ancilla(line,num_of_io,n,input):
     gate = line.split(" ")[1:num_of_io + 1]
     #コントロールビットを数字で取り出す
     controll_bit = []
     for bit in gate[0:num_of_io - 1]:
-        controll_bit.append(ord(bit) - ord('a'))
-
-    target_bit = ( ord(gate[num_of_io - 1].split("\n")[0]) - ord('a') )
+        controll_bit.append(input.index(bit))
+    
+    target_bit = ( input.index(gate[num_of_io - 1].split("\n")[0])) 
     #ancillaにできるビットを探し,target_bitとの距離を入れる
     ancilla = {}
 
@@ -22,11 +22,11 @@ def search_for_ancilla(line,num_of_io,n):
     ancilla = sorted(ancilla.items(), key=lambda x:x[1]) 
     res = list(ancilla[0])
     #昇順で初めのkeyを返す
-    return chr( res[0] + ord('a') )
+    return input( res[0] ) 
 
-def convert_mct_into_toffoli(line,num_of_io,n):
+def convert_mct_into_toffoli(line,num_of_io,n,input):
     gates = ""
-    ancilla = search_for_ancilla(line,num_of_io,n)
+    ancilla = search_for_ancilla(line,num_of_io,n,input)
     print("ancilla:{}".format(ancilla))
 
     bit = line.split(" ")
@@ -37,7 +37,7 @@ def convert_mct_into_toffoli(line,num_of_io,n):
     #controll_bit三つ目
     c = bit[3]
     #ターゲットビット
-    t = bit[4][0]
+    t = bit[4].split("\n")[0]
 
     gates += "t3 {} {} {}\n".format(a,b,ancilla)
     gates += "t3 {} {} {}\n".format(c,ancilla,t)
@@ -58,7 +58,7 @@ def convert_toffoli_into_cnot(line):
     #controll_bit二つ目
     controll_bit.append(bit[2])
     #ターゲットビット
-    target_bit = bit[3][0]
+    target_bit = bit[3].split("\n")[0]
 
     #Clifford+Tゲート群に分解
     gates += "{}1 {}\n".format(const.HADAMARD_GATE,target_bit)
@@ -72,7 +72,7 @@ def convert_toffoli_into_cnot(line):
     gates += "{}1 {}\n".format(const.T_GATE,target_bit)
     gates += "{}2 {} {}\n".format(const.TARGET_BIT,target_bit,controll_bit[1])
     gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],target_bit)
-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],controll_bit[1])
+    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[1],controll_bit[0])
     gates += "{}1 {}\n".format(const.HADAMARD_GATE,target_bit)
 
     return gates
@@ -81,6 +81,7 @@ def convert_toffoli_into_cnot(line):
 
 def decompose(file_name):
     #分解後回路.最後にファイルに書き込む
+    input=[]
     new_circuit = ""
     flag = 0
 
@@ -91,6 +92,12 @@ def decompose(file_name):
  
             if(".numvars" in line):
                n = int( line.split(" ")[1] )
+
+            if(".variables" in line):
+                #量子ビットの上位からinputに入れる
+                input = line.split(" ")[1:n + 1]
+                #改行文字処理
+                input[n - 1] = input[n - 1].split("\n")[0]
         
             #beginからゲートを読み始める(flag = 1)
             if(".begin" in line):
@@ -115,7 +122,7 @@ def decompose(file_name):
                         line = convert_toffoli_into_cnot(line)
                     #MTCゲートをtoffoliに分解後,clifford+tゲート群に分解
                     elif(num_of_io > 3):
-                        gate = convert_mct_into_toffoli(line,num_of_io,n)
+                        gate = convert_mct_into_toffoli(line,num_of_io,n,input)
                         gate = gate.split("\n")
                         line = ""
                         for g in gate[:-1]:

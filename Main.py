@@ -40,8 +40,6 @@ def end_config(num_of_circuit,file_name,sum,n):
 
 
 os.chdir('/Users/DELL/ソースコード')
-print("手法選択(my_method : 0) (ex_method : 1) :")
-method = int( input() )
 #テスト回路のリストを取得する
 print("実験用回路のディレクトリ名を入力してください")
 dir_name = input()
@@ -156,7 +154,7 @@ for file_name in test_list:
 
 
 
-    print("所要時間:%ds"%process_time)
+    print("所要時間:{}s".format(process_time))
     
     
 end_config(num_of_circuit,file_name,sum,n)

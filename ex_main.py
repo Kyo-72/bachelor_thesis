@@ -154,7 +154,7 @@ for file_name in test_list:
 
 
 
-    print("所要時間:%ds"%process_time)
+    print("所要時間:%fs"%process_time)
     
     
 end_config(num_of_circuit,sum,n)

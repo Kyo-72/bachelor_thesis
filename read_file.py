@@ -23,17 +23,17 @@ elementary_gate_list = [const.T_GATE,const.T_DAGGER_GATE,const.HADAMARD_GATE,con
 
 #例[[" ","c","t"],[" ","T"," "]]
 
-def add_elementary_gate(type_of_gate,gate,n):
+def add_elementary_gate(type_of_gate,gate,n,input):
     gate_list = [" " for i in range(n)]
     for bit in gate:
-        gate_list[ord(bit) - ord("a")] = type_of_gate
+        gate_list[input.index(bit)] = type_of_gate
 
     return gate_list
 
 
 
 
-def convert_to_list(n,line):
+def convert_to_list(n,line,input):
     gate_list = [" " for i in range(n)]
     
     #ファイルを区切りリスト
@@ -55,7 +55,7 @@ def convert_to_list(n,line):
 
     for g in elementary_gate_list:
         if(type_of_gate == g):
-            gate_list = add_elementary_gate(g,gate[1:num_of_io + 1],n)
+            gate_list = add_elementary_gate(g,gate[1:num_of_io + 1],n,input)
   
         
     if(type_of_gate == const.TARGET_BIT):
@@ -65,17 +65,17 @@ def convert_to_list(n,line):
         #notゲート
         if(num_of_io == 1):
             n_bit = gate[num_of_io][0]
-            gate_list[ ord(n_bit) - ord("a")] = "n"
+            gate_list[ input.index(n_bit) ] = "n"
         else:
         
             #コントロールビットについてbit毎に文字列に変換
             for i in range(1,num_of_io):
                 controll_bit = gate[i]
-                gate_list[ ord(controll_bit) - ord("a")] = const.CONTROLL_BIT
+                gate_list[ input.index(controll_bit)] = const.CONTROLL_BIT
 
             #最後の一ビットはターゲットビット
-            target_bit = gate[num_of_io][0]
-            gate_list[ ord(target_bit) - ord("a")] = const.TARGET_BIT
+            target_bit = gate[num_of_io].split("\n")[0]
+            gate_list[ input.index(target_bit)] = const.TARGET_BIT
 
     return gate_list
     
@@ -86,6 +86,7 @@ def read_file(str):
     flag = 0
     #リスト形式でゲートを表現
     circuit = []
+    input=[]
     kinds_of_output = []
     
 
@@ -107,7 +108,13 @@ def read_file(str):
             if(".numvars" in line):
                n = int( line.split(" ")[1] )
             #outputを読み込む
-            
+
+            if(".variables" in line):
+                #量子ビットの上位からinputに入れる
+                input = line.split(" ")[1:n + 1]
+                #改行文字処理
+                input[n - 1] = input[n - 1].split("\n")[0]
+
             if(".output" in line):
                 kinds_of_output = line.split(" ")[1:n + 1]
                 #改行文字を消去
@@ -138,7 +145,7 @@ def read_file(str):
 
                 gate_list = []
                 #ゲートをリストにする
-                gate_list = convert_to_list(n,line)
+                gate_list = convert_to_list(n,line,input)
                 circuit.append(gate_list)
                 #ToDoゲートの最後の要求出力をリストの末尾にappendする
               
