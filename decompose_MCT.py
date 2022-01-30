@@ -21,8 +21,10 @@ def search_for_ancilla(line,num_of_io,n,input):
     print(ancilla)
     ancilla = sorted(ancilla.items(), key=lambda x:x[1]) 
     res = list(ancilla[0])
+    print(type(res[0]))
     #昇順で初めのkeyを返す
-    return input( res[0] ) 
+    print(res)
+    return res[0]  
 
 def convert_mct_into_toffoli(line,num_of_io,n,input):
     gates = ""
