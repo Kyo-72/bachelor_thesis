@@ -10,6 +10,9 @@ import aggregate
 import const
 
 
+#卒論　改善　4/11 2022より
+
+
 
 def inti_output(n):
     os.chdir("/Users/DELL/ソースコード/output")
