@@ -1,0 +1,4129 @@
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mdeleted file mode 100644[m
+[1mindex 0dcc735..0000000[m
+[1m--- a/.gitignore[m
+[1m+++ /dev/null[m
+[36m@@ -1,2 +0,0 @@[m
+[31m-output/[m
+[31m-input/[m
+[1mdiff --git a/BtoX.py b/BtoX.py[m
+[1mdeleted file mode 100644[m
+[1mindex b542dc6..0000000[m
+[1m--- a/BtoX.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,7 +0,0 @@[m
+[31m-def convert_into_x(set,n):[m
+[31m-    list = [][m
+[31m-[m
+[31m-    for x in set:[m
+[31m-        [m
+[31m-[m
+[31m-    return list[m
+\ No newline at end of file[m
+[1mdiff --git a/Main.py b/Main.py[m
+[1mindex 01f6b97..66f00e4 100644[m
+[1m--- a/Main.py[m
+[1m+++ b/Main.py[m
+[36m@@ -2,165 +2,97 @@[m [mimport calc[m
+ import logic[m
+ import display[m
+ import time[m
+[32m+[m[32mimport generate_random[m
+ import copy[m
+[31m-import desired_output as desired_output[m
+[31m-import read_file[m
+[31m-import os[m
+[31m-import aggregate[m
+[31m-import const[m
+[32m+[m[32mimport desired_output[m
+ [m
+ [m
+ [m
+[31m-def inti_output(n):[m
+[31m-    os.chdir("/Users/DELL/ソースコード/output")[m
+[31m-    with open("my_{}bit_output.txt".format(n),"w") as output:[m
+[31m-        output.write("ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間\n")[m
+[31m-        [m
+[31m-    os.chdir("/Users/DELL/ソースコード")[m
+[32m+[m[32mwhile(1):[m
+[32m+[m[41m    [m
+[32m+[m[32m    print("入力ビットの数を入力してください(0でプログラム終了):")[m
+[32m+[m[32m    n = int(input())[m
+ [m
+[31m-def init_config(n):[m
+[32m+[m[32m    if(n == 0):[m
+[32m+[m[32m        break[m
+ [m
+[32m+[m[32m    print("cnotの数を入力してください(0でプログラム終了):")[m
+[32m+[m[32m    d = int(input())[m
+ [m
+     init_state = [][m
+[31m-    inti_output(n)[m
+     for i in range(n):[m
+         x = (1<<i)[m
+         init_state.append(x)[m
+ [m
+[31m-    return init_state[m
+[31m-[m
+[31m-def end_config(num_of_circuit,file_name,sum,n):[m
+[31m-    os.chdir("/Users/DELL/ソースコード/output")[m
+[31m-    with open("my_{}.txt".format(file_name),"a") as output:[m
+[31m-        output.write("\n\n平均実行時間{}s\n".format(sum/num_of_circuit))[m
+[31m-        [m
+[31m-    os.chdir("/Users/DELL/ソースコード")[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-os.chdir('/Users/DELL/ソースコード')[m
+[31m-#テスト回路のリストを取得する[m
+[31m-print("実験用回路のディレクトリ名を入力してください")[m
+[31m-dir_name = input()[m
+[31m-test_list = os.listdir(path="input/{}".format(dir_name))[m
+[31m-#実行時間の合計[m
+[31m-sum = 0[m
+[31m-#実行した回路の数[m
+[31m-num_of_circuit = 0;[m
+[31m-[m
+[31m-#ディレクトリ内の回路全て分解する[m
+[31m-for file_name in test_list:[m
+[31m-[m
+[31m-[m
+[31m-    #テスト用回路のディレクトリ移動する[m
+[31m-    os.chdir('/Users/DELL/ソースコード/input/{}'.format(dir_name))[m
+[31m-    [m
+[31m-    #ファイルから回路を読み込む[m
+[31m-    source_circuit = read_file.read_file(file_name)[m
+[31m-    circuit = copy.copy(source_circuit)[m
+[32m+[m[32m    #要求出力集合[m
+[32m+[m[32m    desired_output_set = [init_state][m
+[32m+[m[32m    #ランダムな回路を作成[m
+[32m+[m[32m    random_circuit = generate_random.generate_random_circuit(n,d)[m
+ [m
+[31m-    #回路からビット数を読み込む[m
+[31m-    n = len(circuit[0])[m
+[31m-    print(n)[m
+[32m+[m[32m    print(random_circuit)[m
+[32m+[m[32m    #回路から要求出力集合を得る[m
+[32m+[m[32m    desired_output_set = desired_output.desired_output(init_state,random_circuit)[m
+ [m
+[31m-    #初期状態を設定[m
+[31m-    init_state = init_config(n)[m
+[31m-    #要求出力集合[m
+[31m-    output_set = [init_state][m
+[31m-[m
+[31m-    #回路からゲートの種類と要求出力集合を得る[m
+[31m-    subircuits_output_info = desired_output.desired_output(init_state,circuit)[m
+[31m-    gate_type = subircuits_output_info[0][m
+[31m-    input_list = subircuits_output_info[1][m
+[31m-    output_set = subircuits_output_info[2][m
+[31m-    num_of_var = subircuits_output_info[3][m
+[31m-    #回路の最終的な論理状態を取得[m
+[31m-    x = logic.logical_state(init_state,circuit)[m
+     #分解前の回路を出力[m
+[31m-    # display.display_circuit(circuit,x)[m
+[32m+[m[32m    x = logic.logical_state(init_state,random_circuit)[m
+[32m+[m[32m    display.display_circuit(random_circuit,x)[m
+     #要求出力集合を出力[m
+[31m-    # print(output_set)[m
+[31m-[m
+[31m-    #分解前回路ゲート数[m
+[31m-    print("CNOTゲート数{}".format( aggregate.count_cnot(circuit) ) )[m
+[31m-    [m
+[32m+[m[32m    print(desired_output_set)[m
+ [m
+ [m
+     #開始時間[m
+     start = time.time()[m
+[31m-[m
+[32m+[m[41m    [m
+     #分解後の回路[m
+     decomposed_circuit = [[]][m
+[32m+[m[32m    #input_listの初期化[m
+[32m+[m[32m    input_list = init_state[m
+[32m+[m[32m    depth = 0[m
+     #要求集合に基づいて回路を分解する[m
+[31m-    for block in range( len(output_set) ):[m
+[31m-    [m
+[32m+[m[32m    for block in range( len(desired_output_set )):[m
+[32m+[m[41m        [m
+         #部分的な回路を生成し,decoposed_circuitにつなげる[m
+[31m-        print("今回の回路の入力{}".format( input_list[block] ) )[m
+[31m-        print("今回の回路の出力{}".format( output_set[block] ) )[m
+[31m-        circuit = calc.calc(input_list[block],copy.copy(output_set[block]),n,num_of_var,gate_type[block])[m
+[31m-[m
+[32m+[m[32m        output_list = desired_output_set[block][m
+[32m+[m[32m        circuit = calc.calc(input_list,output_list,n)[m
+[32m+[m[32m        display.display_circuit(circuit)[m
+         for gate in circuit:[m
+             decomposed_circuit.append(copy.copy(gate))[m
+         [m
+[31m-        if(len(circuit) != 0):[m
+[31m-            x = logic.logical_state(input_list[block],circuit)[m
+[31m-        else:[m
+[31m-        #部分回路内のCNOTゲートが0だったら出力はinputと同じ[m
+[31m-            x = input_list[block][m
+[31m-[m
+[31m-        print("実際の出力{}".format(x))[m
+[31m-[m
+[32m+[m[32m        #要求出力が生成されているビットにTゲートをつなげる[m
+[32m+[m[32m        x = logic.logical_state(input_list,circuit)[m
+         gate = [][m
+[31m-        display.display_circuit(circuit,x,input_list[block])[m
+[32m+[m[32m        #最後はTゲートはつなげなくていい[m
+         [m
+[31m-        #要求出力が生成されているビットにelementary量子ゲートをつなげる[m
+[31m-        for i,bit in enumerate(x):[m
+[31m-            if(bit in output_set[block]):[m
+[31m-                if(gate_type[block] == const.HADAMARD_GATE and output_set[block][i] < 0):[m
+[31m-                    gate.append(" ")[m
+[31m-                else:[m
+[31m-                    gate.append(gate_type[block])[m
+[32m+[m[41m            [m
+[32m+[m[32m        for bit in x:[m
+[32m+[m[32m            if(bit in output_list):[m
+[32m+[m[32m                gate.append("T")[m
+             else:[m
+                 gate.append(" ")[m
+ [m
+[31m-    [m
+         decomposed_circuit.append(copy.copy(gate))[m
+[32m+[m[32m        #出力を次の入力に更新[m
+[32m+[m[32m        input_list = x[m
+ [m
+[31m-        #Hゲートがない場合，出力を次の入力に更新[m
+[31m-        if(gate_type[block] != const.HADAMARD_GATE):[m
+[31m-            input_list[block + 1] = x[m
+[31m-        else:[m
+[31m-            print(x)[m
+[31m-            for i,bit in enumerate(x):[m
+[31m-                #Hゲートがある場合，更新しなくていい[m
+[31m-                if(bit not in output_set[block]):[m
+[31m-                    #Hゲートがないbitは前回の回路の出力で更新[m
+[31m-                    input_list[block + 1][i] = bit[m
+[31m-                [m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[32m+[m[32m    print()[m
+     decomposed_circuit.pop(0)[m
+     #出力の論理状態を取得[m
+     x = logic.logical_state(init_state,decomposed_circuit)[m
+     #回路を出力する[m
+     display.display_circuit(decomposed_circuit,x)[m
+[31m-    print(decomposed_circuit)[m
+[31m-    #実行時間を計測[m
+     process_time = time.time() - start[m
+[31m-    num_of_circuit += 1[m
+[31m-    aggregate.aggregate_result(file_name,source_circuit,decomposed_circuit,process_time)[m
+[31m-    sum += process_time[m
+[31m-[m
+[32m+[m[41m   [m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m[32m    print("所要時間:%ds"%process_time)[m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+ [m
+[32m+[m[32m#目的出力関数を得る[m
+ [m
+[32m+[m[32m#ゲートを分解し、回路を更新[m
+ [m
+[31m-    print("所要時間:{}s".format(process_time))[m
+[31m-    [m
+[31m-    [m
+[31m-end_config(num_of_circuit,file_name,sum,n)[m
+ [m
+ [m
+ [m
+[1mdiff --git a/__pycache__/aggregate.cpython-37.pyc b/__pycache__/aggregate.cpython-37.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 5147393..0000000[m
+Binary files a/__pycache__/aggregate.cpython-37.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/aggregate.cpython-39.pyc b/__pycache__/aggregate.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 5c8b75a..0000000[m
+Binary files a/__pycache__/aggregate.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/calc.cpython-37.pyc b/__pycache__/calc.cpython-37.pyc[m
+[1mindex c7d459e..941e487 100644[m
+Binary files a/__pycache__/calc.cpython-37.pyc and b/__pycache__/calc.cpython-37.pyc differ
+[1mdiff --git a/__pycache__/calc.cpython-39.pyc b/__pycache__/calc.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 1212db4..0000000[m
+Binary files a/__pycache__/calc.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/const.cpython-37.pyc b/__pycache__/const.cpython-37.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 4c37be2..0000000[m
+Binary files a/__pycache__/const.cpython-37.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/const.cpython-39.pyc b/__pycache__/const.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex c9d8a56..0000000[m
+Binary files a/__pycache__/const.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/desired_output.cpython-37.pyc b/__pycache__/desired_output.cpython-37.pyc[m
+[1mindex b3b1fe5..dab0673 100644[m
+Binary files a/__pycache__/desired_output.cpython-37.pyc and b/__pycache__/desired_output.cpython-37.pyc differ
+[1mdiff --git a/__pycache__/desired_output.cpython-39.pyc b/__pycache__/desired_output.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 937b1fa..0000000[m
+Binary files a/__pycache__/desired_output.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/display.cpython-37.pyc b/__pycache__/display.cpython-37.pyc[m
+[1mindex c5d028c..4cb94b7 100644[m
+Binary files a/__pycache__/display.cpython-37.pyc and b/__pycache__/display.cpython-37.pyc differ
+[1mdiff --git a/__pycache__/display.cpython-39.pyc b/__pycache__/display.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 5964e3e..0000000[m
+Binary files a/__pycache__/display.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/ex_aggregate.cpython-37.pyc b/__pycache__/ex_aggregate.cpython-37.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 2bce4da..0000000[m
+Binary files a/__pycache__/ex_aggregate.cpython-37.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/ex_aggregate.cpython-39.pyc b/__pycache__/ex_aggregate.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 8121962..0000000[m
+Binary files a/__pycache__/ex_aggregate.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/ex_calc.cpython-37.pyc b/__pycache__/ex_calc.cpython-37.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex e68950d..0000000[m
+Binary files a/__pycache__/ex_calc.cpython-37.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/ex_calc.cpython-39.pyc b/__pycache__/ex_calc.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex f27780e..0000000[m
+Binary files a/__pycache__/ex_calc.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/ex_desired_output.cpython-37.pyc b/__pycache__/ex_desired_output.cpython-37.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 705b7a6..0000000[m
+Binary files a/__pycache__/ex_desired_output.cpython-37.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/ex_desired_output.cpython-39.pyc b/__pycache__/ex_desired_output.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 16e2705..0000000[m
+Binary files a/__pycache__/ex_desired_output.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/logic.cpython-37.pyc b/__pycache__/logic.cpython-37.pyc[m
+[1mindex 5b7be3c..5fa9ec8 100644[m
+Binary files a/__pycache__/logic.cpython-37.pyc and b/__pycache__/logic.cpython-37.pyc differ
+[1mdiff --git a/__pycache__/logic.cpython-39.pyc b/__pycache__/logic.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex e660cc7..0000000[m
+Binary files a/__pycache__/logic.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/read_file.cpython-37.pyc b/__pycache__/read_file.cpython-37.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 93173ce..0000000[m
+Binary files a/__pycache__/read_file.cpython-37.pyc and /dev/null differ
+[1mdiff --git a/__pycache__/read_file.cpython-39.pyc b/__pycache__/read_file.cpython-39.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 48ac139..0000000[m
+Binary files a/__pycache__/read_file.cpython-39.pyc and /dev/null differ
+[1mdiff --git a/a.txt b/a.txt[m
+[1mdeleted file mode 100644[m
+[1mindex e69de29..0000000[m
+[1mdiff --git a/aggregate.py b/aggregate.py[m
+[1mdeleted file mode 100644[m
+[1mindex 0ff9b18..0000000[m
+[1m--- a/aggregate.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,26 +0,0 @@[m
+[31m-import os[m
+[31m-import const[m
+[31m-[m
+[31m-def count_cnot(circuit):[m
+[31m-    res = 0[m
+[31m-    for gate in circuit:[m
+[31m-        if(const.CONTROLL_BIT in gate):[m
+[31m-            res += 1[m
+[31m-[m
+[31m-    return res[m
+[31m-        [m
+[31m-    [m
+[31m-[m
+[31m-def aggregate_result(file_name,circuit,decomposed_circuit,process_time):[m
+[31m-    os.chdir("/Users/DELL/ソースコード/output")[m
+[31m-    [m
+[31m-    with open("my_{}.txt".format(file_name),"a") as output:[m
+[31m-        num_gate_before = count_cnot(circuit)[m
+[31m-        num_gate_after = count_cnot(decomposed_circuit)[m
+[31m-        print("分解前ゲート数:{}".format(num_gate_before))[m
+[31m-        print("分解後ゲート数:{}".format(num_gate_after))[m
+[31m-[m
+[31m-        output.write("{} | {} | {} | {}\n".format(file_name,num_gate_before,num_gate_after,process_time))[m
+[31m-[m
+[31m-        [m
+[31m-        [m
+[1mdiff --git a/calc(alpha).py b/calc(alpha).py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e77b5c6[m
+[1m--- /dev/null[m
+[1m+++ b/calc(alpha).py[m
+[36m@@ -0,0 +1,151 @@[m
+[32m+[m[32mfrom z3 import *[m
+[32m+[m[32mMAX_NUM_GATE = 10[m
+[32m+[m
+[32m+[m[32mdef nearest_neighbor(c_vec,t_vec,n,s):[m
+[32m+[m[41m    [m
+[32m+[m[32m    for i in range(1,n + 1):[m
+[32m+[m[32m        P = Xor(t_vec[i - 1],t_vec[i + 1])[m
+[32m+[m[32m        s.add(Implies(c_vec[i],P))[m
+[32m+[m[41m        [m
+[32m+[m
+[32m+[m[32mdef one_bit_per_gate(vec,n,s):[m
+[32m+[m
+[32m+[m[32m    P_vec = [Bool("P_vec%d" % i) for i in range(n + 1)][m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32m    for i in range(1,n + 1):[m
+[32m+[m[32m        P_vec[i] = vec[i][m
+[32m+[m[32m        for j in range(1,n + 1):[m
+[32m+[m[32m            if(i != j):[m
+[32m+[m[32m                P_vec[i] = And(P_vec[i],Not(vec[j]))[m
+[32m+[m[41m            [m
+[32m+[m[32m    #全ての制約をorで追加したい[m
+[32m+[m[32m    P = P_vec[1][m
+[32m+[m[32m    for i in range(2,n + 1):[m
+[32m+[m[32m       P = Or(P,P_vec[i])[m
+[32m+[m
+[32m+[m[32m    s.add(P)[m
+[32m+[m[32m    #print(P)[m
+[32m+[m[41m            [m
+[32m+[m
+[32m+[m[32mdef generate_output(f_vec,c_vec,t_vec,d,n):[m
+[32m+[m[41m    [m
+[32m+[m[32m    for d in range(d):[m
+[32m+[m[32m        c_bit = BitVec("c_bit",n + 1)[m
+[32m+[m[41m    [m
+[32m+[m[32m        #dコメのゲート コントロールビットがあればc_bit[m
+[32m+[m[32m        for i in range(1,n + 1):[m
+[32m+[m[32m            c_bit = If(c_vec[d][i],f_vec[i]^c_bit,c_bit)[m
+[32m+[m[32m        for i in range(1,n + 1):[m
+[32m+[m[32m            f_vec[i] = If(t_vec[d][i],c_bit^f_vec[i],f_vec[i])[m
+[32m+[m
+[32m+[m[32mdef equal_desired_output(f_vec,output_list,n,s):[m
+[32m+[m[41m    [m
+[32m+[m[32m    i = 1[m
+[32m+[m[32m    for output in output_list:[m
+[32m+[m[41m        [m
+[32m+[m[32m        P = False[m
+[32m+[m[41m        [m
+[32m+[m[32m        #for j in range(1,n + 1):[m
+[32m+[m[41m        [m
+[32m+[m[32m        P = f_vec[i] == output[m
+[32m+[m[32m        i += 1[m
+[32m+[m[32m        s.add(P)[m
+[32m+[m[32m        #print(P)[m
+[32m+[m[32m        #print("###############################################################")[m
+[32m+[m
+[32m+[m[32mdef display_gates(c_vec,t_vec,m,d,n):[m
+[32m+[m
+[32m+[m[32m    for j in range(1,n + 1):[m
+[32m+[m[41m    [m
+[32m+[m[32m        for i in range(d):[m
+[32m+[m[41m        [m
+[32m+[m[32m            print("―",end="")[m
+[32m+[m[41m            [m
+[32m+[m[41m        [m
+[32m+[m[32m            C = m[ c_vec[i][j] ][m
+[32m+[m[32m            T = m[ t_vec[i][j] ][m
+[32m+[m[32m            if(C == True):[m
+[32m+[m[32m                print("ｃ",end="")[m
+[32m+[m[32m            elif(T == True):[m
+[32m+[m[32m                print("ｔ",end="")[m
+[32m+[m[32m            else:[m
+[32m+[m[32m                print("―",end="")[m
+[32m+[m[32m        print("")[m
+[32m+[m
+[32m+[m[32mdef display_bool(c_vec,t_vec,m,d,n):[m
+[32m+[m
+[32m+[m[32m    for i in range(d):[m
+[32m+[m[32m        for j in range(1,n + 1):[m
+[32m+[m[41m                    [m
+[32m+[m[32m            print("%d個目、%dライン"%(i+1,j))[m
+[32m+[m[32m            print("%s"%is_true( m[ c_vec[i][j] ] ))[m
+[32m+[m[32m            print("%s"%is_true( m[ t_vec[i][j] ] ))[m
+[32m+[m[32m        print()[m
+[32m+[m[41m                                             [m
+[32m+[m[41m                        [m
+[32m+[m[41m            [m
+[32m+[m
+[32m+[m[32mdef calc(input_list,output_list,n):[m
+[32m+[m
+[32m+[m[32m    d = 0;[m
+[32m+[m[32m    #ゲート数200まで探索[m
+[32m+[m
+[32m+[m[32m    #論理状態を表現する変数[m
+[32m+[m[41m    [m
+[32m+[m[32m    f_vec = [BitVec("f_vec%d" % i, n) for i in range(n + 1)][m
+[32m+[m[32m    for i in range(1,n + 1):[m
+[32m+[m[41m        [m
+[32m+[m[32m        f_vec[i] =  input_list[i][m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[41m    [m
+[32m+[m[32m    while(d < MAX_NUM_GATE):[m
+[32m+[m[32m        gate = {}[m
+[32m+[m
+[32m+[m[32m        #d*n CNOTゲート群を表す変数[m
+[32m+[m[32m        c_vec = [[Bool("c_vec[%d,%d]" % (i,j)) for j in range(n + 2)] for i in range(d)][m
+[32m+[m[32m        t_vec = [[Bool("t_vec[%d,%d]" % (i,j)) for j in range(n + 2)] for i in range(d)][m
+[32m+[m[32m        for i in range(d):[m
+[32m+[m[32m            c_vec[i][0] = False[m
+[32m+[m[32m            t_vec[i][0] = False[m
+[32m+[m[32m            c_vec[i][n + 1] = False[m
+[32m+[m[32m            t_vec[i][n + 1] = False[m
+[32m+[m[41m            [m
+[32m+[m[32m        #z3-solver インスタンスの作成[m
+[32m+[m[32m        s = Solver()[m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m[32m        #ゲートごとに制約を追加[m
+[32m+[m[32m        for i in range(d):[m
+[32m+[m
+[32m+[m[41m            [m
+[32m+[m[32m            #NNA制約式の追加[m
+[32m+[m[32m            nearest_neighbor(c_vec[i],t_vec[i],n,s)[m
+[32m+[m[32m            #同一ゲートはコントロールビットが一つしかない制約[m
+[32m+[m[32m            one_bit_per_gate(c_vec[i],n,s)[m
+[32m+[m[32m            one_bit_per_gate(t_vec[i],n,s)[m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m[32m        #出力を生成[m
+[32m+[m[32m        generate_output(f_vec,c_vec,t_vec,d,n)[m
+[32m+[m[32m        #出力と要求出力の一致[m
+[32m+[m[32m        equal_desired_output(f_vec,output_list,n,s)[m
+[32m+[m[41m            [m
+[32m+[m[32m        print("d=%d"%d)[m
+[32m+[m[32m        if(s.check() == sat):[m
+[32m+[m[32m            m = s.model()[m
+[32m+[m[32m            display_gates(c_vec,t_vec,m,d,n)[m
+[32m+[m[41m            [m
+[32m+[m[32m            print("found!")[m
+[32m+[m[32m            return 0[m
+[32m+[m[32m        d += 1[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32minput = [0,1,2,4,8,16][m
+[32m+[m[32moutput = [1,2,4,24,16][m
+[32m+[m[32mn = len(input) - 1[m
+[32m+[m
+[32m+[m
+[32m+[m[32mcalc(input,output,n)[m
+[1mdiff --git a/calc(beta).py b/calc(beta).py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..57dc64c[m
+[1m--- /dev/null[m
+[1m+++ b/calc(beta).py[m
+[36m@@ -0,0 +1,103 @@[m
+[32m+[m[32mfrom z3 import *[m
+[32m+[m[32mMAX_NUM_GATE = 3[m
+[32m+[m
+[32m+[m[32mdef nearest_neighbor(c_vec,t_vec,n,s):[m
+[32m+[m[41m    [m
+[32m+[m[32m    for i in range(1,n):[m
+[32m+[m[32m        P = Xor(t_vec[i - 1],t_vec[i + 1])[m
+[32m+[m[32m        s.add(Implies(c_vec[i],P))[m
+[32m+[m
+[32m+[m[32mdef one_bit_per_gate(vec,n,s):[m
+[32m+[m
+[32m+[m[32m    count = Int("count")[m
+[32m+[m[32m    P = vec[1][m
+[32m+[m[32m    for i in range(2,n):[m
+[32m+[m[32m        count += vec[i][m
+[32m+[m[32m    s.add(P == 1)[m
+[32m+[m
+[32m+[m[32mdef generate_output(f_vec,c_vec,t_vec,d,n):[m
+[32m+[m[41m    [m
+[32m+[m[32m    for d in range(d):[m
+[32m+[m[32m        c_bit = BitVec("c_bit",n + 1)[m
+[32m+[m[32m        #d個目のゲート コントロールビットがあればc_bit[m
+[32m+[m[32m        for i in range(1,n + 1):[m
+[32m+[m[32m            c_bit = If(c_vec[d][i],(i),c_bit)[m
+[32m+[m[32m        for i in range(1,n + 1):[m
+[32m+[m[32m            f_vec[i] = If(t_vec[d][i],c_bit^f_vec[i],f_vec[i])[m
+[32m+[m
+[32m+[m[32mdef equal_desired_output(f_vec,output_list,n,s):[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32m    for output in output_list:[m
+[32m+[m[41m        [m
+[32m+[m[32m        P = False[m
+[32m+[m[32m        for j in range(1,n + 1):[m
+[32m+[m[32m            P = Or(P,f_vec[j] == output)[m
+[32m+[m
+[32m+[m[32m    s.add(P)[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m
+[32m+[m[32mdef calc(input_list,output_list,n):[m
+[32m+[m
+[32m+[m[32m    d = 1;[m
+[32m+[m[32m    #ゲート数200まで探索[m
+[32m+[m
+[32m+[m[32m    #論理状態を表現する変数[m
+[32m+[m[41m    [m
+[32m+[m[32m    f_vec = [BitVec("f_vec%d" % i, n) for i in range(n + 1)][m
+[32m+[m[32m    for i in range(1,n + 1):[m
+[32m+[m[41m        [m
+[32m+[m[32m        f_vec[i] = 0 | input_list[i][m[41m [m
+[32m+[m[41m    [m
+[32m+[m[32m    while(d < MAX_NUM_GATE):[m
+[32m+[m[32m        gate = {}[m
+[32m+[m
+[32m+[m[32m        #d*n CNOTゲート群を表す変数[m
+[32m+[m[32m        c_vec = [BitVec("c_vec%d" % i, n) for i in range(n)][m
+[32m+[m[32m        t_vec = [BitVec("t_vec%d" % i, n) for i in range(n)][m
+[32m+[m[41m        [m
+[32m+[m[32m        #z3-solver インスタンスの作成[m
+[32m+[m[32m        s = Solver()[m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m[32m        #ゲートごとに制約を追加[m
+[32m+[m[32m        for i in range(d):[m
+[32m+[m
+[32m+[m[41m            [m
+[32m+[m[32m            #NNA制約式の追加[m
+[32m+[m[32m            nearest_neighbor(c_vec[i],t_vec[i],n,s)[m
+[32m+[m[32m            #同一ゲートはコントロールビットが一つしかない制約[m
+[32m+[m[32m            one_bit_per_gate(c_vec[i],n,s)[m
+[32m+[m[32m            one_bit_per_gate(t_vec[i],n,s)[m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m[32m        #出力を生成[m
+[32m+[m[32m        generate_output(f_vec,c_vec,t_vec,d,n)[m
+[32m+[m[32m        #出力と要求出力の一致[m
+[32m+[m[32m        equal_desired_output(f_vec,output_list,n,s)[m
+[32m+[m[41m            [m
+[32m+[m[32m        print("d=%d"%d)[m
+[32m+[m[32m        print(s.check())[m
+[32m+[m[32m        m = s.model()[m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[41m            [m
+[32m+[m[32m        d += 1[m
+[32m+[m[41m            [m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32minput = [0,1,2,4][m
+[32m+[m[32moutput = [1,2,6][m
+[32m+[m[32mn = 3[m
+[32m+[m
+[32m+[m[32mcalc(input,output,n)[m
+[1mdiff --git a/calc.py b/calc.py[m
+[1mindex 04c6315..ec04c63 100644[m
+[1m--- a/calc.py[m
+[1m+++ b/calc.py[m
+[36m@@ -1,5 +1,4 @@[m
+ from z3 import *[m
+[31m-import const[m
+ MAX_NUM_GATE = 50[m
+ [m
+ def nearest_neighbor(c_vec,t_vec,n,s):[m
+[36m@@ -32,7 +31,7 @@[m [mdef one_bit_per_gate(vec,n,s):[m
+        P = Or(P,P_vec[i])[m
+ [m
+     s.add(P)[m
+[31m-    [m
+[32m+[m[32m    #print(P)[m
+             [m
+ [m
+ def generate_output(f_vec,c_vec,t_vec,d,n):[m
+[36m@@ -41,10 +40,8 @@[m [mdef generate_output(f_vec,c_vec,t_vec,d,n):[m
+         for i in range(n):[m
+             f_vec[d + 1][i] = f_vec[d][i][m
+             for j in range(n):[m
+[31m-[m
+[31m-                #コントロールビットとターゲットビットが隣接していれば制約を追加[m
+[31m-                if( abs(i - j) < 2 and i != j):[m
+[31m-                    f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])[m
+[32m+[m[41m                [m
+[32m+[m[32m                f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])[m
+ [m
+         [m
+             [m
+[36m@@ -62,16 +59,25 @@[m [mdef equal_desired_output(f_vec,output_list,n,d,s):[m
+             [m
+         s.add(P)[m
+ [m
+[31m-def ex_equal_desired_output(f_vec,output_list,n,d,s):[m
+[31m-    #負の数の処理[m
+[31m-    for i in range(len(output_list)):[m
+[31m-        output_list[i] = abs(output_list[i])[m
+[32m+[m[41m      [m
+[32m+[m[32mdef display_gates(c_vec,t_vec,m,d,n):[m
+[32m+[m
+[32m+[m[32m    for j in range(n):[m
+[32m+[m[41m    [m
+[32m+[m[32m        for i in range(d):[m
+         [m
+[31m-    for output in output_list:[m
+[32m+[m[32m            print("―",end="")[m
+[32m+[m[41m            [m
+         [m
+[31m-        #要求出力と出力が正しいかを判定[m
+[31m-        s.add(f_vec[d][output_list.index(output)] == output)[m
+[31m-[m
+[32m+[m[32m            C = m[ c_vec[i][j] ][m
+[32m+[m[32m            T = m[ t_vec[i][j] ][m
+[32m+[m[32m            if(C == True):[m
+[32m+[m[32m                print("・",end="")[m
+[32m+[m[32m            elif(T == True):[m
+[32m+[m[32m                print("〇",end="")[m
+[32m+[m[32m            else:[m
+[32m+[m[32m                print("―",end="")[m
+[32m+[m[32m        print("―")[m
+ [m
+ def display_bool(c_vec,t_vec,m,d,n):[m
+ [m
+[36m@@ -101,7 +107,7 @@[m [mdef convert_output(m,d,n,c_vec,t_vec):[m
+                         [m
+             [m
+ [m
+[31m-def calc(input_list,output_list,n,num_of_var,gate_type):[m
+[32m+[m[32mdef calc(input_list,output_list,n):[m
+ [m
+     d = 0;[m
+     #ゲート数200まで探索[m
+[36m@@ -119,20 +125,21 @@[m [mdef calc(input_list,output_list,n,num_of_var,gate_type):[m
+         c_vec = [[Bool("c_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)][m
+         t_vec = [[Bool("t_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)][m
+         #論理状態を表す変数[m
+[31m-        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),num_of_var) for j in range(n)] for i in range(d + 1)][m
+[32m+[m[32m        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),n) for j in range(n)] for i in range(d + 1)][m
+[32m+[m
+         for i in range(n):[m
+         [m
+[31m-            f_vec[0][i] =  BitVecVal(input_list[i],num_of_var)[m
+[32m+[m[32m            f_vec[0][i] =  BitVecVal(input_list[i],n)[m
+         #z3-solver インスタンスの作成[m
+         s = Solver()[m
+ [m
+[31m-        #このループ　関数内でええやん[m
+[32m+[m[41m        [m
+         #ゲートごとに制約を追加[m
+         for i in range(d):[m
+ [m
+             [m
+[31m-            #NNA制約式の追加(使わなくていいかも)[m
+[31m-            #nearest_neighbor(c_vec[i],t_vec[i],n,s)[m
+[32m+[m[32m            #NNA制約式の追加[m
+[32m+[m[32m            nearest_neighbor(c_vec[i],t_vec[i],n,s)[m
+             #同一ゲートはコントロールビットが一つしかない制約[m
+             one_bit_per_gate(c_vec[i],n,s)[m
+             one_bit_per_gate(t_vec[i],n,s)[m
+[36m@@ -141,11 +148,7 @@[m [mdef calc(input_list,output_list,n,num_of_var,gate_type):[m
+         #出力を生成[m
+         generate_output(f_vec,c_vec,t_vec,d,n)[m
+         #出力と要求出力の一致[m
+[31m-        [m
+[31m-        if(gate_type == const.HADAMARD_GATE):[m
+[31m-            ex_equal_desired_output(f_vec,output_list,n,d,s)[m
+[31m-        else:[m
+[31m-            equal_desired_output(f_vec,output_list,n,d,s)[m
+[32m+[m[32m        equal_desired_output(f_vec,output_list,n,d,s)[m
+         #for i in range(n):[m
+             #print("%dline f_vec P :%s"%(i + 1,f_vec[d][i]) )[m
+             [m
+[1mdiff --git a/ex_calc.py "b/calcr1 - \343\202\263\343\203\224\343\203\274.py"[m
+[1msimilarity index 63%[m
+[1mrename from ex_calc.py[m
+[1mrename to "calcr1 - \343\202\263\343\203\224\343\203\274.py"[m
+[1mindex 05d59b5..e446eaa 100644[m
+[1m--- a/ex_calc.py[m
+[1m+++ "b/calcr1 - \343\202\263\343\203\224\343\203\274.py"[m	
+[36m@@ -1,5 +1,6 @@[m
+ from z3 import *[m
+[31m-import const[m
+[32m+[m
+[32m+[m
+ MAX_NUM_GATE = 50[m
+ [m
+ def nearest_neighbor(c_vec,t_vec,n,s):[m
+[36m@@ -32,7 +33,7 @@[m [mdef one_bit_per_gate(vec,n,s):[m
+        P = Or(P,P_vec[i])[m
+ [m
+     s.add(P)[m
+[31m-    [m
+[32m+[m[32m    #print(P)[m
+             [m
+ [m
+ def generate_output(f_vec,c_vec,t_vec,d,n):[m
+[36m@@ -41,10 +42,8 @@[m [mdef generate_output(f_vec,c_vec,t_vec,d,n):[m
+         for i in range(n):[m
+             f_vec[d + 1][i] = f_vec[d][i][m
+             for j in range(n):[m
+[31m-[m
+[31m-                #コントロールビットとターゲットビットが隣接していれば制約を追加[m
+[31m-                if( abs(i - j) < 2 and i != j):[m
+[31m-                    f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])[m
+[32m+[m[41m                [m
+[32m+[m[32m                f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])[m
+ [m
+         [m
+             [m
+[36m@@ -61,17 +60,25 @@[m [mdef equal_desired_output(f_vec,output_list,n,d,s):[m
+             P = Or(P,(f_vec[d][i] == output) )[m
+             [m
+         s.add(P)[m
+[32m+[m[41m        [m
+[32m+[m[32mdef display_gates(c_vec,t_vec,m,d,n):[m
+ [m
+[31m-def ex_equal_desired_output(f_vec,output_list,n,d,s):[m
+[31m-    #負の数の処理[m
+[31m-    for i in range(len(output_list)):[m
+[31m-        output_list[i] = abs(output_list[i])[m
+[32m+[m[32m    for j in range(n):[m
+[32m+[m[41m    [m
+[32m+[m[32m        for i in range(d):[m
+         [m
+[31m-    for output in output_list:[m
+[32m+[m[32m            print("―",end="")[m
+[32m+[m[41m            [m
+         [m
+[31m-        #要求出力と出力が正しいかを判定[m
+[31m-        s.add(f_vec[d][output_list.index(output)] == output)[m
+[31m-[m
+[32m+[m[32m            C = m[ c_vec[i][j] ][m
+[32m+[m[32m            T = m[ t_vec[i][j] ][m
+[32m+[m[32m            if(C == True):[m
+[32m+[m[32m                print("・",end="")[m
+[32m+[m[32m            elif(T == True):[m
+[32m+[m[32m                print("〇",end="")[m
+[32m+[m[32m            else:[m
+[32m+[m[32m                print("―",end="")[m
+[32m+[m[32m        print("―")[m
+ [m
+ def display_bool(c_vec,t_vec,m,d,n):[m
+ [m
+[36m@@ -82,26 +89,11 @@[m [mdef display_bool(c_vec,t_vec,m,d,n):[m
+             print("%s"%is_true( m[ c_vec[i][j] ] ))[m
+             print("%s"%is_true( m[ t_vec[i][j] ] ))[m
+         print()[m
+[31m-[m
+[31m-def convert_output(m,d,n,c_vec,t_vec):[m
+[31m-    output = [[" " for j in range(n)] for i in range(d)][m
+[31m-    [m
+[31m-    for i in range(d):[m
+[31m-        output[m
+[31m-        for j in range(n):[m
+[31m-            if(m[c_vec[i][j]] == True):[m
+[31m-                output[i][j] = "c"[m
+[31m-[m
+[31m-            if(m[t_vec[i][j]] == True):[m
+[31m-                output[i][j] = "t"[m
+[31m-                [m
+[31m-    return output[m
+[31m-    [m
+                                              [m
+                         [m
+             [m
+ [m
+[31m-def calc(input_list,output_list,n,num_of_var,gate_type):[m
+[32m+[m[32mdef calc(input_list,output_list,n):[m
+ [m
+     d = 0;[m
+     #ゲート数200まで探索[m
+[36m@@ -119,10 +111,11 @@[m [mdef calc(input_list,output_list,n,num_of_var,gate_type):[m
+         c_vec = [[Bool("c_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)][m
+         t_vec = [[Bool("t_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)][m
+         #論理状態を表す変数[m
+[31m-        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),num_of_var) for j in range(n)] for i in range(d + 1)][m
+[32m+[m[32m        f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),n) for j in range(n)] for i in range(d + 1)][m
+[32m+[m
+         for i in range(n):[m
+         [m
+[31m-            f_vec[0][i] =  BitVecVal(input_list[i],num_of_var)[m
+[32m+[m[32m            f_vec[0][i] =  BitVecVal(input_list[i],n)[m
+         #z3-solver インスタンスの作成[m
+         s = Solver()[m
+ [m
+[36m@@ -131,8 +124,8 @@[m [mdef calc(input_list,output_list,n,num_of_var,gate_type):[m
+         for i in range(d):[m
+ [m
+             [m
+[31m-            #NNA制約式の追加(使わなくていいかも)[m
+[31m-            #nearest_neighbor(c_vec[i],t_vec[i],n,s)[m
+[32m+[m[32m            #NNA制約式の追加[m
+[32m+[m[32m            nearest_neighbor(c_vec[i],t_vec[i],n,s)[m
+             #同一ゲートはコントロールビットが一つしかない制約[m
+             one_bit_per_gate(c_vec[i],n,s)[m
+             one_bit_per_gate(t_vec[i],n,s)[m
+[36m@@ -141,23 +134,24 @@[m [mdef calc(input_list,output_list,n,num_of_var,gate_type):[m
+         #出力を生成[m
+         generate_output(f_vec,c_vec,t_vec,d,n)[m
+         #出力と要求出力の一致[m
+[31m-        [m
+[31m-        [m
+[31m-        ex_equal_desired_output(f_vec,output_list,n,d,s)[m
+[31m-        [m
+[32m+[m[32m        equal_desired_output(f_vec,output_list,n,d,s)[m
+         #for i in range(n):[m
+             #print("%dline f_vec P :%s"%(i + 1,f_vec[d][i]) )[m
+             [m
+         print("d=%d"%d)[m
+         if(s.check() == sat):[m
+             m = s.model()[m
+[31m-            #display_gates(c_vec,t_vec,m,d,n)[m
+[32m+[m[32m            display_gates(c_vec,t_vec,m,d,n)[m
+             [m
+[31m-            return convert_output(m,d,n,c_vec,t_vec)[m
+[32m+[m[32m            print("found!")[m
+[32m+[m[32m            return 0[m
+         d += 1[m
+ [m
+     [m
+[31m-#input = [1,2,4,8,16][m
+[31m-#output = [17][m
+[31m-#n = len(input) [m
+[31m-#calc(input,output,n)[m
+[32m+[m
+[32m+[m[32minput = [3,2,6,40,54,98,76][m
+[32m+[m[32moutput = [45,6,7,23,100][m
+[32m+[m[32mn = len(input)[m[41m [m
+[32m+[m
+[32m+[m
+[32m+[m[32mcalc(input,output,n)[m
+[1mdiff --git a/const.py b/const.py[m
+[1mdeleted file mode 100644[m
+[1mindex 540ebb0..0000000[m
+[1m--- a/const.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,9 +0,0 @@[m
+[31m-T_GATE = "T"[m
+[31m-T_DAGGER_GATE = "R"[m
+[31m-HADAMARD_GATE = "H"[m
+[31m-OUTPUT = "o"[m
+[31m-GARBAGE_BIT = "G"[m
+[31m-FUNCTUIN_BIT = "F"[m
+[31m-CONTROLL_BIT = "c"[m
+[31m-TARGET_BIT = "t"[m
+[31m-EMPTY = " "[m
+\ No newline at end of file[m
+[1mdiff --git a/decompose_MCT.py b/decompose_MCT.py[m
+[1mdeleted file mode 100644[m
+[1mindex aa9d927..0000000[m
+[1m--- a/decompose_MCT.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,153 +0,0 @@[m
+[31m-import display[m
+[31m-import const[m
+[31m-#ancillaにできるbitを探し,その中でターゲットビットとの距離が一番近い,ビットのindexを返す[m
+[31m-def search_for_ancilla(line,num_of_io,n,input):[m
+[31m-    gate = line.split(" ")[1:num_of_io + 1][m
+[31m-    #コントロールビットを数字で取り出す[m
+[31m-    controll_bit = [][m
+[31m-    for bit in gate[0:num_of_io - 1]:[m
+[31m-        controll_bit.append(input.index(bit))[m
+[31m-    [m
+[31m-    target_bit = ( input.index(gate[num_of_io - 1].split("\n")[0])) [m
+[31m-    #ancillaにできるビットを探し,target_bitとの距離を入れる[m
+[31m-    ancilla = {}[m
+[31m-[m
+[31m-    for i in range(n):[m
+[31m-        if( (i not in controll_bit) and i != target_bit):[m
+[31m-            #target_bitとancillaの距離[m
+[31m-            distance = abs(i - target_bit)[m
+[31m-            ancilla[i] = distance[m
+[31m-    #distanceが小さい順にソート[m
+[31m-    print(ancilla)[m
+[31m-    ancilla = sorted(ancilla.items(), key=lambda x:x[1]) [m
+[31m-    res = list(ancilla[0])[m
+[31m-    print(type(res[0]))[m
+[31m-    #昇順で初めのkeyを返す[m
+[31m-    print(res)[m
+[31m-    return res[0]  [m
+[31m-[m
+[31m-def convert_mct_into_toffoli(line,num_of_io,n,input):[m
+[31m-    gates = ""[m
+[31m-    ancilla = search_for_ancilla(line,num_of_io,n,input)[m
+[31m-    print("ancilla:{}".format(ancilla))[m
+[31m-[m
+[31m-    bit = line.split(" ")[m
+[31m-    #controll_bit一つ目[m
+[31m-    a = bit[1][m
+[31m-    #controll_bit二つ目[m
+[31m-    b = bit[2][m
+[31m-    #controll_bit三つ目[m
+[31m-    c = bit[3][m
+[31m-    #ターゲットビット[m
+[31m-    t = bit[4].split("\n")[0][m
+[31m-[m
+[31m-    gates += "t3 {} {} {}\n".format(a,b,ancilla)[m
+[31m-    gates += "t3 {} {} {}\n".format(c,ancilla,t)[m
+[31m-    gates += "t3 {} {} {}\n".format(a,b,ancilla)[m
+[31m-    gates += "t3 {} {} {}\n".format(c,ancilla,t)[m
+[31m-    [m
+[31m-[m
+[31m-    return gates[m
+[31m-[m
+[31m-[m
+[31m-def convert_toffoli_into_cnot(line):[m
+[31m-    #分解後のゲート群を入れる変数[m
+[31m-    gates = ""[m
+[31m-    controll_bit= [][m
+[31m-    bit = line.split(" ")[m
+[31m-    #controll_bit一つ目[m
+[31m-    controll_bit.append(bit[1])[m
+[31m-    #controll_bit二つ目[m
+[31m-    controll_bit.append(bit[2])[m
+[31m-    #ターゲットビット[m
+[31m-    target_bit = bit[3].split("\n")[0][m
+[31m-[m
+[31m-    #Clifford+Tゲート群に分解[m
+[31m-    gates += "{}1 {}\n".format(const.HADAMARD_GATE,target_bit)[m
+[31m-    gates += "{}3 {} {} {}\n".format(const.T_GATE,controll_bit[0],controll_bit[1],target_bit)[m
+[31m-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[1],controll_bit[0])[m
+[31m-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,target_bit,controll_bit[1])[m
+[31m-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],target_bit)[m
+[31m-    gates += "{}1 {}\n".format(const.T_DAGGER_GATE,controll_bit[1])[m
+[31m-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],controll_bit[1])[m
+[31m-    gates += "{}2 {} {}\n".format(const.T_DAGGER_GATE,controll_bit[0],controll_bit[1])[m
+[31m-    gates += "{}1 {}\n".format(const.T_GATE,target_bit)[m
+[31m-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,target_bit,controll_bit[1])[m
+[31m-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[0],target_bit)[m
+[31m-    gates += "{}2 {} {}\n".format(const.TARGET_BIT,controll_bit[1],controll_bit[0])[m
+[31m-    gates += "{}1 {}\n".format(const.HADAMARD_GATE,target_bit)[m
+[31m-[m
+[31m-    return gates[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-def decompose(file_name):[m
+[31m-    #分解後回路.最後にファイルに書き込む[m
+[31m-    input=[][m
+[31m-    new_circuit = ""[m
+[31m-    flag = 0[m
+[31m-[m
+[31m-    with open(file_name) as f:[m
+[31m-        [m
+[31m-        [m
+[31m-        for line in f:[m
+[31m- [m
+[31m-            if(".numvars" in line):[m
+[31m-               n = int( line.split(" ")[1] )[m
+[31m-[m
+[31m-            if(".variables" in line):[m
+[31m-                #量子ビットの上位からinputに入れる[m
+[31m-                input = line.split(" ")[1:n + 1][m
+[31m-                #改行文字処理[m
+[31m-                input[n - 1] = input[n - 1].split("\n")[0][m
+[31m-        [m
+[31m-            #beginからゲートを読み始める(flag = 1)[m
+[31m-            if(".begin" in line):[m
+[31m-                flag = 1[m
+[31m-            #endが来たら読み込み終了[m
+[31m-            elif(".end" in line):[m
+[31m-                new_circuit += line [m
+[31m-                break[m
+[31m-            #flag = 1 ならゲートを読み込む[m
+[31m-            elif(flag):[m
+[31m-                #ファイルを区切りリスト[m
+[31m-                gate = line.split(" ")[m
+[31m-                #ゲートの種類[m
+[31m-                type_of_gate = gate[0][0][m
+[31m-                #ゲートの入出力の数[m
+[31m-                num_of_io = int( gate[0][1] )[m
+[31m-                #MCT,NTCを分解する[m
+[31m-                if(type_of_gate == const.TARGET_BIT):[m
+[31m-                    [m
+[31m-                    #Toffoliゲート分解.[m
+[31m-                    if(num_of_io == 3):[m
+[31m-                        line = convert_toffoli_into_cnot(line)[m
+[31m-                    #MTCゲートをtoffoliに分解後,clifford+tゲート群に分解[m
+[31m-                    elif(num_of_io > 3):[m
+[31m-                        gate = convert_mct_into_toffoli(line,num_of_io,n,input)[m
+[31m-                        gate = gate.split("\n")[m
+[31m-                        line = ""[m
+[31m-                        for g in gate[:-1]:[m
+[31m-                            g += "\n"[m
+[31m-                            print(g)[m
+[31m-                            line += convert_toffoli_into_cnot(g)[m
+[31m-                            [m
+[31m-[m
+[31m-                [m
+[31m-[m
+[31m-            #ゲートを追加[m
+[31m-            new_circuit += line [m
+[31m-                    [m
+[31m-[m
+[31m-[m
+[31m-            [m
+[31m-[m
+[31m-    with open(file_name,mode="w") as f:[m
+[31m-        f.write(new_circuit)[m
+[31m-[m
+[31m-    return 0[m
+[31m-[m
+[31m-print("ディレクトリ名を入力してください")[m
+[31m-dir = input()[m
+[31m-[m
+[31m-decompose("input/{}/{}.txt".format(dir,dir))[m
+[1mdiff --git a/desired_output.py b/desired_output.py[m
+[1mindex 44bb2b5..7948ec6 100644[m
+[1m--- a/desired_output.py[m
+[1m+++ b/desired_output.py[m
+[36m@@ -1,108 +1,51 @@[m
+ import logic[m
+ import copy[m
+ import display[m
+[31m-import const[m
+[31m-[m
+[31m-elementary_gate_list = [const.T_GATE,const.T_DAGGER_GATE,const.HADAMARD_GATE,const.OUTPUT][m
+[31m-[m
+[31m-def retrieve_gate_index(gate,kinds_of_gate):[m
+[31m-[m
+[31m-    return 0[m
+ [m
+ def desired_output(init_state,circuit):[m
+     d = len(circuit)[m
+[31m-    n = len(circuit[0])[m
+[31m-    input_list = [][m
+[31m-    input_list.append( copy.copy(init_state) )[m
+     output_set = [][m
+[31m-    gate_type_list = [][m
+[31m-    pre_gate_depth = 0[m
+[31m-    #変数の数　量子ビットの数で初期化．Hゲートが出てくると増やす[m
+[31m-    num_of_var = n[m
+     [m
+     [m
+     [m
+[31m-    #elementary量子ゲートがあるなら要求出力を生成[m
+[32m+[m[32m    #tゲートがあるなら要求出力を生成[m
+     for i in range(d):[m
+         [m
+         gate = circuit[i][m
+         [m
+[31m-        #elementary量子ビットの論理状態を要求出力集合へ[m
+[32m+[m[32m        #最後のtゲートがあるdepth[m
+         [m
+[31m-        gate_itr = [][m
+[31m-        gate_type = " "[m
+[31m-        #bitごとにelementaryゲートがないか探索[m
+[31m-        for index,bit in enumerate(gate):[m
+[31m-            #見つけたらgate_typeを更新[m
+[31m-            if(len(gate_itr) == 0):[m
+[31m-                for g in elementary_gate_list:[m
+[31m-                    if(bit[0] == g):[m
+[31m-                            gate_type = g[m
+[31m-                            gate_itr.append(index)[m
+[31m-                            break;[m
+[31m-            #見つかった後はgate_typeは確定[m
+[31m-            else:[m
+[31m-                if(bit[0] == gate_type):[m
+[31m-                    gate_itr.append(index)[m
+[31m-[m
+[31m-        if(len(gate_itr) != 0):[m
+[31m-              [m
+[32m+[m[32m        #tゲートがあるビットの論理状態を要求出力集合へ[m
+[32m+[m[32m        if "T" in gate:[m
+[32m+[m[32m            #tゲートがあるビットを求める[m
+[32m+[m[32m            idx = -1[m
+[32m+[m[32m            t_gate_bit = [][m
+[32m+[m[32m            for count in range(gate.count("T")):[m
+[32m+[m[32m                idx = gate.index("T",idx + 1)[m
+[32m+[m[32m                t_gate_bit.append(idx)[m
+ [m
+[31m-            #ゲートまでの論理状態を取得[m
+[31m-            #部分回路だけに変更[m
+[31m-            sub_circuit = circuit[pre_gate_depth:i][m
+             [m
+[31m-            if( len(sub_circuit) != 0):[m
+[31m-                x = logic.logical_state(init_state,sub_circuit)[m
+[31m-            else:[m
+[31m-            #部分回路内にCNOTゲートがなければ[m
+[31m-                x = copy.copy( input_list[-1] )[m
+ [m
+[31m-            #今回の部分回路の末尾が何ゲート目かを保存[m
+[31m-            pre_gate_depth = i + 1[m
+[32m+[m[32m            #Tゲートまでの論理状態を取得[m
+[32m+[m[32m            copy_circuit = copy.copy(circuit)[m
+[32m+[m[32m            x = logic.logical_state(init_state,circuit[0:i])[m
+             [m
+             [m
+[31m-            #elementary量子ゲートがあるビットの論理状態を求め,要求出力集合へ[m
+[32m+[m[32m            #tゲートがあるビットの論理状態を求め,要求出力集合へ[m
+             set = [][m
+             [m
+[31m-           #Tゲートなら要求出力は集合[m
+[31m-            if(gate_type != const.HADAMARD_GATE):[m
+[31m-                for t in gate_itr:[m
+[31m-                    set.append(x[t])[m
+[31m-            else:[m
+[31m-            #Hゲートなら要求出力は順列(全て要求を満たす必要がある)[m
+[31m-                for i in range(len(x)):[m
+[31m-                    if(i in gate_itr):[m
+[31m-                        set.append(x[i])[m
+[31m-                    else:[m
+[31m-                        set.append(-x[i])[m
+[32m+[m[32m            for t in t_gate_bit:[m
+[32m+[m[32m                set.append(x[t])[m
+ [m
+[31m-            #ゲートタイプがHなら，入力に新たな変数を追加[m
+[31m-            if(gate_type == const.HADAMARD_GATE):[m
+[31m-                for t in gate_itr:[m
+[31m-                    #最新の変数（ビットベクトルの最上位ビット）を追加[m
+[31m-                    new_var = (1 << num_of_var) [m
+[31m-                    #更新した変数で，xを更新[m
+[31m-                    x[t] = new_var[m
+[31m-                    #変数の数を更新[m
+[31m-                    num_of_var += 1[m
+[31m-            #入力リストを更新[m
+[31m-            input_list.append(x)[m
+[31m-[m
+[31m-[m
+[31m-            #次の入力を，今回の部分回路における出力で更新[m
+[31m-            init_state = x[m
+[32m+[m[41m            [m
+             output_set.append(copy.copy(list(set)))[m
+[31m-            gate_type_list.append(gate_type)[m
+             set.clear()[m
+[31m-                [m
+[31m-[m
+[32m+[m[41m            [m
+ [m
+[31m-    print("---------------input------------------")[m
+[31m-    print(input_list)[m
+[31m-    print("---------------output------------------")[m
+[31m-    print(output_set)[m
+[31m-    return gate_type_list,input_list,output_set,num_of_var[m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m[32m    return output_set[m
+                 [m
+                 [m
+             [m
+[1mdiff --git a/display.py b/display.py[m
+[1mindex a5a28c7..0286412 100644[m
+[1m--- a/display.py[m
+[1m+++ b/display.py[m
+[36m@@ -1,51 +1,32 @@[m
+[31m-NUM_OF_SPACE = 5[m
+ [m
+[31m-import const[m
+[31m-[m
+[31m-#circuitと出力outputを渡すと、回路を表示するプログラム[m
+[31m-def display_circuit(circuit,output=None,input=None):[m
+[32m+[m[32m#circuitと出力xを渡すと、回路を表示するプログラム[m
+[32m+[m[32mdef display_circuit(circuit,x=None):[m
+     d = len(circuit)[m
+     if(d == 0):[m
+         return 0[m
+     n = len(circuit[0])[m
+[31m-[m
+[31m-    print()[m
+     [m
+     [m
+     for j in range(n):[m
+[31m-[m
+[31m-        if(input != None):[m
+[31m-            print("%d"%(input[j]),end="")[m
+[31m-            keta = len( str(input[j]) )[m
+[31m-            for k in range(NUM_OF_SPACE - keta):[m
+[31m-                print(" ",end="")[m
+[31m-[m
+[31m-            print(":",end="")[m
+     [m
+         for i in range(d):[m
+         [m
+[31m-            print("ー",end="")[m
+[32m+[m[32m            print("―",end="")[m
+             gate = circuit[i][j][m
+             [m
+[31m-            if(gate == const.CONTROLL_BIT):[m
+[32m+[m[32m            if(gate == "c"):[m
+                 print("・",end="")[m
+[31m-            elif(gate == const.TARGET_BIT):[m
+[32m+[m[32m            elif(gate == "t"):[m
+                 print("〇",end="")[m
+[31m-            elif(gate == const.T_GATE):[m
+[31m-                print("Ｔ",end="")[m
+[31m-            elif(gate == const.HADAMARD_GATE):[m
+[31m-                print("Ｈ",end="")[m
+[31m-            elif(gate == const.T_DAGGER_GATE):[m
+[31m-                print("ｔ",end="")[m
+[32m+[m[32m            elif(gate == "T"):[m
+[32m+[m[32m                print("□",end="")[m
+             else:[m
+[31m-                print("ー",end="")[m
+[32m+[m[32m                print("―",end="")[m
+ [m
+         [m
+         [m
+[31m-        if(output != None):[m
+[31m-            print(":%d"%(output[j]),end="")[m
+[32m+[m[32m        if(x != None):[m
+[32m+[m[32m            print(":%d"%(x[j]),end="")[m
+ [m
+         print()[m
+[31m-[m
+[31m-    print()[m
+         [m
+[1mdiff --git a/ex_aggregate.py b/ex_aggregate.py[m
+[1mdeleted file mode 100644[m
+[1mindex 86ae392..0000000[m
+[1m--- a/ex_aggregate.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-import os[m
+[31m-[m
+[31m-def count_cnot(circuit):[m
+[31m-    res = 0[m
+[31m-    for gate in circuit:[m
+[31m-        if("c" in gate):[m
+[31m-            res += 1[m
+[31m-[m
+[31m-    return res[m
+[31m-        [m
+[31m-    [m
+[31m-[m
+[31m-def ex_aggregate_result(file_name,circuit,decomposed_circuit,n):[m
+[31m-    os.chdir("/Users/DELL/ソースコード/output")[m
+[31m-    [m
+[31m-    with open("ex_{}bit_output.txt".format(n),"a") as output:[m
+[31m-        num_gate_before = count_cnot(circuit)[m
+[31m-        num_gate_after = count_cnot(decomposed_circuit)[m
+[31m-[m
+[31m-        output.write("{} | {} | {}\n".format(file_name,num_gate_before,num_gate_after))[m
+[31m-[m
+[31m-        [m
+[31m-        [m
+[1mdiff --git a/ex_desired_output.py b/ex_desired_output.py[m
+[1mdeleted file mode 100644[m
+[1mindex ce90bff..0000000[m
+[1m--- a/ex_desired_output.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,103 +0,0 @@[m
+[31m-import logic[m
+[31m-import copy[m
+[31m-import display[m
+[31m-import const[m
+[31m-[m
+[31m-elementary_gate_list = [const.T_GATE,const.T_DAGGER_GATE,const.HADAMARD_GATE,const.OUTPUT][m
+[31m-[m
+[31m-def retrieve_gate_index(gate,kinds_of_gate):[m
+[31m-[m
+[31m-    return 0[m
+[31m-[m
+[31m-def desired_output(init_state,circuit):[m
+[31m-    d = len(circuit)[m
+[31m-    n = len(circuit[0])[m
+[31m-[m
+[31m-    output_set = [][m
+[31m-    gate_type_list = [][m
+[31m-    pre_gate_depth = 0[m
+[31m-    #変数の数　量子ビットの数で初期化．Hゲートが出てくると増やす[m
+[31m-    num_of_var = n[m
+[31m-    [m
+[31m-    [m
+[31m-    [m
+[31m-    #elementary量子ゲートがあるなら要求出力を生成[m
+[31m-    for i in range(d):[m
+[31m-        [m
+[31m-        gate = circuit[i][m
+[31m-        [m
+[31m-        #elementary量子ビットの論理状態を要求出力集合へ[m
+[31m-        [m
+[31m-        gate_itr = [][m
+[31m-        gate_type = " "[m
+[31m-        #bitごとにelementaryゲートがないか探索[m
+[31m-        for index,bit in enumerate(gate):[m
+[31m-            #見つけたらgate_typeを更新[m
+[31m-            if(len(gate_itr) == 0):[m
+[31m-                for g in elementary_gate_list:[m
+[31m-                    if(bit[0] == g):[m
+[31m-                            gate_type = g[m
+[31m-                            gate_itr.append(index)[m
+[31m-                            break;[m
+[31m-            #見つかった後はgate_typeは確定[m
+[31m-            else:[m
+[31m-                if(bit[0] == gate_type):[m
+[31m-                    gate_itr.append(index)[m
+[31m-[m
+[31m-        if(len(gate_itr) != 0):[m
+[31m-              [m
+[31m-[m
+[31m-            #ゲートまでの論理状態を取得[m
+[31m-            #部分回路だけに変更[m
+[31m-            sub_circuit = circuit[pre_gate_depth:i][m
+[31m-            [m
+[31m-            if( len(sub_circuit) != 0):[m
+[31m-                x = logic.logical_state(copy.copy(init_state),sub_circuit)[m
+[31m-            else:[m
+[31m-            #部分回路内にCNOTゲートがなければ[m
+[31m-                x = copy.copy( init_state )[m
+[31m-[m
+[31m-[m
+[31m-            #今回の部分回路の末尾が何ゲート目かを保存[m
+[31m-            pre_gate_depth = i + 1[m
+[31m-            [m
+[31m-            [m
+[31m-            #elementary量子ゲートがあるビットの論理状態を求め,要求出力集合へ[m
+[31m-            set = [][m
+[31m-            [m
+[31m-            #既存手法は要求は順列、ドントケアなし[m
+[31m-            for i in range(len(x)):[m
+[31m-                if(i in gate_itr):[m
+[31m-                    set.append(x[i])[m
+[31m-                else:[m
+[31m-                    set.append(-x[i])[m
+[31m-[m
+[31m-            #ゲートタイプがHなら，入力に新たな変数を追加[m
+[31m-            # if(gate_type == const.HADAMARD_GATE):[m
+[31m-            #     for t in gate_itr:[m
+[31m-            #         #最新の変数（ビットベクトルの最上位ビット）を追加[m
+[31m-            #         new_var = (1 << num_of_var) [m
+[31m-            #         #更新した変数で，xを更新[m
+[31m-            #         x[t] = new_var[m
+[31m-            #         #変数の数を更新[m
+[31m-            #         num_of_var += 1[m
+[31m-[m
+[31m-           [m
+[31m-[m
+[31m-[m
+[31m-            output_set.append(copy.copy(list(set)))[m
+[31m-            gate_type_list.append(gate_type)[m
+[31m-            set.clear()[m
+[31m-                [m
+[31m-[m
+[31m-[m
+[31m-    print("---------------output------------------")[m
+[31m-    print(output_set)[m
+[31m-    return gate_type_list,output_set,num_of_var[m
+[31m-                [m
+[31m-                [m
+[31m-            [m
+[31m-            [m
+[31m-        [m
+[31m-[m
+[31m-    [m
+[1mdiff --git a/ex_main.py b/ex_main.py[m
+[1mdeleted file mode 100644[m
+[1mindex 7d38cda..0000000[m
+[1m--- a/ex_main.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,163 +0,0 @@[m
+[31m-import ex_calc as calc[m
+[31m-import logic[m
+[31m-import display[m
+[31m-import time[m
+[31m-import copy[m
+[31m-import ex_desired_output as desired_output[m
+[31m-import read_file[m
+[31m-import os[m
+[31m-import aggregate[m
+[31m-import const[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-def inti_output(n):[m
+[31m-    os.chdir("/Users/DELL/ソースコード/output")[m
+[31m-    with open("my_{}bit_output.txt".format(n),"w") as output:[m
+[31m-        output.write("ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間\n")[m
+[31m-        [m
+[31m-    os.chdir("/Users/DELL/ソースコード")[m
+[31m-[m
+[31m-def init_config(n):[m
+[31m-[m
+[31m-[m
+[31m-    init_state = [][m
+[31m-    inti_output(n)[m
+[31m-    for i in range(n):[m
+[31m-        x = (1<<i)[m
+[31m-        init_state.append(x)[m
+[31m-[m
+[31m-    return init_state[m
+[31m-[m
+[31m-def end_config(num_of_circuit,sum,n):[m
+[31m-    os.chdir("/Users/DELL/ソースコード/output")[m
+[31m-    with open("my_{}bit_output.txt".format(n),"a") as output:[m
+[31m-        output.write("\n\n平均実行時間{}s\n".format(sum/num_of_circuit))[m
+[31m-        [m
+[31m-    os.chdir("/Users/DELL/ソースコード")[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-os.chdir('/Users/DELL/ソースコード')[m
+[31m-print("手法選択(my_method : 0) (ex_method : 1) :")[m
+[31m-#テスト回路のリストを取得する[m
+[31m-print("実験用回路のディレクトリ名を入力してください")[m
+[31m-dir_name = input()[m
+[31m-test_list = os.listdir(path="input/{}".format(dir_name))[m
+[31m-#実行時間の合計[m
+[31m-sum = 0[m
+[31m-#実行した回路の数[m
+[31m-num_of_circuit = 0;[m
+[31m-[m
+[31m-#ディレクトリ内の回路全て分解する[m
+[31m-for file_name in test_list:[m
+[31m-[m
+[31m-[m
+[31m-    #テスト用回路のディレクトリ移動する[m
+[31m-    os.chdir('/Users/DELL/ソースコード/input/{}'.format(dir_name))[m
+[31m-    [m
+[31m-    #ファイルから回路を読み込む[m
+[31m-    source_circuit = read_file.read_file(file_name)[m
+[31m-    circuit = copy.copy(source_circuit)[m
+[31m-[m
+[31m-    #回路からビット数を読み込む[m
+[31m-    n = len(circuit[0])[m
+[31m-    print(n)[m
+[31m-[m
+[31m-    #初期状態を設定[m
+[31m-    init_state = init_config(n)[m
+[31m-    #要求出力集合[m
+[31m-    output_set = [init_state][m
+[31m-[m
+[31m-    #回路からゲートの種類と要求出力集合を得る[m
+[31m-    subircuits_output_info = desired_output.desired_output(init_state,circuit)[m
+[31m-    gate_type = subircuits_output_info[0][m
+[31m-    output_set = subircuits_output_info[1][m
+[31m-    num_of_var = subircuits_output_info[2][m
+[31m-    #回路の最終的な論理状態を取得[m
+[31m-    x = logic.logical_state(copy.copy(init_state),circuit)[m
+[31m-    #分解前の回路を出力[m
+[31m-    display.display_circuit(circuit,x)[m
+[31m-    #要求出力集合を出力[m
+[31m-    print(output_set)[m
+[31m-    [m
+[31m-[m
+[31m-[m
+[31m-    #開始時間[m
+[31m-    start = time.time()[m
+[31m-[m
+[31m-    #分解後の回路[m
+[31m-    decomposed_circuit = [[]][m
+[31m-    #要求集合に基づいて回路を分解する[m
+[31m-    for block in range( len(output_set) ):[m
+[31m-    [m
+[31m-        #部分的な回路を生成し,decoposed_circuitにつなげる[m
+[31m-        print("今回の回路の入力{}".format( init_state ) )[m
+[31m-        print("今回の回路の出力{}".format( output_set[block] ) )[m
+[31m-        circuit = calc.calc(copy.copy(init_state),copy.copy(output_set[block]),n,num_of_var,gate_type[block])[m
+[31m-[m
+[31m-        for gate in circuit:[m
+[31m-            decomposed_circuit.append(copy.copy(gate))[m
+[31m-        [m
+[31m-        if(len(circuit) != 0):[m
+[31m-            x = logic.logical_state(copy.copy(init_state),circuit)[m
+[31m-        else:[m
+[31m-        #部分回路内のCNOTゲートが0だったら出力はinputと同じ[m
+[31m-            x = copy.copy(init_state)[m
+[31m-[m
+[31m-        print("実際の出力{}".format(x))[m
+[31m-[m
+[31m-        gate = [][m
+[31m-        display.display_circuit(circuit,x,copy.copy(init_state))[m
+[31m-        [m
+[31m-        #単一量子ゲートをつなげる[m
+[31m-        for i,bit in enumerate(x):[m
+[31m-            if(bit in output_set[block]):[m
+[31m-                if(output_set[block][i] < 0):[m
+[31m-                    gate.append(" ")[m
+[31m-                else:[m
+[31m-                    gate.append(gate_type[block])[m
+[31m-            else:[m
+[31m-                gate.append(" ")[m
+[31m-[m
+[31m-    [m
+[31m-        decomposed_circuit.append(copy.copy(gate))[m
+[31m-[m
+[31m-        #Hゲートがない場合，出力を次の入力に更新[m
+[31m-        # if(gate_type[block] != const.HADAMARD_GATE):[m
+[31m-        #     input_list[block + 1] = x[m
+[31m-        # else:[m
+[31m-        #     print(x)[m
+[31m-        #     for i,bit in enumerate(x):[m
+[31m-        #         #Hゲートがある場合，更新しなくていい[m
+[31m-        #         if(bit not in output_set[block]):[m
+[31m-        #             #Hゲートがないbitは前回の回路の出力で更新[m
+[31m-        #             input_list[block + 1][i] = bit[m
+[31m-                [m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-    decomposed_circuit.pop(0)[m
+[31m-    #出力の論理状態を取得[m
+[31m-    x = logic.logical_state(init_state,decomposed_circuit)[m
+[31m-    #回路を出力する[m
+[31m-    display.display_circuit(decomposed_circuit,x)[m
+[31m-    print(decomposed_circuit)[m
+[31m-    #実行時間を計測[m
+[31m-    process_time = time.time() - start[m
+[31m-    num_of_circuit += 1[m
+[31m-    aggregate.aggregate_result(file_name,source_circuit,decomposed_circuit,n)[m
+[31m-    sum += process_time[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-    print("所要時間:%fs"%process_time)[m
+[31m-    [m
+[31m-    [m
+[31m-end_config(num_of_circuit,sum,n)[m
+[31m-[m
+[31m-[m
+[31m-[m
+[1mdiff --git a/generate_circuit.py b/generate_circuit.py[m
+[1mdeleted file mode 100644[m
+[1mindex 5f26d95..0000000[m
+[1m--- a/generate_circuit.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,189 +0,0 @@[m
+[31m-import random[m
+[31m-import display[m
+[31m-import desired_output as desired_output[m
+[31m-import os[m
+[31m-import shutil[m
+[31m-import const[m
+[31m-[m
+[31m-T_GATE_PROB = 5 #Tゲートが挿入されるまでのCNOTの数の期待値[m
+[31m-T_GATE_NUM = 3  #Tゲートの数[m
+[31m-[m
+[31m-[m
+[31m-def generate_gate(n,j,d):[m
+[31m-    gate = [][m
+[31m-    gate_type = random.randrange(T_GATE_PROB)[m
+[31m-    #gate_typeが0ならTゲート[m
+[31m-    if(not gate_type or j == d - 1):[m
+[31m-        gate = generate_T_gate(n)[m
+[31m-        [m
+[31m-    #それ以外ならcnotゲート[m
+[31m-    else:[m
+[31m-        gate = generate_cnot(n)[m
+[31m-[m
+[31m-    return gate[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-def generate_T_gate(n):[m
+[31m-    gate = [][m
+[31m-    for i in range(n):[m
+[31m-        if(custom_rand(T_GATE_NUM)):[m
+[31m-            gate.append( i )[m
+[31m-[m
+[31m-    num = len(gate)[m
+[31m-    [m
+[31m-    if(not num):[m
+[31m-        return None[m
+[31m-    [m
+[31m-    gate.insert(0,"{}{}".format(const.T_GATE,num))[m
+[31m-            [m
+[31m-    return gate[m
+[31m-[m
+[31m-def generate_cnot(n):[m
+[31m-    gate = [][m
+[31m-    gate.append("{}2".format(const.TARGET_BIT))[m
+[31m-    #コントロールビットを決定[m
+[31m-    c_bit = random.randrange(n)[m
+[31m-    gate.append(c_bit)[m
+[31m-    #ターゲットビットを決定（コントロールビットと被らないように）[m
+[31m-    while True:[m
+[31m-        t_bit = random.randrange(n)[m
+[31m-        if(t_bit != c_bit):[m
+[31m-            gate.append(t_bit)[m
+[31m-            break[m
+[31m-[m
+[31m-    return gate[m
+[31m-        [m
+[31m-    [m
+[31m-[m
+[31m-# (1/prob) で1を返す[m
+[31m-def custom_rand(prob):[m
+[31m-    var = random.randrange(prob)[m
+[31m-    return (var == 0)[m
+[31m-[m
+[31m-#重複してるゲートを削除[m
+[31m-def delete_redundant_gate(str,n):[m
+[31m-    #指定したディレクトリのファイル名をリストで取得[m
+[31m-    i = 0[m
+[31m-    for name in os.listdir(path=str):[m
+[31m-        i += 1[m
+[31m-        [m
+[31m-        [m
+[31m-        #ファイル一つずつ調査[m
+[31m-        os.chdir('/Users/DELL/ソースコード/input/{}'.format(str))[m
+[31m-        with open(name) as f:[m
+[31m-            pre_gate = [" "]*n[m
+[31m-            with open("circuit{}.txt".format(i),"w") as new_file:[m
+[31m-                #ヘッダ書き込み[m
+[31m-                new_file.write("#my_test_circuit{}\n".format(i))[m
+[31m-                new_file.write(".numvars " + "{}\n".format(n))[m
+[31m-                new_file.write(".begin\n")[m
+[31m-                [m
+[31m-                [m
+[31m-                #ゲートをひとつづつ読み込む[m
+[31m-                for line in f:[m
+[31m-                    gate = line.split(" ")[m
+[31m-                    [m
+[31m-                   [m
+[31m-                    gate_type = gate[0][0][m
+[31m-                    num_of_io = int( gate[0][1] )[m
+[31m-                    [m
+[31m-       [m
+[31m-[m
+[31m-                    #Tゲートの時[m
+[31m-[m
+[31m-                    if(gate_type == const.T_GATE):[m
+[31m-                        [m
+[31m-                        #直前のゲートと重複していないかチェック[m
+[31m-                        [m
+[31m-                        delete = 0[m
+[31m-                        for bit in gate[1:num_of_io + 1]:[m
+[31m-                            [m
+[31m-                            t_bit = int(bit)[m
+[31m-                            if(pre_gate[t_bit] == const.T_GATE):[m
+[31m-                                gate.pop(gate.index(bit))[m
+[31m-                                delete += 1[m
+[31m-                            else:[m
+[31m-                                pre_gate[t_bit] = const.T_GATE[m
+[31m-                                [m
+[31m-[m
+[31m-                        if(num_of_io == delete):continue        [m
+[31m-                        gate[0] = "{}{}".format(const.T_GATE,num_of_io - delete)[m
+[31m-[m
+[31m-                        [m
+[31m-                        new_file.write(gate[0] + " ")[m
+[31m-                        for bit in gate[1:-1]:[m
+[31m-                            new_file.write( chr( int(bit) + ord("a")) + " ")[m
+[31m-                        [m
+[31m-                        new_file.write(gate[-1])    [m
+[31m-                        [m
+[31m-[m
+[31m-                    #CNOTゲートの時[m
+[31m-                    elif(gate_type == "t"):[m
+[31m-                        t_bit = int(gate[len(gate)-2])[m
+[31m-                        if(pre_gate[t_bit] == line):[m
+[31m-                            continue[m
+[31m-                        pre_gate[t_bit] = line[m
+[31m-                        [m
+[31m-                        new_file.write(gate[0] + " ")[m
+[31m-                        [m
+[31m-                        for bit in gate[1:-1]:[m
+[31m-                            new_file.write( chr( int(bit) + ord("a") ) + " " )[m
+[31m-                        new_file.write("\n")[m
+[31m-[m
+[31m-                #フッター書き込み[m
+[31m-                new_file.write(".end")[m
+[31m-                [m
+[31m-[m
+[31m-        #読み込んだ元ファイルを削除[m
+[31m-        os.remove(name)[m
+[31m-        [m
+[31m-            [m
+[31m-    return 0[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-#カレントディレクトリを移動[m
+[31m-os.chdir('/Users/DELL/ソースコード/input')[m
+[31m-[m
+[31m-print("いくつの回路を生成しますか？: p = ",end="")[m
+[31m-p = int( input() )[m
+[31m-print("何ビットの回路を生成しますか?: n = ",end="")[m
+[31m-n = int( input() )[m
+[31m-print("ゲートをいくつ生成しますか?",end="")[m
+[31m-d = int ( input() )[m
+[31m-[m
+[31m-exist = os.path.isdir('/Users/DELL/ソースコード/input/{}bit_circuit'.format(n))[m
+[31m-if(exist):[m
+[31m-    shutil.rmtree('/Users/DELL/ソースコード/input/{}bit_circuit'.format(n))[m
+[31m-#bitの数によってディレクトリを分ける[m
+[31m-os.makedirs("{}bit_circuit".format(n))[m
+[31m-    [m
+[31m-[m
+[31m-[m
+[31m-#作成したディレクトリに移動[m
+[31m-os.chdir('/Users/DELL/ソースコード/input/{}bit_circuit'.format(n))[m
+[31m-for i in range(p):[m
+[31m-[m
+[31m-    #ファイルを書き込み専用で開く[m
+[31m-    file = open("test_circuit{}.txt".format(i + 1),'w')[m
+[31m-    #ファイルのヘッダに書き込み[m
+[31m-    #file.write("#my_test_circuit{}\n".format(i + 1))[m
+[31m-    #file.write(".begin\n")[m
+[31m-    #回路をd個生成する[m
+[31m-    for j in range(d):[m
+[31m-        gate = generate_gate(n,j,d)[m
+[31m-        if(gate != None):[m
+[31m-            for g in gate:[m
+[31m-                file.write(str(g))[m
+[31m-                file.write(" ")[m
+[31m-[m
+[31m-            file.write("\n")[m
+[31m-            [m
+[31m-    #file.write(".end\n",p)   [m
+[31m-    file.close()[m
+[31m-    [m
+[31m-os.chdir('/Users/DELL/ソースコード/input')[m
+[31m-        [m
+[31m-#冗長な回路を削除する[m
+[31m-delete_redundant_gate("{}bit_circuit".format(n),n)[m
+[1mdiff --git a/generate_random.py b/generate_random.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..2008004[m
+[1m--- /dev/null[m
+[1m+++ b/generate_random.py[m
+[36m@@ -0,0 +1,78 @@[m
+[32m+[m
+[32m+[m[32m#Tゲートが挿入される確率 = 1/T_GATE_PROBABILITY[m
+[32m+[m[32m#Tゲートが挿入される個数の期待値 NUM_T_GATE[m
+[32m+[m
+[32m+[m[32m#nビット、cnotゲート数dの回路を生成する[m
+[32m+[m[32mT_GATE_PROBABILITY = 5[m
+[32m+[m[32mNUM_T_GATE = 2[m
+[32m+[m
+[32m+[m[32mimport random[m
+[32m+[m[32mimport display[m
+[32m+[m[32mimport desired_output[m
+[32m+[m
+[32m+[m[32mdef generate_t_gate(n):[m
+[32m+[m[32m    res = [" " for i in range(n)][m
+[32m+[m[32m    for i in range(n):[m
+[32m+[m[32m        #i番目のラインにtゲートを挿入するかの乱数(0なら生成)[m
+[32m+[m[32m        probability = random.randrange(NUM_T_GATE)[m
+[32m+[m[32m        if(not probability):[m
+[32m+[m[32m            res[i] = "T"[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32m    return res[m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32mdef generate_random_circuit(n,d):[m
+[32m+[m[32m    circuit = [["" for i in range(n)]][m
+[32m+[m[32m    #depthをcnotゲートの数で初期化（Tゲートが加わる可能性）[m
+[32m+[m[32m    gate_depth = d[m
+[32m+[m[32m    for i in range(gate_depth):[m
+[32m+[m[32m        gate = [" " for j in range(n)][m
+[32m+[m[32m        #remoteCNOTgateを生成する[m
+[32m+[m[32m        controll_bit = random.randrange(n)[m
+[32m+[m[32m        #controll_bitとtarget_bitで重複なし[m
+[32m+[m[32m        #NNAを満たさないCNOTのみ[m
+[32m+[m[32m        tmp = random.randrange(n)[m
+[32m+[m[32m        while( abs(controll_bit - tmp) < 2 ):[m
+[32m+[m[32m            tmp = random.randrange(n)[m
+[32m+[m[32m        target_bit = tmp[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        gate[controll_bit] = "c"[m
+[32m+[m[32m        gate[target_bit] = "t"[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        circuit.append(gate)[m
+[32m+[m
+[32m+[m[41m        [m
+[32m+[m[41m        [m
+[32m+[m[32m        #Tゲートを確率で生成する[m
+[32m+[m
+[32m+[m[32m        #tゲートを生成するかの乱数(0なら生成 or 最後は必ず)[m
+[32m+[m[32m        probability = random.randrange(T_GATE_PROBABILITY)[m
+[32m+[m[32m        if( not probability or i == gate_depth):[m
+[32m+[m[32m            gate = generate_t_gate(n)[m
+[32m+[m[32m            circuit.append(gate)[m
+[32m+[m[32m            #tゲートが追加されたので、depthが増加[m
+[32m+[m[32m            gate_depth += 1[m
+[32m+[m[32m            #イテレーターも増加[m
+[32m+[m
+[32m+[m[32m    return circuit[m
+[32m+[m[41m            [m
+[32m+[m
+[32m+[m[32m"""[m
+[32m+[m[32mn = 4[m
+[32m+[m[32md = 15[m
+[32m+[m[32mrandom_circuit = generate_random_circuit(n,d)[m
+[32m+[m[32mrandom_circuit.pop(0)[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdisplay.display_circuit(random_circuit)[m
+[32m+[m[32moutput_set = desired_output.desired_output([1,2,4,8],random_circuit)[m
+[32m+[m[32mprint(output_set)[m
+[32m+[m[32m"""[m
+[32m+[m
+[32m+[m
+[1mdiff --git a/input/10bit_circuit/circuit1.txt b/input/10bit_circuit/circuit1.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 4308ee5..0000000[m
+[1m--- a/input/10bit_circuit/circuit1.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit1[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 j d [m
+[31m-t2 d g [m
+[31m-t2 d h [m
+[31m-t2 i e [m
+[31m-t2 h j [m
+[31m-T8 a b c d g h i j [m
+[31m-t2 e d [m
+[31m-t2 i b [m
+[31m-t2 j b [m
+[31m-t2 a e [m
+[31m-t2 g h [m
+[31m-t2 h a [m
+[31m-t2 f h [m
+[31m-t2 j d [m
+[31m-t2 g d [m
+[31m-T4 a d f h [m
+[31m-t2 a b [m
+[31m-t2 i h [m
+[31m-T3 b e h [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit10.txt b/input/10bit_circuit/circuit10.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 80d18be..0000000[m
+[1m--- a/input/10bit_circuit/circuit10.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit10[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 a b [m
+[31m-t2 f j [m
+[31m-t2 f e [m
+[31m-t2 j c [m
+[31m-t2 g i [m
+[31m-t2 e i [m
+[31m-t2 b d [m
+[31m-T2 c f [m
+[31m-t2 a e [m
+[31m-t2 h j [m
+[31m-t2 g b [m
+[31m-t2 d h [m
+[31m-t2 c i [m
+[31m-t2 f d [m
+[31m-t2 g e [m
+[31m-T3 d e g [m
+[31m-t2 f g [m
+[31m-t2 f h [m
+[31m-t2 g e [m
+[31m-T4 a b h i [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit2.txt b/input/10bit_circuit/circuit2.txt[m
+[1mdeleted file mode 100644[m
+[1mindex dfba47b..0000000[m
+[1m--- a/input/10bit_circuit/circuit2.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit2[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 c g [m
+[31m-T6 a b c d g i [m
+[31m-t2 e d [m
+[31m-t2 e b [m
+[31m-t2 i g [m
+[31m-T4 e g h j [m
+[31m-t2 c a [m
+[31m-t2 i g [m
+[31m-T1 g [m
+[31m-t2 b c [m
+[31m-t2 j d [m
+[31m-t2 b e [m
+[31m-T3 a c f [m
+[31m-t2 i b [m
+[31m-T2 d e [m
+[31m-t2 j a [m
+[31m-t2 f j [m
+[31m-t2 i d [m
+[31m-t2 i e [m
+[31m-T3 a d e [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit3.txt b/input/10bit_circuit/circuit3.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 7361624..0000000[m
+[1m--- a/input/10bit_circuit/circuit3.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit3[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 a b [m
+[31m-t2 j i [m
+[31m-t2 j e [m
+[31m-t2 i b [m
+[31m-t2 b c [m
+[31m-T2 b c [m
+[31m-t2 f e [m
+[31m-t2 a d [m
+[31m-t2 d e [m
+[31m-T1 a [m
+[31m-t2 g e [m
+[31m-t2 c a [m
+[31m-t2 b f [m
+[31m-t2 j e [m
+[31m-t2 c e [m
+[31m-t2 c f [m
+[31m-t2 h d [m
+[31m-t2 a d [m
+[31m-T4 a d e f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit4.txt b/input/10bit_circuit/circuit4.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 3ac0830..0000000[m
+[1m--- a/input/10bit_circuit/circuit4.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit4[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 h f [m
+[31m-t2 d b [m
+[31m-t2 e a [m
+[31m-t2 g b [m
+[31m-T3 d f g [m
+[31m-t2 i j [m
+[31m-t2 c a [m
+[31m-t2 f d [m
+[31m-t2 b e [m
+[31m-t2 c i [m
+[31m-t2 f j [m
+[31m-t2 e b [m
+[31m-t2 g e [m
+[31m-t2 b h [m
+[31m-t2 b a [m
+[31m-t2 j d [m
+[31m-T2 e i [m
+[31m-t2 g b [m
+[31m-t2 e g [m
+[31m-T6 a b c d g j [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit5.txt b/input/10bit_circuit/circuit5.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 3359fe2..0000000[m
+[1m--- a/input/10bit_circuit/circuit5.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit5[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 f e [m
+[31m-t2 i g [m
+[31m-t2 d j [m
+[31m-T7 a c d f g h j [m
+[31m-t2 h b [m
+[31m-T3 b e i [m
+[31m-t2 a e [m
+[31m-t2 b f [m
+[31m-t2 e i [m
+[31m-t2 g e [m
+[31m-t2 f d [m
+[31m-t2 i a [m
+[31m-t2 d i [m
+[31m-t2 i e [m
+[31m-t2 g b [m
+[31m-t2 f e [m
+[31m-t2 b d [m
+[31m-T2 a f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit6.txt b/input/10bit_circuit/circuit6.txt[m
+[1mdeleted file mode 100644[m
+[1mindex b28c6f8..0000000[m
+[1m--- a/input/10bit_circuit/circuit6.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit6[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 f d [m
+[31m-t2 c j [m
+[31m-t2 c h [m
+[31m-t2 g c [m
+[31m-T2 b g [m
+[31m-t2 f g [m
+[31m-t2 j d [m
+[31m-t2 a h [m
+[31m-t2 g b [m
+[31m-t2 i h [m
+[31m-t2 g i [m
+[31m-t2 g d [m
+[31m-t2 f j [m
+[31m-t2 a d [m
+[31m-t2 a h [m
+[31m-t2 a i [m
+[31m-t2 g a [m
+[31m-T1 c [m
+[31m-t2 j b [m
+[31m-T5 a b f h i [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit7.txt b/input/10bit_circuit/circuit7.txt[m
+[1mdeleted file mode 100644[m
+[1mindex e5d38b1..0000000[m
+[1m--- a/input/10bit_circuit/circuit7.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit7[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 d g [m
+[31m-t2 g b [m
+[31m-t2 c a [m
+[31m-t2 b a [m
+[31m-t2 e h [m
+[31m-t2 i e [m
+[31m-t2 d j [m
+[31m-t2 e a [m
+[31m-t2 b h [m
+[31m-t2 j d [m
+[31m-t2 e f [m
+[31m-t2 a h [m
+[31m-t2 b e [m
+[31m-t2 a c [m
+[31m-t2 g j [m
+[31m-t2 c a [m
+[31m-t2 d a [m
+[31m-T6 a b d e f h [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit8.txt b/input/10bit_circuit/circuit8.txt[m
+[1mdeleted file mode 100644[m
+[1mindex ebb6ea2..0000000[m
+[1m--- a/input/10bit_circuit/circuit8.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit8[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 j b [m
+[31m-t2 b e [m
+[31m-t2 f b [m
+[31m-t2 h b [m
+[31m-t2 b i [m
+[31m-t2 i c [m
+[31m-t2 h a [m
+[31m-t2 g a [m
+[31m-t2 j b [m
+[31m-t2 a b [m
+[31m-t2 i b [m
+[31m-t2 b j [m
+[31m-t2 j b [m
+[31m-t2 a d [m
+[31m-t2 e h [m
+[31m-t2 a g [m
+[31m-t2 c b [m
+[31m-t2 h c [m
+[31m-T7 a c d e g i j [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/10bit_circuit/circuit9.txt b/input/10bit_circuit/circuit9.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 4c01153..0000000[m
+[1m--- a/input/10bit_circuit/circuit9.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit9[m
+[31m-.numvars 10[m
+[31m-.begin[m
+[31m-t2 i e [m
+[31m-t2 d i [m
+[31m-t2 i d [m
+[31m-t2 c h [m
+[31m-t2 g i [m
+[31m-t2 i j [m
+[31m-t2 e d [m
+[31m-t2 f c [m
+[31m-T8 a b c f g h i j [m
+[31m-T2 d e [m
+[31m-t2 a g [m
+[31m-t2 j a [m
+[31m-t2 e g [m
+[31m-t2 g d [m
+[31m-t2 f i [m
+[31m-t2 c g [m
+[31m-t2 c e [m
+[31m-t2 b c [m
+[31m-T3 c d e [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit1.txt b/input/4bit_circuit/circuit1.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 7bce911..0000000[m
+[1m--- a/input/4bit_circuit/circuit1.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit1[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 a d [m
+[31m-t2 a c [m
+[31m-t2 d b [m
+[31m-t2 c a [m
+[31m-T3 a b d [m
+[31m-T1 c [m
+[31m-t2 c a [m
+[31m-t2 a c [m
+[31m-t2 b d [m
+[31m-T1 d [m
+[31m-t2 b d [m
+[31m-t2 d c [m
+[31m-T2 a c [m
+[31m-t2 a c [m
+[31m-t2 d b [m
+[31m-t2 d c [m
+[31m-T3 b c d [m
+[31m-t2 a c [m
+[31m-t2 d a [m
+[31m-T2 a c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit10.txt b/input/4bit_circuit/circuit10.txt[m
+[1mdeleted file mode 100644[m
+[1mindex bc9b5d4..0000000[m
+[1m--- a/input/4bit_circuit/circuit10.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,18 +0,0 @@[m
+[31m-#my_test_circuit10[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 d a [m
+[31m-t2 a d [m
+[31m-t2 b a [m
+[31m-t2 a b [m
+[31m-t2 d b [m
+[31m-T2 c d [m
+[31m-t2 d a [m
+[31m-t2 b c [m
+[31m-t2 b d [m
+[31m-t2 a c [m
+[31m-T2 a b [m
+[31m-T1 c [m
+[31m-t2 a c [m
+[31m-T1 c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit2.txt b/input/4bit_circuit/circuit2.txt[m
+[1mdeleted file mode 100644[m
+[1mindex f668a70..0000000[m
+[1m--- a/input/4bit_circuit/circuit2.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit2[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 d b [m
+[31m-t2 c a [m
+[31m-t2 b c [m
+[31m-t2 b a [m
+[31m-t2 c d [m
+[31m-t2 d a [m
+[31m-t2 a c [m
+[31m-t2 d c [m
+[31m-t2 a c [m
+[31m-t2 a b [m
+[31m-t2 d c [m
+[31m-t2 c b [m
+[31m-T2 b d [m
+[31m-t2 d b [m
+[31m-t2 b c [m
+[31m-t2 c a [m
+[31m-t2 a c [m
+[31m-T2 b c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit3.txt b/input/4bit_circuit/circuit3.txt[m
+[1mdeleted file mode 100644[m
+[1mindex e9bf36c..0000000[m
+[1m--- a/input/4bit_circuit/circuit3.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit3[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 a b [m
+[31m-t2 d c [m
+[31m-t2 a d [m
+[31m-t2 a c [m
+[31m-t2 c b [m
+[31m-t2 d a [m
+[31m-t2 d b [m
+[31m-t2 a b [m
+[31m-T3 b c d [m
+[31m-t2 b c [m
+[31m-t2 d c [m
+[31m-t2 a c [m
+[31m-T1 a [m
+[31m-t2 c d [m
+[31m-t2 a b [m
+[31m-T3 b c d [m
+[31m-t2 c b [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit4.txt b/input/4bit_circuit/circuit4.txt[m
+[1mdeleted file mode 100644[m
+[1mindex dcbb975..0000000[m
+[1m--- a/input/4bit_circuit/circuit4.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit4[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 c a [m
+[31m-t2 b a [m
+[31m-t2 c a [m
+[31m-t2 a b [m
+[31m-t2 c b [m
+[31m-t2 a b [m
+[31m-t2 b a [m
+[31m-t2 a d [m
+[31m-T3 a b c [m
+[31m-t2 a b [m
+[31m-T1 d [m
+[31m-t2 a d [m
+[31m-t2 d b [m
+[31m-t2 c d [m
+[31m-t2 d c [m
+[31m-t2 b a [m
+[31m-t2 c a [m
+[31m-T3 a c d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit5.txt b/input/4bit_circuit/circuit5.txt[m
+[1mdeleted file mode 100644[m
+[1mindex be6a27b..0000000[m
+[1m--- a/input/4bit_circuit/circuit5.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-#my_test_circuit5[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 d a [m
+[31m-t2 b c [m
+[31m-t2 a b [m
+[31m-t2 a c [m
+[31m-t2 c d [m
+[31m-t2 a d [m
+[31m-t2 d b [m
+[31m-T2 a d [m
+[31m-T2 b c [m
+[31m-t2 b c [m
+[31m-t2 c d [m
+[31m-T2 c d [m
+[31m-t2 d a [m
+[31m-t2 c a [m
+[31m-T1 a [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit6.txt b/input/4bit_circuit/circuit6.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 53982a9..0000000[m
+[1m--- a/input/4bit_circuit/circuit6.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-#my_test_circuit6[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 a c [m
+[31m-t2 c d [m
+[31m-t2 c a [m
+[31m-t2 d b [m
+[31m-t2 d c [m
+[31m-t2 d a [m
+[31m-T3 a c d [m
+[31m-t2 d c [m
+[31m-t2 b d [m
+[31m-t2 b c [m
+[31m-t2 c a [m
+[31m-t2 c b [m
+[31m-t2 a c [m
+[31m-t2 c d [m
+[31m-T2 a d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit7.txt b/input/4bit_circuit/circuit7.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 188f004..0000000[m
+[1m--- a/input/4bit_circuit/circuit7.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit7[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-T2 c d [m
+[31m-t2 b a [m
+[31m-t2 c d [m
+[31m-t2 a d [m
+[31m-t2 a b [m
+[31m-t2 b d [m
+[31m-t2 c b [m
+[31m-t2 c d [m
+[31m-t2 a d [m
+[31m-t2 d a [m
+[31m-T3 a b d [m
+[31m-t2 d b [m
+[31m-T1 b [m
+[31m-t2 b c [m
+[31m-t2 a b [m
+[31m-t2 c a [m
+[31m-T2 b c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit8.txt b/input/4bit_circuit/circuit8.txt[m
+[1mdeleted file mode 100644[m
+[1mindex ef946ff..0000000[m
+[1m--- a/input/4bit_circuit/circuit8.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-#my_test_circuit8[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 a c [m
+[31m-t2 d a [m
+[31m-t2 c d [m
+[31m-T3 b c d [m
+[31m-t2 a b [m
+[31m-t2 b d [m
+[31m-t2 c a [m
+[31m-T1 a [m
+[31m-t2 b c [m
+[31m-t2 d b [m
+[31m-t2 a b [m
+[31m-T2 b c [m
+[31m-t2 d c [m
+[31m-t2 c b [m
+[31m-t2 a c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/4bit_circuit/circuit9.txt b/input/4bit_circuit/circuit9.txt[m
+[1mdeleted file mode 100644[m
+[1mindex da34d94..0000000[m
+[1m--- a/input/4bit_circuit/circuit9.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit9[m
+[31m-.numvars 4[m
+[31m-.begin[m
+[31m-t2 d a [m
+[31m-T4 a b c d [m
+[31m-t2 d a [m
+[31m-t2 b a [m
+[31m-t2 b c [m
+[31m-t2 d a [m
+[31m-t2 a b [m
+[31m-t2 d c [m
+[31m-t2 c d [m
+[31m-t2 c a [m
+[31m-t2 a d [m
+[31m-t2 d b [m
+[31m-t2 a b [m
+[31m-T2 a c [m
+[31m-t2 d b [m
+[31m-t2 b d [m
+[31m-t2 b c [m
+[31m-T1 d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit1.txt b/input/6bit_circuit/circuit1.txt[m
+[1mdeleted file mode 100644[m
+[1mindex e69de29..0000000[m
+[1mdiff --git a/input/6bit_circuit/circuit10.txt b/input/6bit_circuit/circuit10.txt[m
+[1mdeleted file mode 100644[m
+[1mindex fde2ba6..0000000[m
+[1m--- a/input/6bit_circuit/circuit10.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-#my_test_circuit10[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-t2 b a [m
+[31m-t2 c d [m
+[31m-T2 b f [m
+[31m-t2 e d [m
+[31m-t2 d a [m
+[31m-t2 f b [m
+[31m-t2 d c [m
+[31m-t2 e f [m
+[31m-t2 a b [m
+[31m-t2 d e [m
+[31m-t2 c f [m
+[31m-t2 c b [m
+[31m-t2 b f [m
+[31m-T4 a b c e [m
+[31m-t2 b c [m
+[31m-T2 c f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit2.txt b/input/6bit_circuit/circuit2.txt[m
+[1mdeleted file mode 100644[m
+[1mindex e97b089..0000000[m
+[1m--- a/input/6bit_circuit/circuit2.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit2[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-t2 c d [m
+[31m-T6 a b c d e f [m
+[31m-t2 a f [m
+[31m-t2 a d [m
+[31m-t2 c b [m
+[31m-t2 e f [m
+[31m-t2 b a [m
+[31m-T2 a d [m
+[31m-t2 e d [m
+[31m-t2 f e [m
+[31m-t2 f a [m
+[31m-t2 b c [m
+[31m-t2 a e [m
+[31m-T4 b c d e [m
+[31m-T1 a [m
+[31m-T1 f [m
+[31m-t2 d f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit3.txt b/input/6bit_circuit/circuit3.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 7cc6c90..0000000[m
+[1m--- a/input/6bit_circuit/circuit3.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit3[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-T4 b c d e [m
+[31m-t2 e d [m
+[31m-t2 c b [m
+[31m-T2 b d [m
+[31m-t2 c d [m
+[31m-t2 f d [m
+[31m-t2 a c [m
+[31m-t2 f c [m
+[31m-t2 a c [m
+[31m-t2 c f [m
+[31m-t2 e c [m
+[31m-T2 a f [m
+[31m-t2 d a [m
+[31m-t2 c b [m
+[31m-T2 a d [m
+[31m-t2 b e [m
+[31m-T2 c e [m
+[31m-t2 f b [m
+[31m-T1 b [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit4.txt b/input/6bit_circuit/circuit4.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 7819a8a..0000000[m
+[1m--- a/input/6bit_circuit/circuit4.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit4[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-t2 f b [m
+[31m-t2 e d [m
+[31m-t2 e a [m
+[31m-t2 c a [m
+[31m-t2 f d [m
+[31m-t2 f a [m
+[31m-t2 a f [m
+[31m-t2 e d [m
+[31m-t2 c b [m
+[31m-t2 e a [m
+[31m-T3 a c e [m
+[31m-t2 f c [m
+[31m-t2 f d [m
+[31m-t2 c e [m
+[31m-t2 b a [m
+[31m-t2 f a [m
+[31m-t2 b c [m
+[31m-t2 a e [m
+[31m-T3 c d f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit5.txt b/input/6bit_circuit/circuit5.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 5ce6995..0000000[m
+[1m--- a/input/6bit_circuit/circuit5.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-#my_test_circuit5[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-T3 c e f [m
+[31m-t2 c b [m
+[31m-t2 d e [m
+[31m-t2 e f [m
+[31m-t2 b c [m
+[31m-t2 b f [m
+[31m-t2 f e [m
+[31m-t2 b a [m
+[31m-t2 e f [m
+[31m-t2 a d [m
+[31m-t2 d a [m
+[31m-t2 b d [m
+[31m-t2 c d [m
+[31m-t2 c a [m
+[31m-t2 d f [m
+[31m-T2 c d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit6.txt b/input/6bit_circuit/circuit6.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 7cd85f2..0000000[m
+[1m--- a/input/6bit_circuit/circuit6.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit6[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-t2 c d [m
+[31m-t2 e b [m
+[31m-t2 b d [m
+[31m-t2 e f [m
+[31m-t2 a b [m
+[31m-t2 d c [m
+[31m-t2 c a [m
+[31m-t2 e a [m
+[31m-t2 c f [m
+[31m-t2 e f [m
+[31m-T1 d [m
+[31m-T2 c e [m
+[31m-T2 a f [m
+[31m-t2 a f [m
+[31m-t2 b a [m
+[31m-T2 b f [m
+[31m-t2 f a [m
+[31m-t2 b d [m
+[31m-t2 c a [m
+[31m-T2 a d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit7.txt b/input/6bit_circuit/circuit7.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 06d04fa..0000000[m
+[1m--- a/input/6bit_circuit/circuit7.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit7[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-t2 f c [m
+[31m-t2 f a [m
+[31m-t2 c f [m
+[31m-t2 e a [m
+[31m-T5 a b d e f [m
+[31m-t2 d a [m
+[31m-t2 e b [m
+[31m-t2 d c [m
+[31m-t2 f a [m
+[31m-t2 b c [m
+[31m-t2 c a [m
+[31m-T1 b [m
+[31m-T2 a c [m
+[31m-t2 a e [m
+[31m-t2 f a [m
+[31m-t2 a d [m
+[31m-t2 c a [m
+[31m-T1 d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit8.txt b/input/6bit_circuit/circuit8.txt[m
+[1mdeleted file mode 100644[m
+[1mindex fea45ef..0000000[m
+[1m--- a/input/6bit_circuit/circuit8.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit8[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-t2 a c [m
+[31m-t2 d f [m
+[31m-t2 e c [m
+[31m-t2 f c [m
+[31m-t2 e a [m
+[31m-T4 b c e f [m
+[31m-t2 d f [m
+[31m-t2 e d [m
+[31m-t2 c e [m
+[31m-t2 c a [m
+[31m-t2 e f [m
+[31m-t2 e a [m
+[31m-t2 f d [m
+[31m-t2 a f [m
+[31m-t2 b a [m
+[31m-t2 b c [m
+[31m-t2 a c [m
+[31m-t2 e a [m
+[31m-T4 c d e f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/6bit_circuit/circuit9.txt b/input/6bit_circuit/circuit9.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 5d326d0..0000000[m
+[1m--- a/input/6bit_circuit/circuit9.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-#my_test_circuit9[m
+[31m-.numvars 6[m
+[31m-.begin[m
+[31m-T3 a b f [m
+[31m-t2 e b [m
+[31m-T4 b c d e [m
+[31m-t2 e b [m
+[31m-t2 b a [m
+[31m-t2 d e [m
+[31m-t2 b e [m
+[31m-t2 a d [m
+[31m-t2 f e [m
+[31m-t2 b e [m
+[31m-t2 d f [m
+[31m-t2 c e [m
+[31m-T1 f [m
+[31m-T4 a b d e [m
+[31m-t2 c f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit1.txt b/input/7bit_circuit/circuit1.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 865a721..0000000[m
+[1m--- a/input/7bit_circuit/circuit1.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit1[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-T2 a d [m
+[31m-t2 e c [m
+[31m-t2 e g [m
+[31m-T1 f [m
+[31m-t2 g a [m
+[31m-t2 d c [m
+[31m-T4 a c e g [m
+[31m-T1 b [m
+[31m-t2 g d [m
+[31m-t2 e g [m
+[31m-t2 a f [m
+[31m-t2 c e [m
+[31m-t2 b d [m
+[31m-t2 f d [m
+[31m-t2 b c [m
+[31m-t2 e d [m
+[31m-T1 d [m
+[31m-T2 e f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit10.txt b/input/7bit_circuit/circuit10.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 683511d..0000000[m
+[1m--- a/input/7bit_circuit/circuit10.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-#my_test_circuit10[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 c a [m
+[31m-T3 b f g [m
+[31m-t2 c g [m
+[31m-t2 a c [m
+[31m-t2 a g [m
+[31m-t2 e a [m
+[31m-t2 f c [m
+[31m-t2 a b [m
+[31m-T1 e [m
+[31m-t2 f b [m
+[31m-t2 c e [m
+[31m-T4 a c e g [m
+[31m-t2 b f [m
+[31m-t2 g f [m
+[31m-t2 c d [m
+[31m-T2 b f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit11.txt b/input/7bit_circuit/circuit11.txt[m
+[1mdeleted file mode 100644[m
+[1mindex f57e288..0000000[m
+[1m--- a/input/7bit_circuit/circuit11.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit11[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 d b [m
+[31m-t2 b d [m
+[31m-t2 a b [m
+[31m-T1 g [m
+[31m-t2 d g [m
+[31m-t2 b a [m
+[31m-t2 d b [m
+[31m-t2 e d [m
+[31m-t2 f b [m
+[31m-t2 b c [m
+[31m-t2 a c [m
+[31m-t2 c e [m
+[31m-T5 a b d e f [m
+[31m-t2 a f [m
+[31m-t2 c g [m
+[31m-t2 c d [m
+[31m-t2 b f [m
+[31m-T2 f g [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit12.txt b/input/7bit_circuit/circuit12.txt[m
+[1mdeleted file mode 100644[m
+[1mindex f4594a9..0000000[m
+[1m--- a/input/7bit_circuit/circuit12.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit12[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-T4 b d e g [m
+[31m-t2 b g [m
+[31m-t2 e b [m
+[31m-t2 g c [m
+[31m-t2 g e [m
+[31m-t2 f c [m
+[31m-t2 e d [m
+[31m-T3 a b c [m
+[31m-t2 g d [m
+[31m-t2 e b [m
+[31m-T3 b d e [m
+[31m-t2 d f [m
+[31m-t2 g e [m
+[31m-t2 e a [m
+[31m-t2 a g [m
+[31m-T1 a [m
+[31m-T2 f g [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit13.txt b/input/7bit_circuit/circuit13.txt[m
+[1mdeleted file mode 100644[m
+[1mindex d12da3f..0000000[m
+[1m--- a/input/7bit_circuit/circuit13.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit13[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 b f [m
+[31m-t2 d f [m
+[31m-T3 a b d [m
+[31m-t2 f d [m
+[31m-T2 f g [m
+[31m-t2 e g [m
+[31m-t2 e b [m
+[31m-t2 a b [m
+[31m-t2 e b [m
+[31m-t2 b a [m
+[31m-t2 c f [m
+[31m-t2 a e [m
+[31m-T3 a e g [m
+[31m-T1 b [m
+[31m-t2 d g [m
+[31m-t2 e d [m
+[31m-t2 e b [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit14.txt b/input/7bit_circuit/circuit14.txt[m
+[1mdeleted file mode 100644[m
+[1mindex c575668..0000000[m
+[1m--- a/input/7bit_circuit/circuit14.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit14[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 f g [m
+[31m-t2 b c [m
+[31m-t2 d e [m
+[31m-t2 d f [m
+[31m-T2 a f [m
+[31m-T2 c e [m
+[31m-t2 e b [m
+[31m-t2 g a [m
+[31m-t2 g e [m
+[31m-t2 f d [m
+[31m-t2 e d [m
+[31m-t2 c f [m
+[31m-t2 d f [m
+[31m-t2 d e [m
+[31m-t2 g e [m
+[31m-t2 a f [m
+[31m-t2 b f [m
+[31m-t2 e f [m
+[31m-T2 b d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit15.txt b/input/7bit_circuit/circuit15.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 09e4404..0000000[m
+[1m--- a/input/7bit_circuit/circuit15.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit15[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 a g [m
+[31m-t2 b c [m
+[31m-t2 g d [m
+[31m-t2 f d [m
+[31m-t2 b g [m
+[31m-t2 g d [m
+[31m-t2 f a [m
+[31m-t2 e g [m
+[31m-t2 d f [m
+[31m-t2 b d [m
+[31m-t2 g e [m
+[31m-t2 c g [m
+[31m-t2 e g [m
+[31m-t2 f g [m
+[31m-t2 d g [m
+[31m-t2 c g [m
+[31m-t2 f e [m
+[31m-T2 b e [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit16.txt b/input/7bit_circuit/circuit16.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 3d7feb6..0000000[m
+[1m--- a/input/7bit_circuit/circuit16.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit16[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-T2 e g [m
+[31m-t2 g f [m
+[31m-t2 f c [m
+[31m-t2 c f [m
+[31m-t2 e g [m
+[31m-t2 c d [m
+[31m-t2 b e [m
+[31m-T2 b f [m
+[31m-t2 g d [m
+[31m-t2 c f [m
+[31m-t2 b a [m
+[31m-t2 g a [m
+[31m-t2 a f [m
+[31m-t2 g c [m
+[31m-T1 c [m
+[31m-t2 e c [m
+[31m-T3 c d f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit17.txt b/input/7bit_circuit/circuit17.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 8c346ba..0000000[m
+[1m--- a/input/7bit_circuit/circuit17.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit17[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 e a [m
+[31m-t2 f e [m
+[31m-t2 e c [m
+[31m-t2 b d [m
+[31m-t2 b a [m
+[31m-t2 f c [m
+[31m-T2 c g [m
+[31m-t2 d b [m
+[31m-T3 a d e [m
+[31m-t2 g d [m
+[31m-t2 e c [m
+[31m-t2 e b [m
+[31m-t2 b g [m
+[31m-t2 d b [m
+[31m-T1 g [m
+[31m-t2 d c [m
+[31m-t2 e c [m
+[31m-t2 b f [m
+[31m-t2 f d [m
+[31m-T1 c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit18.txt b/input/7bit_circuit/circuit18.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 06fbbc4..0000000[m
+[1m--- a/input/7bit_circuit/circuit18.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit18[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 f b [m
+[31m-t2 e b [m
+[31m-t2 g f [m
+[31m-t2 a f [m
+[31m-t2 a c [m
+[31m-t2 e c [m
+[31m-t2 b c [m
+[31m-t2 d b [m
+[31m-t2 d c [m
+[31m-t2 c d [m
+[31m-T1 a [m
+[31m-T4 b e f g [m
+[31m-t2 g a [m
+[31m-T1 d [m
+[31m-t2 b d [m
+[31m-T2 c d [m
+[31m-t2 f b [m
+[31m-t2 e a [m
+[31m-t2 g f [m
+[31m-T1 f [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit19.txt b/input/7bit_circuit/circuit19.txt[m
+[1mdeleted file mode 100644[m
+[1mindex f13e7a1..0000000[m
+[1m--- a/input/7bit_circuit/circuit19.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit19[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 c g [m
+[31m-T3 b c g [m
+[31m-T1 a [m
+[31m-t2 g a [m
+[31m-t2 b f [m
+[31m-t2 d g [m
+[31m-t2 a g [m
+[31m-t2 g f [m
+[31m-T3 e f g [m
+[31m-t2 f c [m
+[31m-T1 d [m
+[31m-t2 a d [m
+[31m-t2 g c [m
+[31m-t2 e g [m
+[31m-T1 d [m
+[31m-t2 f e [m
+[31m-t2 b g [m
+[31m-t2 b e [m
+[31m-T2 c e [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit2.txt b/input/7bit_circuit/circuit2.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 8e84366..0000000[m
+[1m--- a/input/7bit_circuit/circuit2.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit2[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 e d [m
+[31m-t2 b f [m
+[31m-t2 c a [m
+[31m-T2 e g [m
+[31m-t2 d e [m
+[31m-t2 e b [m
+[31m-t2 g a [m
+[31m-t2 d f [m
+[31m-t2 b d [m
+[31m-T1 d [m
+[31m-t2 a g [m
+[31m-t2 f c [m
+[31m-t2 f b [m
+[31m-t2 e a [m
+[31m-t2 g c [m
+[31m-t2 b a [m
+[31m-t2 d g [m
+[31m-T3 a e g [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit20.txt b/input/7bit_circuit/circuit20.txt[m
+[1mdeleted file mode 100644[m
+[1mindex f0c4ccf..0000000[m
+[1m--- a/input/7bit_circuit/circuit20.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit20[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 c g [m
+[31m-t2 a f [m
+[31m-t2 e d [m
+[31m-T2 a g [m
+[31m-t2 g f [m
+[31m-t2 g b [m
+[31m-t2 g a [m
+[31m-t2 d a [m
+[31m-t2 b e [m
+[31m-t2 b g [m
+[31m-t2 a b [m
+[31m-T1 g [m
+[31m-t2 d g [m
+[31m-t2 f b [m
+[31m-t2 b a [m
+[31m-t2 e b [m
+[31m-T1 b [m
+[31m-t2 f c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit3.txt b/input/7bit_circuit/circuit3.txt[m
+[1mdeleted file mode 100644[m
+[1mindex febd69d..0000000[m
+[1m--- a/input/7bit_circuit/circuit3.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit3[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-T3 a b f [m
+[31m-t2 e c [m
+[31m-t2 b e [m
+[31m-t2 d b [m
+[31m-t2 f e [m
+[31m-t2 a g [m
+[31m-t2 b c [m
+[31m-t2 e c [m
+[31m-t2 d f [m
+[31m-t2 f b [m
+[31m-T1 e [m
+[31m-t2 b d [m
+[31m-t2 a b [m
+[31m-T1 c [m
+[31m-T3 b f g [m
+[31m-t2 b c [m
+[31m-t2 a e [m
+[31m-T1 d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit4.txt b/input/7bit_circuit/circuit4.txt[m
+[1mdeleted file mode 100644[m
+[1mindex a029619..0000000[m
+[1m--- a/input/7bit_circuit/circuit4.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit4[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 e f [m
+[31m-t2 e c [m
+[31m-T3 a d e [m
+[31m-t2 a b [m
+[31m-t2 c f [m
+[31m-t2 f b [m
+[31m-t2 d a [m
+[31m-t2 g c [m
+[31m-t2 a d [m
+[31m-t2 g d [m
+[31m-t2 e d [m
+[31m-t2 f e [m
+[31m-t2 c g [m
+[31m-t2 f a [m
+[31m-t2 a e [m
+[31m-t2 g e [m
+[31m-T2 a c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit5.txt b/input/7bit_circuit/circuit5.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 987421a..0000000[m
+[1m--- a/input/7bit_circuit/circuit5.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-#my_test_circuit5[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 a f [m
+[31m-t2 c e [m
+[31m-t2 a e [m
+[31m-t2 f b [m
+[31m-t2 a b [m
+[31m-T5 a b e f g [m
+[31m-t2 d e [m
+[31m-t2 f b [m
+[31m-t2 d c [m
+[31m-t2 b c [m
+[31m-T2 d e [m
+[31m-t2 c g [m
+[31m-t2 d a [m
+[31m-t2 e b [m
+[31m-t2 g e [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit6.txt b/input/7bit_circuit/circuit6.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 9568ede..0000000[m
+[1m--- a/input/7bit_circuit/circuit6.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit6[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 c g [m
+[31m-t2 a f [m
+[31m-t2 b e [m
+[31m-t2 d a [m
+[31m-T3 c e g [m
+[31m-t2 c a [m
+[31m-T2 b d [m
+[31m-t2 c f [m
+[31m-t2 f e [m
+[31m-t2 f c [m
+[31m-t2 c d [m
+[31m-t2 c e [m
+[31m-T2 d f [m
+[31m-t2 d e [m
+[31m-t2 f g [m
+[31m-t2 f a [m
+[31m-t2 g d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit7.txt b/input/7bit_circuit/circuit7.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 4f93c63..0000000[m
+[1m--- a/input/7bit_circuit/circuit7.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit7[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 g f [m
+[31m-t2 e c [m
+[31m-t2 a d [m
+[31m-t2 f c [m
+[31m-t2 e b [m
+[31m-t2 e f [m
+[31m-T2 b e [m
+[31m-t2 e a [m
+[31m-t2 d f [m
+[31m-t2 c d [m
+[31m-t2 e d [m
+[31m-t2 d g [m
+[31m-t2 a b [m
+[31m-t2 c f [m
+[31m-T1 d [m
+[31m-T2 b f [m
+[31m-t2 f d [m
+[31m-T1 d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit8.txt b/input/7bit_circuit/circuit8.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 83f0f42..0000000[m
+[1m--- a/input/7bit_circuit/circuit8.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-#my_test_circuit8[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 g b [m
+[31m-t2 e a [m
+[31m-t2 b d [m
+[31m-t2 b a [m
+[31m-t2 g c [m
+[31m-t2 c e [m
+[31m-T3 a d g [m
+[31m-t2 c d [m
+[31m-t2 b f [m
+[31m-t2 e c [m
+[31m-t2 g f [m
+[31m-t2 e d [m
+[31m-t2 d f [m
+[31m-t2 f e [m
+[31m-t2 b g [m
+[31m-T1 b [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/7bit_circuit/circuit9.txt b/input/7bit_circuit/circuit9.txt[m
+[1mdeleted file mode 100644[m
+[1mindex f42f292..0000000[m
+[1m--- a/input/7bit_circuit/circuit9.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit9[m
+[31m-.numvars 7[m
+[31m-.begin[m
+[31m-t2 g d [m
+[31m-t2 f e [m
+[31m-t2 f d [m
+[31m-T3 c e f [m
+[31m-t2 g a [m
+[31m-t2 g b [m
+[31m-t2 a g [m
+[31m-t2 g c [m
+[31m-t2 a f [m
+[31m-t2 c b [m
+[31m-t2 a d [m
+[31m-t2 g e [m
+[31m-T2 b g [m
+[31m-t2 f c [m
+[31m-t2 c d [m
+[31m-T1 d [m
+[31m-t2 d e [m
+[31m-T1 e [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/__pycache__/read_file.cpython-37.pyc b/input/__pycache__/read_file.cpython-37.pyc[m
+[1mdeleted file mode 100644[m
+[1mindex 2173fdb..0000000[m
+Binary files a/input/__pycache__/read_file.cpython-37.pyc and /dev/null differ
+[1mdiff --git a/input/5bit_circuit/my_test1.txt b/input/my_test1.txt[m
+[1msimilarity index 87%[m
+[1mrename from input/5bit_circuit/my_test1.txt[m
+[1mrename to input/my_test1.txt[m
+[1mindex 63db7b8..8fe7f40 100644[m
+[1m--- a/input/5bit_circuit/my_test1.txt[m
+[1m+++ b/input/my_test1.txt[m
+[36m@@ -6,11 +6,9 @@[m
+ .numvars 5[m
+ .variables a b c d e[m
+ .inputs 1 b c d e[m
+[31m-.output g g c d e[m
+ .begin[m
+ t2 a d[m
+[31m-t2 d b[m
+[31m-t2 b d[m
+[32m+[m[32mt2 c d[m
+ t2 d e[m
+ t2 e b[m
+ T2 b d[m
+[36m@@ -31,5 +29,5 @@[m [mt2 d a[m
+ t2 a e[m
+ t2 a c[m
+ t2 c e[m
+[31m-T3 a c e[m
+[32m+[m[32mT5 a b c d e[m
+ .end[m
+\ No newline at end of file[m
+[1mdiff --git a/input/read_file.py b/input/read_file.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..df8a04d[m
+[1m--- /dev/null[m
+[1m+++ b/input/read_file.py[m
+[36m@@ -0,0 +1,97 @@[m
+[32m+[m[32mimport os[m
+[32m+[m[32m#read_file revliv形式の量子ゲート群をリストに変換.ファイル名を指定すると二次元リストで返す[m
+[32m+[m
+[32m+[m
+[32m+[m[32m#" "⇒何もなし[m
+[32m+[m[32m#"c"⇒コントロールビット[m
+[32m+[m[32m#"t"⇒ターゲットビット[m
+[32m+[m[32m#"T"⇒Tゲート[m
+[32m+[m[32m#"n"⇒NOTゲート[m
+[32m+[m
+[32m+[m
+[32m+[m[32m#例[[" ","c","t"],[" ","T"," "]][m
+[32m+[m[32mos.chdir('/Users/DELL/ソースコード/input')[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef convert_to_list(d,line):[m
+[32m+[m[32m    gate_list = [" " for i in range(d)][m
+[32m+[m[41m    [m
+[32m+[m[32m    #ファイルを区切りリストへ[m
+[32m+[m[32m    gate = line.split(" ")[m
+[32m+[m[32m    #ゲートの種類[m
+[32m+[m[32m    type_of_gate = gate[0][0][m
+[32m+[m[32m    #ゲートの入出力の数[m
+[32m+[m[32m    print(type_of_gate)[m
+[32m+[m[32m    num_of_io = int( gate[0][1] )[m
+[32m+[m[32m    #bit毎に文字列に変換する[m
+[32m+[m
+[32m+[m[32m    #Tゲート[m
+[32m+[m[32m    if(type_of_gate == "T"):[m
+[32m+[m[32m        for i in range(1,num_of_io):[m
+[32m+[m[32m            T_gate_bit = gate[i][m
+[32m+[m[32m            gate_list[ord(T_gate_bit) - ord("a")] = "T"[m
+[32m+[m[41m            [m
+[32m+[m[32m        T_gate_bit = gate[num_of_io][0][m
+[32m+[m[32m        gate_list[ord(T_gate_bit) - ord("a")] = "T"[m[41m    [m
+[32m+[m[41m        [m
+[32m+[m[32m    elif(type_of_gate == "t"):[m
+[32m+[m[41m        [m
+[32m+[m[32m    #MCTゲート[m
+[32m+[m
+[32m+[m[32m        #notゲート[m
+[32m+[m[32m        if(num_of_io == 1):[m
+[32m+[m[32m            n_bit = gate[num_of_io][0][m
+[32m+[m[32m            gate_list[ ord(n_bit) - ord("a")] = "n"[m
+[32m+[m[32m        else:[m
+[32m+[m[41m        [m
+[32m+[m[32m            #コントロールビットについてbit毎に文字列に変換[m
+[32m+[m[32m            for i in range(1,num_of_io):[m
+[32m+[m[32m                controll_bit = gate[i][m
+[32m+[m[32m                gate_list[ ord(controll_bit) - ord("a")] = "c"[m
+[32m+[m
+[32m+[m[32m            #最後の一ビットはターゲットビット[m
+[32m+[m[32m            target_bit = gate[num_of_io][0][m
+[32m+[m[32m            gate_list[ ord(target_bit) - ord("a")] = "t"[m
+[32m+[m
+[32m+[m[32m    return gate_list[m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[32mdef read_file(str):[m
+[32m+[m[32m    #lineの数[m
+[32m+[m[32m    d = 0[m
+[32m+[m[32m    flag = 0[m
+[32m+[m[32m    #リスト形式でゲートを表現[m
+[32m+[m[32m    circuit = [][m
+[32m+[m[41m    [m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[32m    #ファイルから一行ずつ読み込む[m
+[32m+[m[32m    with open(str) as f:[m
+[32m+[m[32m        for line in f:[m
+[32m+[m
+[32m+[m[41m            [m
+[32m+[m[41m            [m
+[32m+[m[32m            if(".numvars" in line):[m
+[32m+[m[32m               d = int( line.split(" ")[1] )[m[41m [m
+[32m+[m[32m            #beginからゲートを読み始める(flag = 1)[m
+[32m+[m[32m            if(".begin" in line):[m
+[32m+[m[32m                flag = 1[m
+[32m+[m[32m            #endが来たら読み込み終了[m
+[32m+[m[32m            elif(".end" in line):[m
+[32m+[m[32m                break[m
+[32m+[m[32m            #flag = 1 ならゲートを読み込む[m
+[32m+[m[32m            elif(flag):[m
+[32m+[m
+[32m+[m[32m                gate_list = [][m
+[32m+[m[32m                #ゲートをリストにする[m
+[32m+[m[32m                gate_list = convert_to_list(d,line)[m
+[32m+[m[32m                circuit.append(gate_list)[m
+[32m+[m
+[32m+[m[32m    print(circuit)[m
+[32m+[m
+[32m+[m[32mread_file("my_test1.txt")[m
+[32m+[m
+[32m+[m
+[32m+[m[41m                [m
+[32m+[m
+[1mdiff --git a/input/test.txt b/input/test.txt[m
+[1mnew file mode 100644[m
+[1mindex 0000000..9d3c99a[m
+[1m--- /dev/null[m
+[1m+++ b/input/test.txt[m
+[36m@@ -0,0 +1,20 @@[m
+[32m+[m[32m# Function: 4mod7-v1[m
+[32m+[m[32m# Note: Embedding with constant 1.[m
+[32m+[m[32m# Used Library: MCT (gates: 5, quantum costs: 39)[m
+[32m+[m[32m# This file have been taken from RevLib (www.revlib.org).[m[41m [m
+[32m+[m[32m.version 1.0[m
+[32m+[m[32m.numvars 5[m
+[32m+[m[32m.variables a b c d e[m
+[32m+[m[32m.inputs 1 b c d e[m
+[32m+[m[32m.outputs g g c d e[m
+[32m+[m[32m.constants 1----[m
+[32m+[m[32m.garbage 11---[m
+[32m+[m[32m.begin[m
+[32m+[m[32mt1 a[m
+[32m+[m[32mt3 e b a[m
+[32m+[m[32mt2 b e[m
+[32m+[m[32mt4 e d c a[m
+[32m+[m[32mt4 d c a e[m
+[32m+[m[32mt3 a d c[m
+[32m+[m[32mt2 a d[m
+[32m+[m[32m.end[m
+[1mdiff --git a/logic.py b/logic.py[m
+[1mindex e0a6bac..0e33c6b 100644[m
+[1m--- a/logic.py[m
+[1m+++ b/logic.py[m
+[36m@@ -1,6 +1,5 @@[m
+ #inputと回路から出力の論理状態を整数型リストで返す[m
+ import copy[m
+[31m-import const[m
+ [m
+ def logical_state(init_state,circuit):[m
+     #ゲートがないならinput_listを返す[m
+[36m@@ -15,15 +14,15 @@[m [mdef logical_state(init_state,circuit):[m
+     for i in range(d):[m
+         c_bit = -1;[m
+         #iゲート目のコントロールビットを見つける[m
+[31m-        if "c" not in circuit[i]:[m
+[32m+[m[32m        if "T" in circuit[i]:[m
+             continue[m
+         [m
+         for j in range(n):[m
+[31m-            if(circuit[i][j] == const.CONTROLL_BIT):[m
+[32m+[m[32m            if(circuit[i][j] == "c"):[m
+                 c_bit = j[m
+         #iゲート目のターゲットビットにコントロールビットの論理状態をxorする[m
+         for j in range(n):[m
+[31m-            if(circuit[i][j] == const.TARGET_BIT):[m
+[32m+[m[32m            if(circuit[i][j] == "t"):[m
+                 x[j] = x[c_bit] ^ x[j][m
+ [m
+     return x[m
+[1mdiff --git a/output/4bit_output.txt b/output/4bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex bfedf28..0000000[m
+[1m--- a/output/4bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[1mdiff --git a/output/5bit_output.txt b/output/5bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex bfedf28..0000000[m
+[1m--- a/output/5bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[1mdiff --git a/output/6bit_output.txt b/output/6bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex bfedf28..0000000[m
+[1m--- a/output/6bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[1mdiff --git a/output/ex_4bit_output.txt b/output/ex_4bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex f32ae80..0000000[m
+[1m--- a/output/ex_4bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,14 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[31m-circuit1.txt | 14 | 37[m
+[31m-circuit10.txt | 10 | 27[m
+[31m-circuit2.txt | 16 | 17[m
+[31m-circuit3.txt | 14 | 17[m
+[31m-circuit4.txt | 15 | 17[m
+[31m-circuit5.txt | 11 | 19[m
+[31m-circuit6.txt | 13 | 19[m
+[31m-circuit7.txt | 13 | 19[m
+[31m-circuit8.txt | 12 | 23[m
+[31m-circuit9.txt | 15 | 27[m
+[31m-[m
+[31m-[m
+[31m-���ώ��s����3.774013137817383s[m
+[1mdiff --git a/output/ex_5bit_output.txt b/output/ex_5bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex bfedf28..0000000[m
+[1m--- a/output/ex_5bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[1mdiff --git a/output/ex_6bit_output.txt b/output/ex_6bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 3ee2298..0000000[m
+[1m--- a/output/ex_6bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,6 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[31m-circuit1.txt | 17 | 21[m
+[31m-circuit10.txt | 13 | 24[m
+[31m-circuit2.txt | 12 | 35[m
+[31m-circuit3.txt | 13 | 41[m
+[31m-circuit4.txt | 17 | 37[m
+[1mdiff --git a/output/my_4bit_output.txt b/output/my_4bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex bfedf28..0000000[m
+[1m--- a/output/my_4bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[1mdiff --git a/output/my_5bit_output.txt b/output/my_5bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex ef002ed..0000000[m
+[1m--- a/output/my_5bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,4 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[31m-[m
+[31m-[m
+[31m-���ώ��s����46.42707967758179s[m
+[1mdiff --git a/output/my_6bit_output.txt b/output/my_6bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex 6bf9d2d..0000000[m
+[1m--- a/output/my_6bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,5 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[31m-tmp.txt | 28 | 203[m
+[31m-[m
+[31m-[m
+[31m-���ώ��s����125.28047490119934s[m
+[1mdiff --git a/output/my_7bit_output.txt b/output/my_7bit_output.txt[m
+[1mdeleted file mode 100644[m
+[1mindex bfedf28..0000000[m
+[1m--- a/output/my_7bit_output.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[1mdiff --git a/pallelization.py b/pallelization.py[m
+[1mdeleted file mode 100644[m
+[1mindex 024626f..0000000[m
+[1m--- a/pallelization.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,43 +0,0 @@[m
+[31m-def pallelize_circuit(f):[m
+[31m-    n = 0[m
+[31m-    flag = 0[m
+[31m-    previous_gate_type = " "[m
+[31m-    previous_gate_bit = [][m
+[31m-[m
+[31m-    for line in f:[m
+[31m-        if(".numvars" in line):[m
+[31m-            n = int( line.split(" ")[1] )[m
+[31m-        #beginからゲートを読み始める(flag = 1)[m
+[31m-        if(".begin" in line):[m
+[31m-            flag = 1[m
+[31m-        #endが来たら読み込み終了[m
+[31m-        elif(".end" in line):[m
+[31m-            break[m
+[31m-        #flag = 1 ならゲートを読み込む[m
+[31m-        elif(flag):[m
+[31m-            gate = line.split(" ")[m
+[31m-            gate_type = gate[0][0][m
+[31m-            gate_bit = [][m
+[31m-            for bit in gate[1:n+1]:[m
+[31m-                gate_bit.append(bit)[m
+[31m-            #前のゲートと同じゲート[m
+[31m-            if(gate_type == previous_gate_type):[m
+[31m-                change_flag = 0[m
+[31m-                for gate in gate_bit:[m
+[31m-                    #一つ前のゲートと並列可能[m
+[31m-                    if(gate not in previous_gate_bit):[m
+[31m-                        previous_gate_bit.append(gate)[m
+[31m-                        change_flag = 1[m
+[31m-                #並列化処理が行われたら現在のgateは読み飛ばす[m
+[31m-                if(change_flag == 1):continue[m
+[31m-            [m
+[31m-            previous_gate_bit = gate_bit[m
+[31m-            previous_gate_type = gate_type[m
+[31m-                        [m
+[31m-                    [m
+[31m-[m
+[31m-            [m
+[31m-[m
+[31m-            [m
+[31m-[m
+[31m-    [m
+\ No newline at end of file[m
+[1mdiff --git a/read_file.py b/read_file.py[m
+[1mdeleted file mode 100644[m
+[1mindex 4f5ea46..0000000[m
+[1m--- a/read_file.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,159 +0,0 @@[m
+[31m-import os[m
+[31m-import const[m
+[31m-#read_file revliv形式の量子ゲート群をリストに変換.ファイル名を指定すると二次元リストで返す[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-#" "⇒何もなし[m
+[31m-#"c"⇒コントロールビット[m
+[31m-#"t"⇒ターゲットビット[m
+[31m-#"T"⇒Tゲート[m
+[31m-#"R"⇒Tダガーゲート[m
+[31m-#"H"⇒Hゲート[m
+[31m-#"n"⇒NOTゲート[m
+[31m-#"G"⇒ガーベッジビット[m
+[31m-#"f"⇒要求出力ビット[m
+[31m-#"out_*"⇒出力ビット[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-elementary_gate_list = [const.T_GATE,const.T_DAGGER_GATE,const.HADAMARD_GATE,const.OUTPUT][m
+[31m-[m
+[31m-[m
+[31m-#例[[" ","c","t"],[" ","T"," "]][m
+[31m-[m
+[31m-def add_elementary_gate(type_of_gate,gate,n,input):[m
+[31m-    gate_list = [" " for i in range(n)][m
+[31m-    for bit in gate:[m
+[31m-        gate_list[input.index(bit)] = type_of_gate[m
+[31m-[m
+[31m-    return gate_list[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-def convert_to_list(n,line,input):[m
+[31m-    gate_list = [" " for i in range(n)][m
+[31m-    [m
+[31m-    #ファイルを区切りリスト[m
+[31m-    gate = line.split(" ")[m
+[31m-    #ゲートの種類[m
+[31m-    type_of_gate = gate[0][0][m
+[31m-    #ゲートの入出力の数[m
+[31m-    num_of_io = int( gate[0][1] )[m
+[31m-    #末尾の改行文字を処理[m
+[31m-    try:[m
+[31m-        gate[num_of_io] = gate[num_of_io].split("\n")[0][m
+[31m-    except IndexError:[m
+[31m-        print("index error occured")[m
+[31m-        print(line)[m
+[31m-[m
+[31m-    #bit毎に文字列に変換する[m
+[31m-[m
+[31m-    #1量子bitゲート[m
+[31m-[m
+[31m-    for g in elementary_gate_list:[m
+[31m-        if(type_of_gate == g):[m
+[31m-            gate_list = add_elementary_gate(g,gate[1:num_of_io + 1],n,input)[m
+[31m-  [m
+[31m-        [m
+[31m-    if(type_of_gate == const.TARGET_BIT):[m
+[31m-        [m
+[31m-    #MCTゲート[m
+[31m-[m
+[31m-        #notゲート[m
+[31m-        if(num_of_io == 1):[m
+[31m-            n_bit = gate[num_of_io][0][m
+[31m-            gate_list[ input.index(n_bit) ] = "n"[m
+[31m-        else:[m
+[31m-        [m
+[31m-            #コントロールビットについてbit毎に文字列に変換[m
+[31m-            for i in range(1,num_of_io):[m
+[31m-                controll_bit = gate[i][m
+[31m-                gate_list[ input.index(controll_bit)] = const.CONTROLL_BIT[m
+[31m-[m
+[31m-            #最後の一ビットはターゲットビット[m
+[31m-            target_bit = gate[num_of_io].split("\n")[0][m
+[31m-            gate_list[ input.index(target_bit)] = const.TARGET_BIT[m
+[31m-[m
+[31m-    return gate_list[m
+[31m-    [m
+[31m-[m
+[31m-def read_file(str):[m
+[31m-    #lineの数[m
+[31m-    d = 0[m
+[31m-    flag = 0[m
+[31m-    #リスト形式でゲートを表現[m
+[31m-    circuit = [][m
+[31m-    input=[][m
+[31m-    kinds_of_output = [][m
+[31m-    [m
+[31m-[m
+[31m-    #TODO MCTゲート 分解[m
+[31m-    #TODO Toffoli分解[m
+[31m-    [m
+[31m-    #TODO 優先順位 並行処理出来るゲートを並列化[m
+[31m-    [m
+[31m-[m
+[31m-    [m
+[31m-    #ファイルから一行ずつ読み込む[m
+[31m-    with open(str) as f:[m
+[31m-        [m
+[31m-        [m
+[31m-        for line in f:[m
+[31m-[m
+[31m-            [m
+[31m-            [m
+[31m-            if(".numvars" in line):[m
+[31m-               n = int( line.split(" ")[1] )[m
+[31m-            #outputを読み込む[m
+[31m-[m
+[31m-            if(".variables" in line):[m
+[31m-                #量子ビットの上位からinputに入れる[m
+[31m-                input = line.split(" ")[1:n + 1][m
+[31m-                #改行文字処理[m
+[31m-                input[n - 1] = input[n - 1].split("\n")[0][m
+[31m-[m
+[31m-            if(".output" in line):[m
+[31m-                kinds_of_output = line.split(" ")[1:n + 1][m
+[31m-                #改行文字を消去[m
+[31m-                kinds_of_output[n - 1] = kinds_of_output[n - 1].split("\n")[0][m
+[31m-[m
+[31m-                #output_bitをより分かりやすく(c ⇒　out_c)[m
+[31m-                for i in range( len(kinds_of_output) ):[m
+[31m-                    kinds_of_output[i] = "out_" + kinds_of_output[i][m
+[31m-[m
+[31m-            #garbageビットを読み取る[m
+[31m-            if(".garbage" in line):[m
+[31m-                garbage = line.split(" ")[1][m
+[31m-                #末尾のnull文字消去[m
+[31m-                garbage = garbage.split("\n")[0][m
+[31m-                [m
+[31m-                for i,g in enumerate(garbage):[m
+[31m-                    if(g == "1"):[m
+[31m-                        kinds_of_output[i] = const.GARBAGE_BIT[m
+[31m-        [m
+[31m-            #beginからゲートを読み始める(flag = 1)[m
+[31m-            if(".begin" in line):[m
+[31m-                flag = 1[m
+[31m-            #endが来たら読み込み終了[m
+[31m-            elif(".end" in line):[m
+[31m-                break[m
+[31m-            #flag = 1 ならゲートを読み込む[m
+[31m-            elif(flag):[m
+[31m-[m
+[31m-                gate_list = [][m
+[31m-                #ゲートをリストにする[m
+[31m-                gate_list = convert_to_list(n,line,input)[m
+[31m-                circuit.append(gate_list)[m
+[31m-                #ToDoゲートの最後の要求出力をリストの末尾にappendする[m
+[31m-              [m
+[31m-                [m
+[31m-    circuit.append(kinds_of_output) [m
+[31m-    return circuit[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-                [m
+[31m-[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit1.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit1.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex ad27144..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit1.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,18 +0,0 @@[m
+[31m-#my_test_circuit1[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 a d [m
+[31m-t2 e c [m
+[31m-t2 a b [m
+[31m-t2 c d [m
+[31m-t2 a d [m
+[31m-T2 c e [m
+[31m-t2 c a [m
+[31m-t2 b d [m
+[31m-T2 b d [m
+[31m-t2 b c [m
+[31m-t2 c b [m
+[31m-t2 d e [m
+[31m-t2 e d [m
+[31m-t2 e b [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit10.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit10.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 4035af3..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit10.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-#my_test_circuit10[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-T3 b c e [m
+[31m-t2 a d [m
+[31m-T1 a [m
+[31m-t2 d a [m
+[31m-t2 e c [m
+[31m-T1 a [m
+[31m-T1 c [m
+[31m-t2 c b [m
+[31m-t2 c a [m
+[31m-t2 c e [m
+[31m-t2 b a [m
+[31m-t2 b e [m
+[31m-t2 e c [m
+[31m-t2 c e [m
+[31m-t2 d b [m
+[31m-t2 d c [m
+[31m-t2 a c [m
+[31m-t2 e b [m
+[31m-t2 b d [m
+[31m-T2 a c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit2.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit2.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 924ac4f..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit2.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit2[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 b d [m
+[31m-t2 d e [m
+[31m-t2 c b [m
+[31m-t2 b e [m
+[31m-t2 d b [m
+[31m-t2 c a [m
+[31m-t2 c d [m
+[31m-t2 a d [m
+[31m-T1 a [m
+[31m-t2 b d [m
+[31m-t2 a e [m
+[31m-t2 b e [m
+[31m-T2 b d [m
+[31m-t2 c d [m
+[31m-T2 d e [m
+[31m-t2 a e [m
+[31m-T1 c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit3.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit3.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 7f00375..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit3.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit3[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 e a [m
+[31m-t2 c a [m
+[31m-t2 e d [m
+[31m-t2 c e [m
+[31m-T2 d e [m
+[31m-t2 c d [m
+[31m-t2 d a [m
+[31m-t2 c e [m
+[31m-t2 c a [m
+[31m-t2 b c [m
+[31m-t2 a c [m
+[31m-t2 b d [m
+[31m-t2 c d [m
+[31m-T3 a c d [m
+[31m-t2 c a [m
+[31m-t2 e c [m
+[31m-T2 b c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit4.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit4.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 1a459d4..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit4.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,22 +0,0 @@[m
+[31m-#my_test_circuit4[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 a d [m
+[31m-t2 a b [m
+[31m-t2 e c [m
+[31m-T2 a c [m
+[31m-t2 d b [m
+[31m-t2 b a [m
+[31m-t2 d a [m
+[31m-T2 a d [m
+[31m-t2 c e [m
+[31m-t2 c a [m
+[31m-t2 a c [m
+[31m-t2 d e [m
+[31m-T1 c [m
+[31m-t2 a e [m
+[31m-t2 e a [m
+[31m-T1 e [m
+[31m-t2 d e [m
+[31m-T1 a [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit5.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit5.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex f363f4d..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit5.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,19 +0,0 @@[m
+[31m-#my_test_circuit5[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 c e [m
+[31m-t2 d c [m
+[31m-t2 a b [m
+[31m-t2 c d [m
+[31m-T3 c d e [m
+[31m-t2 d b [m
+[31m-t2 a c [m
+[31m-t2 c a [m
+[31m-t2 e c [m
+[31m-t2 e d [m
+[31m-T1 d [m
+[31m-t2 e a [m
+[31m-T1 c [m
+[31m-T1 a [m
+[31m-t2 e b [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit6.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit6.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 86e8dae..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit6.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit6[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-T2 a c [m
+[31m-T2 b e [m
+[31m-t2 a e [m
+[31m-T1 d [m
+[31m-t2 d e [m
+[31m-t2 c e [m
+[31m-t2 a c [m
+[31m-t2 e d [m
+[31m-T1 e [m
+[31m-t2 e c [m
+[31m-T1 c [m
+[31m-t2 c d [m
+[31m-t2 e b [m
+[31m-t2 a d [m
+[31m-t2 b a [m
+[31m-t2 c d [m
+[31m-t2 a c [m
+[31m-T1 d [m
+[31m-T1 c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit7.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit7.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 91fac53..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit7.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-#my_test_circuit7[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 d e [m
+[31m-t2 a c [m
+[31m-t2 d c [m
+[31m-t2 c e [m
+[31m-t2 d b [m
+[31m-t2 e c [m
+[31m-T2 b e [m
+[31m-t2 c b [m
+[31m-t2 e d [m
+[31m-t2 a b [m
+[31m-T2 b d [m
+[31m-t2 d b [m
+[31m-t2 c d [m
+[31m-t2 c b [m
+[31m-T2 b c [m
+[31m-t2 e c [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit8.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit8.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 88d1188..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit8.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,23 +0,0 @@[m
+[31m-#my_test_circuit8[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 d b [m
+[31m-t2 b c [m
+[31m-t2 e a [m
+[31m-t2 c d [m
+[31m-t2 b e [m
+[31m-t2 d c [m
+[31m-t2 a e [m
+[31m-T1 d [m
+[31m-t2 b a [m
+[31m-t2 c e [m
+[31m-t2 a c [m
+[31m-t2 d e [m
+[31m-t2 b e [m
+[31m-t2 a e [m
+[31m-T1 a [m
+[31m-t2 e a [m
+[31m-t2 d c [m
+[31m-t2 e c [m
+[31m-T2 c e [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit9.txt" "b/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit9.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex df8469c..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/5bit_circuit/circuit9.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-#my_test_circuit9[m
+[31m-.numvars 5[m
+[31m-.begin[m
+[31m-t2 a e [m
+[31m-t2 c d [m
+[31m-t2 c b [m
+[31m-T2 c d [m
+[31m-t2 e b [m
+[31m-t2 d b [m
+[31m-t2 d c [m
+[31m-t2 a c [m
+[31m-t2 a d [m
+[31m-t2 a b [m
+[31m-t2 b e [m
+[31m-t2 c d [m
+[31m-t2 a d [m
+[31m-t2 d b [m
+[31m-t2 b d [m
+[31m-t2 c b [m
+[31m-T2 c d [m
+[31m-.end[m
+\ No newline at end of file[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/ex_5bit_output.txt" "b/\351\200\200\351\201\277\345\205\210/ex_5bit_output.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 887644c..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/ex_5bit_output.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,11 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[31m-circuit1.txt | 12 | 12[m
+[31m-circuit10.txt | 15 | 31[m
+[31m-circuit2.txt | 13 | 36[m
+[31m-circuit3.txt | 14 | 34[m
+[31m-circuit4.txt | 13 | 43[m
+[31m-circuit5.txt | 11 | 26[m
+[31m-circuit6.txt | 12 | 36[m
+[31m-circuit7.txt | 13 | 19[m
+[31m-circuit8.txt | 16 | 38[m
+[31m-circuit9.txt | 15 | 24[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/my_5bit_output.txt" "b/\351\200\200\351\201\277\345\205\210/my_5bit_output.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 98ea1b4..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/my_5bit_output.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,14 +0,0 @@[m
+[31m-�t�@�C�����@| ����O�Q�[�g�� | ������Q�[�g�� | ���s����[m
+[31m-circuit1.txt | 12 | 7[m
+[31m-circuit10.txt | 15 | 10[m
+[31m-circuit2.txt | 13 | 18[m
+[31m-circuit3.txt | 14 | 18[m
+[31m-circuit4.txt | 13 | 17[m
+[31m-circuit5.txt | 11 | 12[m
+[31m-circuit6.txt | 12 | 12[m
+[31m-circuit7.txt | 13 | 23[m
+[31m-circuit8.txt | 16 | 11[m
+[31m-circuit9.txt | 15 | 8[m
+[31m-[m
+[31m-[m
+[31m-���ώ��s����2.6050721406936646s[m
+[1mdiff --git "a/\351\200\200\351\201\277\345\205\210/my_test1.txt" "b/\351\200\200\351\201\277\345\205\210/my_test1.txt"[m
+[1mdeleted file mode 100644[m
+[1mindex 68bf3f3..0000000[m
+[1m--- "a/\351\200\200\351\201\277\345\205\210/my_test1.txt"[m
+[1m+++ /dev/null[m
+[36m@@ -1,35 +0,0 @@[m
+[31m-# Function: mytest1[m
+[31m-# Note: nothing[m
+[31m-# Used Library: remoteCNOT[m
+[31m-# This file have been made from pon [m
+[31m-.version 1.0[m
+[31m-.numvars 5[m
+[31m-.variables a b c d e[m
+[31m-.inputs 1 b c d e[m
+[31m-.output g g c d e[m
+[31m-.begin[m
+[31m-t2 a d[m
+[31m-t2 d b[m
+[31m-t2 b d[m
+[31m-H1 d[m
+[31m-t2 e b[m
+[31m-H2 b d[m
+[31m-t2 c a[m
+[31m-t2 b d[m
+[31m-t2 a b[m
+[31m-t2 b e[m
+[31m-t2 c a[m
+[31m-H3 a d e[m
+[31m-t2 e a[m
+[31m-t2 d b[m
+[31m-t2 a c[m
+[31m-t2 b d[m
+[31m-t2 c e[m
+[31m-t2 a b[m
+[31m-T3 a c e[m
+[31m-t2 d a[m
+[31m-t2 a e[m
+[31m-t2 a c[m
+[31m-t2 c e[m
+[31m-T3 a c e[m
+[31m-.end[m
+\ No newline at end of file[m

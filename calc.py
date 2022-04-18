@@ -4,19 +4,56 @@ MAX_NUM_GATE = 50
 
 def nearest_neighbor(c_vec,t_vec,n,s):
     
-    for i in range(n):
-        if(i == 0):
-            P = t_vec[1]
-        elif(i == n - 1):
-            P = t_vec[n - 2]
-        else:
-            P = Xor(t_vec[i - 1],t_vec[i + 1])
-            
-        s.add(Implies(c_vec[i],P))
+    #使わないノードの情報を無くす
+    Nodes = Q20_graph[0:n]
+    Optimized_nodes = []
+    print("変更前")
+    print(Nodes)
+    
+    for list in Nodes:
+        if(type(list) is int):
+            break
+        delete = []
+        tmp = []
+        for i in list:
+            if(i < n):
+                tmp.append(i)
+        
+        Optimized_nodes.append(tmp)
+
+
+    
+    #コントロールビットがnodeの時の条件を生成
+    for node in range(n):
+        num_of_near = len(Optimized_nodes[node])
+        P_vec = [Bool("P_vec%d" % i) for i in range(num_of_near)]
+
+        #ノードiがターゲットビットである条件を生成
+        for index,i in  enumerate( Optimized_nodes[node] ):
+            if(n <= i):
+    
+                break
+
+            P_vec[index] = t_vec[i]
+            #i以外のc_vec[node]に隣接するノードにターゲットビットは存在しない
+            for j in Optimized_nodes[node]:
+                #隣接ノードがビット数より大きかったら試さない
+                if(i != j):
+
+                    P_vec[index] = And(P_vec[index],Not(t_vec[j]))
+        P = P_vec[0]
+        
+        
+        for i in range(1,num_of_near):
+            P = Or(P,P_vec[i])    
+
+        print(Implies(c_vec[node],P))
+
+        s.add(Implies(c_vec[node],P))    
         
 
 def one_bit_per_gate(vec,n,s):
-
+    
     P_vec = [Bool("P_vec%d" % i) for i in range(n)]
     
 
@@ -132,7 +169,7 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
 
             
             #NNA制約式の追加(使わなくていいかも)
-            #nearest_neighbor(c_vec[i],t_vec[i],n,s)
+            nearest_neighbor(c_vec[i],t_vec[i],n,s)
             #同一ゲートはコントロールビットが一つしかない制約
             one_bit_per_gate(c_vec[i],n,s)
             one_bit_per_gate(t_vec[i],n,s)
