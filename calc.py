@@ -1,18 +1,68 @@
+from pickletools import optimize
 from z3 import *
 import const
 MAX_NUM_GATE = 50
+#IBM Q20　隣接ノードを格納
+Q20_graph = [ [1,5],[0,2,6,7],[2,4,8,9],[3,8,9],\
+             [0,6,10,11],[1,2,5,7,10,11],[1,2,6,8,12,13],[3,4,7,9,12,13],\
+             [3,4,7,9,12,13],[3,4,8,14],[5,6,11,15],[5,6,10,11],\
+             [7,8,11,13,16,17],[7,8,9,12,14,18],[9,13,18,19],[10,16],\
+             [11,12,15,17],[11,12,16,18],[13,14,17,19],[13,14,18] ]
+
+#一次元アーキテクチャへの適応
 
 def nearest_neighbor(c_vec,t_vec,n,s):
     
-    for i in range(n):
-        if(i == 0):
-            P = t_vec[1]
-        elif(i == n - 1):
-            P = t_vec[n - 2]
-        else:
-            P = Xor(t_vec[i - 1],t_vec[i + 1])
+    #使わないノードの情報を無くす
+    Nodes = Q20_graph[0:n]
+    Optimized_nodes = []
+    print("変更前")
+    print(Nodes)
+    
+    for list in Nodes:
+        if(type(list) is int):
+            break
+        delete = []
+        tmp = []
+        for i in list:
+            if(i < n):
+                tmp.append(i)
+        
+        Optimized_nodes.append(tmp)
+
+
+    
+    #コントロールビットがnodeの時の条件を生成
+    for node in range(n):
+        num_of_near = len(Optimized_nodes[node])
+        P_vec = [Bool("P_vec%d" % i) for i in range(num_of_near)]
+
+        #ノードiがターゲットビットである条件を生成
+        for index,i in  enumerate( Optimized_nodes[node] ):
+            if(n <= i):
+    
+                break
+
+            P_vec[index] = t_vec[i]
+            #i以外のc_vec[node]に隣接するノードにターゲットビットは存在しない
+            for j in Optimized_nodes[node]:
+                #隣接ノードがビット数より大きかったら試さない
+                if(i != j):
+
+                    P_vec[index] = And(P_vec[index],Not(t_vec[j]))
+        P = P_vec[0]
+        
+        
+        for i in range(1,num_of_near):
+            P = Or(P,P_vec[i])    
+
+        print(Implies(c_vec[node],P))
+
+        s.add(Implies(c_vec[node],P))    
+
             
-        s.add(Implies(c_vec[i],P))
+            
+        
         
 
 def one_bit_per_gate(vec,n,s):
@@ -132,7 +182,7 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
         for i in range(d):
 
             
-            #NNA制約式の追加(使わなくていいかも)
+            #NNA制約式の追加
             #nearest_neighbor(c_vec[i],t_vec[i],n,s)
             #同一ゲートはコントロールビットが一つしかない制約
             one_bit_per_gate(c_vec[i],n,s)

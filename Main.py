@@ -1,14 +1,14 @@
-import calc
-import logic
-import display
-import time
-import copy
-import desired_output as desired_output
 import read_file
-import os
 import aggregate
 import const
-
+import os
+import copy
+import desired_output
+import calc
+import logic
+import time 
+import copy
+import display
 
 #卒論　改善　4/11 2022より
 

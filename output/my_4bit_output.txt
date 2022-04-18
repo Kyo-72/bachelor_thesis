@@ -1,14 +1,1 @@
 ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間
-circuit1.txt | 14 | 23
-circuit10.txt | 10 | 4
-circuit2.txt | 16 | 12
-circuit3.txt | 14 | 17
-circuit4.txt | 15 | 14
-circuit5.txt | 11 | 17
-circuit6.txt | 13 | 9
-circuit7.txt | 13 | 13
-circuit8.txt | 12 | 12
-circuit9.txt | 15 | 15
-
-
-平均実行時間1.8066306829452514s
