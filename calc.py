@@ -1,14 +1,20 @@
+from pickletools import optimize
 from z3 import *
 import const
-MAX_NUM_GATE = 50
+MAX_NUM_GATE = 20
+
+Q20_graph = [ [1,5],[0,2,6,7],[1,3,6,7],[2,4,8,9],[3,8,9],\
+             [0,6,10,11],[1,2,5,7,10,11],[1,2,6,8,12,13],[3,4,7,9,12,13],\
+             [3,4,8,14],[5,6,11,15],[5,6,10,12],\
+             [7,8,11,13,16,17],[7,8,12,14,18,19],[9,13,18,19],[10,16],\
+             [11,12,15,17],[11,12,16,18],[13,14,17,19],[13,14,18] ]
+
+Optimized_nodes = []
 
 def nearest_neighbor(c_vec,t_vec,n,s):
     
-    #使わないノードの情報を無くす
+    #使わないノードの情報を無くす(indexエラーを避ける)
     Nodes = Q20_graph[0:n]
-    Optimized_nodes = []
-    print("変更前")
-    print(Nodes)
     
     for list in Nodes:
         if(type(list) is int):
@@ -24,32 +30,20 @@ def nearest_neighbor(c_vec,t_vec,n,s):
 
     
     #コントロールビットがnodeの時の条件を生成
-    for node in range(n):
-        num_of_near = len(Optimized_nodes[node])
-        P_vec = [Bool("P_vec%d" % i) for i in range(num_of_near)]
+    # for node in range(n):
+    #     num_of_near = len(Optimized_nodes[node])
+    #     P = Bool("P")
+    #     P = t_vec[ Optimized_nodes[node][0] ]
+    #     #P = t_vec[ Optimized_nodes[node][0] ]
+    #     #print(P)
 
-        #ノードiがターゲットビットである条件を生成
-        for index,i in  enumerate( Optimized_nodes[node] ):
-            if(n <= i):
-    
-                break
+    #     #ノードiがターゲットビットである条件を生成
+    #     for i in Optimized_nodes[node]:
+    #         P = Or(P,t_vec[i]) 
 
-            P_vec[index] = t_vec[i]
-            #i以外のc_vec[node]に隣接するノードにターゲットビットは存在しない
-            for j in Optimized_nodes[node]:
-                #隣接ノードがビット数より大きかったら試さない
-                if(i != j):
+    #     print(P)    
 
-                    P_vec[index] = And(P_vec[index],Not(t_vec[j]))
-        P = P_vec[0]
-        
-        
-        for i in range(1,num_of_near):
-            P = Or(P,P_vec[i])    
-
-        print(Implies(c_vec[node],P))
-
-        s.add(Implies(c_vec[node],P))    
+    #     s.add(Implies(c_vec[node],P))  
         
 
 def one_bit_per_gate(vec,n,s):
@@ -78,13 +72,12 @@ def generate_output(f_vec,c_vec,t_vec,d,n):
         for i in range(n):
             f_vec[d + 1][i] = f_vec[d][i]
             for j in range(n):
-
+                #iがターゲットビット、jがコントロールビット
                 #コントロールビットとターゲットビットが隣接していれば制約を追加
-                if( abs(i - j) < 2 and i != j):
+                if(i != j and i in Optimized_nodes[j]):
                     f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])
 
-        
-            
+
 
 def equal_desired_output(f_vec,output_list,n,d,s):
     
