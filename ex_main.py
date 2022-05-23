@@ -40,7 +40,6 @@ def end_config(num_of_circuit,sum,n):
 
 
 os.chdir('/Users/DELL/ソースコード')
-print("手法選択(my_method : 0) (ex_method : 1) :")
 #テスト回路のリストを取得する
 print("実験用回路のディレクトリ名を入力してください")
 dir_name = input()

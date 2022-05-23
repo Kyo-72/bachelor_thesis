@@ -1,0 +1,21 @@
+#my_test_circuit7
+.numvars 4
+.begin
+T2 c d 
+t2 b a 
+t2 c d 
+t2 a d 
+t2 a b 
+t2 b d 
+t2 c b 
+t2 c d 
+t2 a d 
+t2 d a 
+T3 a b d 
+t2 d b 
+T1 b 
+t2 b c 
+t2 a b 
+t2 c a 
+T2 b c 
+.end

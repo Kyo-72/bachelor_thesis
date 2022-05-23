@@ -1,0 +1,280 @@
+# Function: sym9
+# Used Library: MCT (gates: 28, quantum costs: 108 )
+# This file has been taken from RevLib (www.revlib.org).
+.version 1.0
+.numvars 12
+.variables x1 x2 x3 x4 x5 x6 x7 x8 x9 s2 s3 s4 
+.inputs x1 x2 x3 x4 x5 x6 x7 x8 x9  0 0 0
+.outputs g g g g g g g g g g g s
+.constants ---------000
+.garbage 11111111111-
+.begin
+H1 s2
+T3 x1 x2 s2
+t2 x2 x1
+t2 s2 x2
+t2 x1 s2
+R1 x2
+t2 x1 x2
+R2 x1 x2
+T1 s2
+t2 s2 x2
+t2 x1 s2
+t2 x1 x2
+H1 s2
+t2 x1 x2
+H1 s3
+T3 x3 s2 s3
+t2 s2 x3
+t2 s3 s2
+t2 x3 s3
+R1 s2
+t2 x3 s2
+R2 x3 s2
+T1 s3
+t2 s3 s2
+t2 x3 s3
+t2 x3 s2
+H1 s3
+H1 s2
+T3 x2 x3 s2
+t2 x3 x2
+t2 s2 x3
+t2 x2 s2
+R1 x3
+t2 x2 x3
+R2 x2 x3
+T1 s2
+t2 s2 x3
+t2 x2 s2
+t2 x2 x3
+H1 s2
+t2 x2 x3
+H1 s4
+T3 x4 s3 s4
+t2 s3 x4
+t2 s4 s3
+t2 x4 s4
+R1 s3
+t2 x4 s3
+R2 x4 s3
+T1 s4
+t2 s4 s3
+t2 x4 s4
+t2 x4 s3
+H1 s4
+H1 s3
+T3 x4 s2 s3
+t2 s2 x4
+t2 s3 s2
+t2 x4 s3
+R1 s2
+t2 x4 s2
+R2 x4 s2
+T1 s3
+t2 s3 s2
+t2 x4 s3
+t2 x4 s2
+H1 s3
+H1 s2
+T3 x3 x4 s2
+t2 x4 x3
+t2 s2 x4
+t2 x3 s2
+R1 x4
+t2 x3 x4
+R2 x3 x4
+T1 s2
+t2 s2 x4
+t2 x3 s2
+t2 x3 x4
+H1 s2
+t2 x3 x4
+H1 s4
+T3 x5 s3 s4
+t2 s3 x5
+t2 s4 s3
+t2 x5 s4
+R1 s3
+t2 x5 s3
+R2 x5 s3
+T1 s4
+t2 s4 s3
+t2 x5 s4
+t2 x5 s3
+H1 s4
+H1 s3
+T3 x5 s2 s3
+t2 s2 x5
+t2 s3 s2
+t2 x5 s3
+R1 s2
+t2 x5 s2
+R2 x5 s2
+T1 s3
+t2 s3 s2
+t2 x5 s3
+t2 x5 s2
+H1 s3
+H1 s2
+T3 x4 x5 s2
+t2 x5 x4
+t2 s2 x5
+t2 x4 s2
+R1 x5
+t2 x4 x5
+R2 x4 x5
+T1 s2
+t2 s2 x5
+t2 x4 s2
+t2 x4 x5
+H1 s2
+t2 x4 x5
+H1 s4
+T3 x6 s3 s4
+t2 s3 x6
+t2 s4 s3
+t2 x6 s4
+R1 s3
+t2 x6 s3
+R2 x6 s3
+T1 s4
+t2 s4 s3
+t2 x6 s4
+t2 x6 s3
+H1 s4
+H1 s3
+T3 x6 s2 s3
+t2 s2 x6
+t2 s3 s2
+t2 x6 s3
+R1 s2
+t2 x6 s2
+R2 x6 s2
+T1 s3
+t2 s3 s2
+t2 x6 s3
+t2 x6 s2
+H1 s3
+H1 s2
+T3 x5 x6 s2
+t2 x6 x5
+t2 s2 x6
+t2 x5 s2
+R1 x6
+t2 x5 x6
+R2 x5 x6
+T1 s2
+t2 s2 x6
+t2 x5 s2
+t2 x5 x6
+H1 s2
+t2 x5 x6
+H1 s4
+T3 x7 s3 s4
+t2 s3 x7
+t2 s4 s3
+t2 x7 s4
+R1 s3
+t2 x7 s3
+R2 x7 s3
+T1 s4
+t2 s4 s3
+t2 x7 s4
+t2 x7 s3
+H1 s4
+H1 s3
+T3 x7 s2 s3
+t2 s2 x7
+t2 s3 s2
+t2 x7 s3
+R1 s2
+t2 x7 s2
+R2 x7 s2
+T1 s3
+t2 s3 s2
+t2 x7 s3
+t2 x7 s2
+H1 s3
+H1 s2
+T3 x6 x7 s2
+t2 x7 x6
+t2 s2 x7
+t2 x6 s2
+R1 x7
+t2 x6 x7
+R2 x6 x7
+T1 s2
+t2 s2 x7
+t2 x6 s2
+t2 x6 x7
+H1 s2
+t2 x6 x7
+H1 s4
+T3 x8 s3 s4
+t2 s3 x8
+t2 s4 s3
+t2 x8 s4
+R1 s3
+t2 x8 s3
+R2 x8 s3
+T1 s4
+t2 s4 s3
+t2 x8 s4
+t2 x8 s3
+H1 s4
+H1 s3
+T3 x8 s2 s3
+t2 s2 x8
+t2 s3 s2
+t2 x8 s3
+R1 s2
+t2 x8 s2
+R2 x8 s2
+T1 s3
+t2 s3 s2
+t2 x8 s3
+t2 x8 s2
+H1 s3
+H1 s2
+T3 x7 x8 s2
+t2 x8 x7
+t2 s2 x8
+t2 x7 s2
+R1 x8
+t2 x7 x8
+R2 x7 x8
+T1 s2
+t2 s2 x8
+t2 x7 s2
+t2 x7 x8
+H1 s2
+t2 x7 x8
+H1 s4
+T3 x9 s3 s4
+t2 s3 x9
+t2 s4 s3
+t2 x9 s4
+R1 s3
+t2 x9 s3
+R2 x9 s3
+T1 s4
+t2 s4 s3
+t2 x9 s4
+t2 x9 s3
+H1 s4
+H1 s3
+T3 x9 s2 s3
+t2 s2 x9
+t2 s3 s2
+t2 x9 s3
+R1 s2
+t2 x9 s2
+R2 x9 s2
+T1 s3
+t2 s3 s2
+t2 x9 s3
+t2 x9 s2
+H1 s3
+t2 s3 s4
+.end

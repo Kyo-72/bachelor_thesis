@@ -1,4 +1,4 @@
-NUM_OF_SPACE = 5
+NUM_OF_SPACE = 10
 
 import const
 

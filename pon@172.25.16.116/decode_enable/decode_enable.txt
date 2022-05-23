@@ -1,0 +1,287 @@
+# Function: decod24-enable
+# Used Library: MCT (gates: 14 , quantum costs: 86)
+# This file has been taken from RevLib (www.revlib.org).
+.version 1.0
+.numvars 6
+.variables a b c d e f
+.inputs a b E 0 0 0
+.outputs g g e0 e2 e1 e3
+.constants ---000
+.garbage 11----
+.begin
+H1 c
+T3 b e c
+t2 e b
+t2 c e
+t2 b c
+R1 e
+t2 b e
+R2 b e
+T1 c
+t2 c e
+t2 b c
+t2 e b
+H1 c
+H1 3
+T3 a b 3
+t2 b a
+t2 3 b
+t2 a 3
+R1 b
+t2 a b
+R2 a b
+T1 3
+t2 3 b
+t2 a 3
+t2 b a
+H1 3
+H1 e
+T3 f 3 e
+t2 3 f
+t2 e 3
+t2 f e
+R1 3
+t2 f 3
+R2 f 3
+T1 e
+t2 e 3
+t2 f e
+t2 3 f
+H1 e
+H1 3
+T3 a b 3
+t2 b a
+t2 3 b
+t2 a 3
+R1 b
+t2 a b
+R2 a b
+T1 3
+t2 3 b
+t2 a 3
+t2 b a
+H1 3
+H1 e
+T3 f 3 e
+t2 3 f
+t2 e 3
+t2 f e
+R1 3
+t2 f 3
+R2 f 3
+T1 e
+t2 e 3
+t2 f e
+t2 3 f
+H1 e
+H1 d
+T3 b f d
+t2 f b
+t2 d f
+t2 b d
+R1 f
+t2 b f
+R2 b f
+T1 d
+t2 d f
+t2 b d
+t2 f b
+H1 d
+H1 3
+T3 a b 3
+t2 b a
+t2 3 b
+t2 a 3
+R1 b
+t2 a b
+R2 a b
+T1 3
+t2 3 b
+t2 a 3
+t2 b a
+H1 3
+H1 f
+T3 e 3 f
+t2 3 e
+t2 f 3
+t2 e f
+R1 3
+t2 e 3
+R2 e 3
+T1 f
+t2 f 3
+t2 e f
+t2 3 e
+H1 f
+H1 3
+T3 a b 3
+t2 b a
+t2 3 b
+t2 a 3
+R1 b
+t2 a b
+R2 a b
+T1 3
+t2 3 b
+t2 a 3
+t2 b a
+H1 3
+H1 f
+T3 e 3 f
+t2 3 e
+t2 f 3
+t2 e f
+R1 3
+t2 e 3
+R2 e 3
+T1 f
+t2 f 3
+t2 e f
+t2 3 e
+H1 f
+H1 f
+T3 b d f
+t2 d b
+t2 f d
+t2 b f
+R1 d
+t2 b d
+R2 b d
+T1 f
+t2 f d
+t2 b f
+t2 d b
+H1 f
+H1 d
+T3 b f d
+t2 f b
+t2 d f
+t2 b d
+R1 f
+t2 b f
+R2 b f
+T1 d
+t2 d f
+t2 b d
+t2 f b
+H1 d
+H1 c
+T3 a d c
+t2 d a
+t2 c d
+t2 a c
+R1 d
+t2 a d
+R2 a d
+T1 c
+t2 c d
+t2 a c
+t2 d a
+H1 c
+t2 c f
+H1 3
+T3 a b 3
+t2 b a
+t2 3 b
+t2 a 3
+R1 b
+t2 a b
+R2 a b
+T1 3
+t2 3 b
+t2 a 3
+t2 b a
+H1 3
+H1 c
+T3 f 3 c
+t2 3 f
+t2 c 3
+t2 f c
+R1 3
+t2 f 3
+R2 f 3
+T1 c
+t2 c 3
+t2 f c
+t2 3 f
+H1 c
+H1 3
+T3 a b 3
+t2 b a
+t2 3 b
+t2 a 3
+R1 b
+t2 a b
+R2 a b
+T1 3
+t2 3 b
+t2 a 3
+t2 b a
+H1 3
+H1 c
+T3 f 3 c
+t2 3 f
+t2 c 3
+t2 f c
+R1 3
+t2 f 3
+R2 f 3
+T1 c
+t2 c 3
+t2 f c
+t2 3 f
+H1 c
+t2 c f
+H1 e
+T3 b c e
+t2 c b
+t2 e c
+t2 b e
+R1 c
+t2 b c
+R2 b c
+T1 e
+t2 e c
+t2 b e
+t2 c b
+H1 e
+H1 c
+T3 b e c
+t2 e b
+t2 c e
+t2 b c
+R1 e
+t2 b e
+R2 b e
+T1 c
+t2 c e
+t2 b c
+t2 e b
+H1 c
+H1 d
+T3 a c d
+t2 c a
+t2 d c
+t2 a d
+R1 c
+t2 a c
+R2 a c
+T1 d
+t2 d c
+t2 a d
+t2 c a
+H1 d
+H1 c
+T3 a d c
+t2 d a
+t2 c d
+t2 a c
+R1 d
+t2 a d
+R2 a d
+T1 c
+t2 c d
+t2 a c
+t2 d a
+H1 c
+.end

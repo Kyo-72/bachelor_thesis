@@ -1,0 +1,132 @@
+# Function: one-two-three-v0
+# Note: Embedding with constant 00.
+# Used Library: MCT (gates: 8, quantum costs: 40)
+# This file have been taken from RevLib (www.revlib.org). 
+.version 1.0
+.numvars 5
+.variables a b c d e
+.inputs 0 0 c d e
+.outputs g g c d e
+.constants 00---
+.garbage 11---
+.begin
+t2 e b
+H1 a
+T3 e b a
+t2 b e
+t2 a b
+t2 e a
+R1 b
+t2 e b
+R2 e b
+T1 a
+t2 a b
+t2 e a
+t2 e b
+H1 a
+t2 d c
+H1 b
+T3 d c b
+t2 c d
+t2 b c
+t2 d b
+R1 c
+t2 d c
+R2 d c
+T1 b
+t2 b c
+t2 d b
+t2 d c
+H1 b
+H1 c
+T3 b a c
+t2 a b
+t2 c a
+t2 b c
+R1 a
+t2 b a
+R2 b a
+T1 c
+t2 c a
+t2 b c
+t2 b a
+H1 c
+H1 d
+T3 e c d
+t2 c e
+t2 d c
+t2 e d
+R1 c
+t2 e c
+R2 e c
+T1 d
+t2 d c
+t2 e d
+t2 e c
+H1 d
+H1 c
+T3 b a c
+t2 a b
+t2 c a
+t2 b c
+R1 a
+t2 b a
+R2 b a
+T1 c
+t2 c a
+t2 b c
+t2 b a
+H1 c
+H1 d
+T3 e c d
+t2 c e
+t2 d c
+t2 e d
+R1 c
+t2 e c
+R2 e c
+T1 d
+t2 d c
+t2 e d
+t2 e c
+H1 d
+H1 e
+T3 d a e
+t2 a d
+t2 e a
+t2 d e
+R1 a
+t2 d a
+R2 d a
+T1 e
+t2 e a
+t2 d e
+t2 d a
+H1 e
+H1 c
+T3 a d c
+t2 d a
+t2 c d
+t2 a c
+R1 d
+t2 a d
+R2 a d
+T1 c
+t2 c d
+t2 a c
+t2 a d
+H1 c
+H1 d
+T3 c b d
+t2 b c
+t2 d b
+t2 c d
+R1 b
+t2 c b
+R2 c b
+T1 d
+t2 d b
+t2 c d
+t2 c b
+H1 d
+.end

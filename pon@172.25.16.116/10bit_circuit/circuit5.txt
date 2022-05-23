@@ -1,0 +1,22 @@
+#my_test_circuit5
+.numvars 10
+.begin
+t2 f e 
+t2 i g 
+t2 d j 
+T7 a c d f g h j 
+t2 h b 
+T3 b e i 
+t2 a e 
+t2 b f 
+t2 e i 
+t2 g e 
+t2 f d 
+t2 i a 
+t2 d i 
+t2 i e 
+t2 g b 
+t2 f e 
+t2 b d 
+T2 a f 
+.end

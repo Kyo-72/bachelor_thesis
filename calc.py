@@ -135,13 +135,7 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
 
     d = 0;
     #ゲート数200まで探索
-
-    #論理状態を表現する変数
-    
-    
-    
-        
-    
+    #論理状態を表現する変数    
     while(d < MAX_NUM_GATE):
         gate = {}
 
