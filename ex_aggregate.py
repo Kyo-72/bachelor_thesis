@@ -11,7 +11,7 @@ def count_cnot(circuit):
     
 
 def ex_aggregate_result(file_name,circuit,decomposed_circuit,n):
-    os.chdir("/Users/DELL/ソースコード/output")
+    os.chdir("./output")
     
     with open("ex_{}bit_output.txt".format(n),"a") as output:
         num_gate_before = count_cnot(circuit)
@@ -19,5 +19,5 @@ def ex_aggregate_result(file_name,circuit,decomposed_circuit,n):
 
         output.write("{} | {} | {}\n".format(file_name,num_gate_before,num_gate_after))
 
-        
+    os.chdir("../")
         

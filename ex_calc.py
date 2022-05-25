@@ -2,17 +2,30 @@ from z3 import *
 import const
 MAX_NUM_GATE = 50
 
+Q20_graph = [ [1,5],[0,2,6,7],[1,3,6,7],[2,4,8,9],[3,8,9],\
+             [0,6,10,11],[1,2,5,7,10,11],[1,2,6,8,12,13],[3,4,7,9,12,13],\
+             [3,4,8,14],[5,6,11,15],[5,6,10,12],\
+             [7,8,11,13,16,17],[7,8,12,14,18,19],[9,13,18,19],[10,16],\
+             [11,12,15,17],[11,12,16,18],[13,14,17,19],[13,14,18] ]
+
+Optimized_nodes = []
+
 def nearest_neighbor(c_vec,t_vec,n,s):
     
-    for i in range(n):
-        if(i == 0):
-            P = t_vec[1]
-        elif(i == n - 1):
-            P = t_vec[n - 2]
-        else:
-            P = Xor(t_vec[i - 1],t_vec[i + 1])
-            
-        s.add(Implies(c_vec[i],P))
+    #使わないノードの情報を無くす(indexエラーを避ける)
+    Nodes = Q20_graph[0:n]
+    
+    for list in Nodes:
+        if(type(list) is int):
+            break
+        delete = []
+        tmp = []
+        for i in list:
+            if(i < n):
+                tmp.append(i)
+        
+        Optimized_nodes.append(tmp)
+
         
 
 def one_bit_per_gate(vec,n,s):
@@ -43,7 +56,7 @@ def generate_output(f_vec,c_vec,t_vec,d,n):
             for j in range(n):
 
                 #コントロールビットとターゲットビットが隣接していれば制約を追加
-                if( abs(i - j) < 2 and i != j):
+                if(i in Optimized_nodes[j] and i != j):
                     f_vec[d + 1][i] = If(And(t_vec[d][i],c_vec[d][j]),f_vec[d + 1][i]^f_vec[d][j],f_vec[d + 1][i])
 
         
@@ -132,7 +145,7 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
 
             
             #NNA制約式の追加(使わなくていいかも)
-            #nearest_neighbor(c_vec[i],t_vec[i],n,s)
+            nearest_neighbor(c_vec[i],t_vec[i],n,s)
             #同一ゲートはコントロールビットが一つしかない制約
             one_bit_per_gate(c_vec[i],n,s)
             one_bit_per_gate(t_vec[i],n,s)

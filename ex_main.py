@@ -12,11 +12,11 @@ import const
 
 
 def inti_output(n):
-    os.chdir("/Users/DELL/ソースコード/output")
+    os.chdir("../../output")
     with open("my_{}bit_output.txt".format(n),"w") as output:
         output.write("ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間\n")
         
-    os.chdir("/Users/DELL/ソースコード")
+    os.chdir("../")
 
 def init_config(n):
 
@@ -30,11 +30,11 @@ def init_config(n):
     return init_state
 
 def end_config(num_of_circuit,sum,n):
-    os.chdir("/Users/DELL/ソースコード/output")
+    os.chdir("./output")
     with open("my_{}bit_output.txt".format(n),"a") as output:
         output.write("\n\n平均実行時間{}s\n".format(sum/num_of_circuit))
         
-    os.chdir("/Users/DELL/ソースコード")
+    os.chdir("../")
 
 
 
@@ -54,7 +54,7 @@ for file_name in test_list:
 
 
     #テスト用回路のディレクトリ移動する
-    os.chdir('/Users/DELL/ソースコード/input/{}'.format(dir_name))
+    os.chdir('./input/{}'.format(dir_name))
     
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
