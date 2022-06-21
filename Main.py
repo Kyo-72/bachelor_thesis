@@ -114,6 +114,7 @@ for file_name in test_list:
         gate = []
         display.display_circuit(circuit,x,input_list[block])
         
+        #TODO 変換後回路を分析して論理関数が一致するところに単一量子ゲートを配置する
         #要求出力が生成されているビットにelementary量子ゲートをつなげる
         for i,bit in enumerate(x):
             if(bit in output_set[block]):

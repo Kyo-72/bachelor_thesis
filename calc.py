@@ -85,10 +85,10 @@ def equal_desired_output(f_vec,output_list,n,d,s):
     for output in output_list:
         
         P = False
-        
-        for i in range(n):
-        
-            P = Or(P,(f_vec[d][i] == output) )
+
+        for i in range(d + 1):
+            for j in range(n):
+                P = Or(P,(f_vec[i][j] == output) )
             
         s.add(P)
 
