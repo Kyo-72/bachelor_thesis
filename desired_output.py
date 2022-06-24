@@ -75,9 +75,9 @@ def desired_output(init_state,circuit):
                 #Hゲートなら要求出力は順列(全て要求を満たす必要がある)
                 for i in range(len(x)):
                     if(i in gate_itr):
-                        tuple_set.append( (x[t],gate_type) )
+                        tuple_set.append( (x[i],gate_type) )
                     else:
-                        tuple_set.append( (-x[t],gate_type) )
+                        tuple_set.append( (-x[i],gate_type) )
 
                 #ゲートタイプがHなら，入力に新たな変数を追加
                 for t in gate_itr:
@@ -105,7 +105,7 @@ def desired_output(init_state,circuit):
     print(input_list)
     print("---------------output------------------")
     print(output_set)
-    return gate_type_list,input_list,output_set,num_of_var
+    return input_list,output_set,num_of_var
                 
                 
             
