@@ -1,3 +1,3 @@
-output/
-input/
-__pycache__/
+output/*
+input/*
+__pycache__/*
