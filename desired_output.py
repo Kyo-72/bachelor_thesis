@@ -15,11 +15,11 @@ def desired_output(init_state,circuit):
     input_list = []
     input_list.append( copy.copy(init_state) )
     #単一量子ゲートが必要とする論理関数と，そのゲートの種類　例{integer,gate_type}
-    output_set = [()]
+    output_set = []
     pre_gate_depth = 0
 
     #部分回路ごとの要求出力と量子ゲートのペアを管理
-    tuple_set = [()]
+    tuple_set = []
     #変数の数　量子ビットの数で初期化．Hゲートが出てくると増やす
     num_of_var = n
     

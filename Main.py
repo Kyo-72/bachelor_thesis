@@ -90,18 +90,16 @@ for file_name in test_list:
     start = time.time()
 
     #分解後の回路
-    decomposed_circuit = [[]]
+    decomposed_circuit = []
     #要求集合に基づいて回路を分解する
     for block in range( len(output_set) ):
         #各部分回路の 
         print(output_set)
-        output = output_set[block][0]
-        gate_type = output_set[block][1]
     
         #部分的な回路を生成し,decoposed_circuitにつなげる
         print("今回の回路の入力{}".format( input_list[block] ) )
-        print("今回の回路の出力{}".format( output_set[block][0] ) )
-        circuit = calc.calc(input_list[block],copy.copy(output),n,num_of_var,gate_type)
+        print("今回の回路の出力{}".format( output_set[block] ) )
+        circuit = calc.calc(input_list[block],copy.copy(output_set[block]),n,num_of_var)
 
         for gate in circuit:
             decomposed_circuit.append(copy.copy(gate))
@@ -119,6 +117,8 @@ for file_name in test_list:
         
         #TODO 変換後回路を分析して論理関数が一致するところに単一量子ゲートを配置する
         #要求出力が生成されているビットにelementary量子ゲートをつなげる
+
+        #TODO HゲートとTゲートを一緒に処理できるようにする
         for i,bit in enumerate(x):
             if(bit in output_set[block]):
                 if(gate_type == const.HADAMARD_GATE and output[i] < 0):
