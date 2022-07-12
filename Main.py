@@ -78,7 +78,7 @@ for file_name in test_list:
     #回路の最終的な論理状態を取得
     x = logic.logical_state(init_state,circuit)
     #分解前の回路を出力Z
-    # display.display_circuit(circuit,x)
+    display.display_circuit(circuit,x)
     #要求出力集合を出力
     # print(output_set)
 
