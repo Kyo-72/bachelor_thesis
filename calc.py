@@ -1,6 +1,10 @@
 from pickletools import optimize
+from re import A
+from sqlalchemy import true
 from z3 import *
 import const
+from desired_output import desired_output
+import display
 MAX_NUM_GATE = 20
 
 Q20_graph = [ [1,5],[0,2,6,7],[1,3,6,7],[2,4,8,9],[3,8,9],\
@@ -10,6 +14,27 @@ Q20_graph = [ [1,5],[0,2,6,7],[1,3,6,7],[2,4,8,9],[3,8,9],\
              [11,12,15,17],[11,12,16,18],[13,14,17,19],[13,14,18] ]
 
 Optimized_nodes = []
+
+
+# def extract_gate_type(output_set):
+
+#     gate_type = []
+
+#     for output in output_set:
+#         gate_type += output[1]
+
+
+#     return gate_type
+
+# def extract_desired_set(output_set):
+
+#     desired_output= []
+
+#     for output in output_set:
+#         desired_output += output[0]
+
+#     desired_output
+
 
 def nearest_neighbor(c_vec,t_vec,n,s):
     
@@ -79,16 +104,32 @@ def generate_output(f_vec,c_vec,t_vec,d,n):
 
 
 
-def equal_desired_output(f_vec,output_list,n,d,s):
+def equal_desired_output(f_vec,desired_output,n,d,s,H_gate_vec,T_gate_vec,T_dagger_gate_vec):
     
     i = 0
-    for output in output_list:
+    for output in desired_output:
         
         P = False
+        output_function = abs(output[0])
+        gate_tyep = output[1]
+        
+        #Hゲートなら部分回路の終端の論理関数だけに着目
+        if(gate_tyep == const.HADAMARD_GATE):
+            for i in range(n):
+                P = Or(P, f_vec[d][i] == output_function)
+                H_gate_vec[d][i] = (f_vec[d][i] == output_function);
 
-        for i in range(d + 1):
-            for j in range(n):
-                P = Or(P,(f_vec[i][j] == output) )
+        #Tゲート以外なら部分回路の任意の場所に配置可能
+        else: 
+
+            for i in range(d + 1):
+                for j in range(n):
+                    #括弧ないがそのままゲート変数になる
+                    P = Or(P,(f_vec[i][j] == output_function) )
+                    if(gate_tyep == const.T_GATE):
+                        T_gate_vec[i][j] = (f_vec[i][j] == output_function)
+                    elif(gate_tyep == const.T_DAGGER_GATE):
+                        T_dagger_gate_vec[i][j] = (f_vec[i][j] == output_function)
             
         s.add(P)
 
@@ -127,12 +168,78 @@ def convert_output(m,d,n,c_vec,t_vec):
                 
     return output
     
-                                             
+    # output_circuit = []
+
+    # for i in range(d):
+
+    #     #CNOTゲートを配置
+    #     cnot_gate = []
+    #     for j in range(n):
+    #         if(m[c_vec[i][j]] == True):
+    #             cnot_gate.append(const.CONTROLL_BIT)
+    #         elif(m[t_vec[i][j]] == True):
+    #             cnot_gate.append(const.TARGET_BIT)
+    #         else:
+    #             cnot_gate.append(" ")
+
+    #     unitary_gate = []
+    #     #単位ゲートを配置
+
+    #     for j in range(n):
+    #         if( m[ T_gate_vec[i][j] ] ) == True):
+    #             unitary_gate.append(const.T_GATE)
+    #         elif(m[ T_dagger_gate_vec[i][j] ] == True):
+    #             unitary_gate.append(const.T_DAGGER_GATE)
+    #         else:
+    #             unitary_gate.append(" ")
+
+    #     output_circuit.append(cnot_gate)
+    #     output_circuit.append(unitary_gate)
+
+    # H_gate = []
+    # #Hゲートを配置
+    # for j in range(n):
+    #     if(H_gate_vec == True):
+    #         H_gate.append(const.HADAMARD_GATE)
+    #     else:
+    #         H_gate.append(" ")
+
+    # output_circuit.append(H_gate)
+                
+    # return output_circuit
+
+#i ~ d + 1 j ~ nまでの not T_gate_vec[i][j]をAndでつなげた論理式を生成
+def generate_restriction_of_other_gate_position(T_gate_vec,d,n,i,j):
+
+    P = True
+
+    for x in range(i,d + 1):
+        for y in range(j,n):
+            P = And( P, Not( T_gate_vec[x][y]) )
+            
+    return P
+    
+
+
+#Tゲートの後にHゲートが来るように調整
+def restrict_gate_order(H_gate_vec,T_gate_vec,d,n,s):
+
+    for i in range(d + 1):
+        for j in range(n):
+            #￢oterh_gate_vec[i][j]をすべてAndでつないだ論理式　i,j以降のT_gate_vecがFalseであるという論理式
+            P = generate_restriction_of_other_gate_position(T_gate_vec,d,n,i,j)
+            s.add(If(H_gate_vec[i][j],P,True))                                        
                         
             
 
-def calc(input_list,output_list,n,num_of_var,gate_type):
+def calc(input_list,output_set,n,num_of_var):
 
+    #TODO　outputからgatetypeと要求出力を取り出すor管理する
+    # desired_output = extract_desired_set(output_set)
+    # gate_type = extract_gate_type(output_set)
+    
+
+    
     d = 0;
     #ゲート数200まで探索
     #論理状態を表現する変数    
@@ -142,6 +249,10 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
         #d*n CNOTゲート群を表す変数
         c_vec = [[Bool("c_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)]
         t_vec = [[Bool("t_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d)]
+        #ゲートの配置を表す変数
+        H_gate_vec = [[Bool("H_gate_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d + 1)]
+        T_gate_vec = [[Bool("T_gate_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d + 1)]
+        T_dagger_gate_vec = [[Bool("T_dagger_gate_vec[%d,%d]" % (i,j)) for j in range(n)] for i in range(d + 1)]
         #論理状態を表す変数
         f_vec = [[BitVec("f_vec[%d,%d]" % (i,j),num_of_var) for j in range(n)] for i in range(d + 1)]
         for i in range(n):
@@ -165,11 +276,16 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
         #出力を生成
         generate_output(f_vec,c_vec,t_vec,d,n)
         #出力と要求出力の一致
+
+        equal_desired_output(f_vec,output_set,n,d,s,H_gate_vec,T_gate_vec,T_dagger_gate_vec)
+
+        #TODO　ここら辺は抜本的に書き換える必要がある
+        # restrict_gate_order(H_gate_vec,T_gate_vec,d,n,s)
         
-        if(gate_type == const.HADAMARD_GATE):
-            ex_equal_desired_output(f_vec,output_list,n,d,s)
-        else:
-            equal_desired_output(f_vec,output_list,n,d,s)
+        # if(gate_type == const.HADAMARD_GATE):
+        #     ex_equal_desired_output(f_vec,output_list,n,d,s)
+        # else:
+        #     equal_desired_output(f_vec,output_list,n,d,s)
         #for i in range(n):
             #print("%dline f_vec P :%s"%(i + 1,f_vec[d][i]) )
             
@@ -178,11 +294,13 @@ def calc(input_list,output_list,n,num_of_var,gate_type):
             m = s.model()
             #display_gates(c_vec,t_vec,m,d,n)
             
+
             return convert_output(m,d,n,c_vec,t_vec)
+
         d += 1
 
     
-#input = [1,2,4,8,16]
-#output = [17]
-#n = len(input) 
-#calc(input,output,n)
+# input = [1,2,4,8]
+# output = [(9,"T"),(10,"T"),(6,"T"),(-8,"H"),(10,"H"),(-6,"H"),(-5,"H")]
+# n = len(input) 
+# display.display_circuit( calc(input,output,n,n) )

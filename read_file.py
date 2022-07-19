@@ -149,7 +149,6 @@ def read_file(str):
                 circuit.append(gate_list)
                 #ToDoゲートの最後の要求出力をリストの末尾にappendする
               
-                
     circuit.append(kinds_of_output) 
     return circuit
 

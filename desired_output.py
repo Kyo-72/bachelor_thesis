@@ -24,7 +24,6 @@ def desired_output(init_state,circuit):
     num_of_var = n
     
     
-    
     #elementary量子ゲートがあるなら要求出力を生成
     for i in range(d):
         
@@ -39,6 +38,7 @@ def desired_output(init_state,circuit):
             #見つけたらgate_typeを更新
             if(len(gate_itr) == 0):
                 for g in elementary_gate_list:
+                    #bit[0]はゲート名の頭文字アルファベット
                     if(bit[0] == g):
                             gate_type = g
                             gate_itr.append(index)
@@ -99,12 +99,27 @@ def desired_output(init_state,circuit):
                     tuple_set.clear()
           
                 
+    #ガーベッジビット以外の量子ビットにおける論理状態を戻す
+    tuple_set = []
+    last_output = circuit[len(circuit) - 1]
+    x = logic.logical_state(init_state,circuit)
+
+    for index,output in enumerate(last_output):
+        if(output != const.GARBAGE_BIT):
+            tuple_set.append( (x[index],const.OUTPUT) )
+        else:
+            tuple_set.append( (x[index],const.GARBAGE_BIT) )
+
+    output_set.append(copy.copy(list(tuple_set)))
+    tuple_set.clear()
+
 
 
     print("---------------input------------------")
     print(input_list)
     print("---------------output------------------")
     print(output_set)
+    
     return input_list,output_set,num_of_var
                 
                 
