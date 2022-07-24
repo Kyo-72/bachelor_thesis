@@ -1,0 +1,156 @@
+# Used Library: MCT (gates: 7, quantum costs: 43)
+# This file have been taken from RevLib (www.revlib.org). 
+.version 1.0
+.numvars 5
+.variables e d c b a
+.inputs e d c b a
+.outputs e d c b a
+.constants -----
+.garbage -----
+.begin
+H1 c
+T3 a b c
+t2 b a
+t2 c b
+t2 a c
+R1 b
+t2 a b
+R2 a b
+T1 c
+t2 c b
+t2 a c
+t2 b a
+H1 c
+H1 a
+T3 a c a
+t2 c a
+t2 a c
+t2 a a
+R1 c
+t2 a c
+R2 a c
+T1 a
+t2 a c
+t2 a a
+t2 c a
+H1 a
+H1 b
+T3 d a b
+t2 a d
+t2 b a
+t2 d b
+R1 a
+t2 d a
+R2 d a
+T1 b
+t2 b a
+t2 d b
+t2 a d
+H1 b
+H1 a
+T3 a c a
+t2 c a
+t2 a c
+t2 a a
+R1 c
+t2 a c
+R2 a c
+T1 a
+t2 a c
+t2 a a
+t2 c a
+H1 a
+H1 b
+T3 d a b
+t2 a d
+t2 b a
+t2 d b
+R1 a
+t2 d a
+R2 d a
+T1 b
+t2 b a
+t2 d b
+t2 a d
+H1 b
+H1 b
+T3 a d b
+t2 d a
+t2 b d
+t2 a b
+R1 d
+t2 a d
+R2 a d
+T1 b
+t2 b d
+t2 a b
+t2 d a
+H1 b
+H1 a
+T3 a b a
+t2 b a
+t2 a b
+t2 a a
+R1 b
+t2 a b
+R2 a b
+T1 a
+t2 a b
+t2 a a
+t2 b a
+H1 a
+H1 d
+T3 c a d
+t2 a c
+t2 d a
+t2 c d
+R1 a
+t2 c a
+R2 c a
+T1 d
+t2 d a
+t2 c d
+t2 a c
+H1 d
+H1 a
+T3 a b a
+t2 b a
+t2 a b
+t2 a a
+R1 b
+t2 a b
+R2 a b
+T1 a
+t2 a b
+t2 a a
+t2 b a
+H1 a
+H1 d
+T3 c a d
+t2 a c
+t2 d a
+t2 c d
+R1 a
+t2 c a
+R2 c a
+T1 d
+t2 d a
+t2 c d
+t2 a c
+H1 d
+H1 d
+T3 a b d
+t2 b a
+t2 d b
+t2 a d
+R1 b
+t2 a b
+R2 a b
+T1 d
+t2 d b
+t2 a d
+t2 b a
+H1 d
+t2 a b 
+t1 a 
+.end
