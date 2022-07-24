@@ -85,6 +85,8 @@ for file_name in test_list:
     #要求出力集合を出力
     # print(output_set)
 
+    divied_num = len(output_set)
+
     #分解前回路ゲート数
     print("CNOTゲート数{}".format( aggregate.count_cnot(circuit) ) )
     
@@ -162,6 +164,8 @@ for file_name in test_list:
     sum += process_time
 
     print("所要時間:{}s".format(process_time))
+    print("分割数:{}".format(divied_num))
+    
     
     
 end_config(num_of_circuit,file_name,sum,n)
