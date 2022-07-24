@@ -38,7 +38,7 @@ def end_config(num_of_circuit,file_name,sum,n):
     os.chdir("../")
 
 def place_elementary_gate():
-
+    
     return 0
 
 

@@ -7,9 +7,14 @@ def search_for_ancilla(line,num_of_io,n,input):
     controll_bit = []
     for bit in gate[0:num_of_io - 1]:
         controll_bit.append(input.index(bit))
+
+    print("コントロールビット")
+    print(controll_bit)
     
     target_bit = ( input.index(gate[num_of_io - 1].split("\n")[0])) 
     #ancillaにできるビットを探し,target_bitとの距離を入れる
+    print("たーげっとびっと")
+    print(target_bit)
     ancilla = {}
 
     for i in range(n):
@@ -28,7 +33,7 @@ def search_for_ancilla(line,num_of_io,n,input):
 
 def convert_mct_into_toffoli(line,num_of_io,n,input):
     gates = ""
-    ancilla = search_for_ancilla(line,num_of_io,n,input)
+    ancilla =  chr(search_for_ancilla(line,num_of_io,n,input) + ord('a') )
     print("ancilla:{}".format(ancilla))
 
     bit = line.split(" ")
@@ -122,6 +127,7 @@ def decompose(file_name):
                     #Toffoliゲート分解.
                     if(num_of_io == 3):
                         line = convert_toffoli_into_cnot(line)
+                        
                     #MTCゲートをtoffoliに分解後,clifford+tゲート群に分解
                     elif(num_of_io > 3):
                         gate = convert_mct_into_toffoli(line,num_of_io,n,input)
