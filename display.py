@@ -1,6 +1,7 @@
 NUM_OF_SPACE = 10
 
 import const
+import pprint
 
 #circuitと出力outputを渡すと、回路を表示するプログラム
 def display_circuit(circuit,output=None,input=None):
@@ -23,9 +24,16 @@ def display_circuit(circuit,output=None,input=None):
             print(":",end="")
     
         for i in range(d):
-        
-            print("ー",end="")
-            gate = circuit[i][j]
+            
+            #空文字列の時の処理
+            try:
+                print("ー",end="")
+                gate = circuit[i][j]
+            except IndexError:
+                continue
+
+
+
             
             if(gate == const.CONTROLL_BIT):
                 print("・",end="")

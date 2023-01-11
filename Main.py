@@ -155,7 +155,7 @@ for file_name in test_list:
     #出力の論理状態を取得
     x = logic.logical_state(init_state,decomposed_circuit)
     #回路を出力する
-    #display.display_circuit(decomposed_circuit,x)
+    display.display_circuit(decomposed_circuit,x)
     print(decomposed_circuit)
     #実行時間を計測
     process_time = time.time() - start
