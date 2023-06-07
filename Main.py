@@ -62,11 +62,9 @@ for file_name in test_list:
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
     circuit = copy.copy(source_circuit)
-    print("ここやで")
     print(circuit)
     #回路からビット数を読み込む
     n = len(circuit[0])
-    print(n)
 
     #初期状態を設定
     init_state = init_config(n)

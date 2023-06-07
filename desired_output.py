@@ -57,6 +57,11 @@ def desired_output(init_state,circuit):
             
             if( len(sub_circuit) != 0):
                 x = logic.logical_state(init_state,sub_circuit)
+                print("ここやで")
+                print(init_state)
+                print(x)
+
+                print('-----------------------------------------')
             else:
             #部分回路内にCNOTゲートがなければ
                 x = copy.copy( input_list[-1] )
@@ -71,6 +76,8 @@ def desired_output(init_state,circuit):
             if(gate_type != const.HADAMARD_GATE):
                 for t in gate_itr:
                     tuple_set.append( (x[t],gate_type) )
+                    #次の入力を，今回の部分回路における出力で更新
+                    init_state = x
             else:
                 #Hゲートなら要求出力は順列(全て要求を満たす必要がある)
                 for i in range(len(x)):
