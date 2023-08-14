@@ -8,6 +8,7 @@ import read_file
 import os
 import aggregate
 import const
+import place_elementary_gate
 
 
 
@@ -37,16 +38,11 @@ def end_config(num_of_circuit,file_name,sum,n):
         
     os.chdir("../")
 
-def place_elementary_gate():
-    
-    return 0
-
-
-
 
 #テスト回路のリストを取得する
 print("実験用回路のディレクトリ名を入力してください")
-dir_name = input()
+# dir_name = input()
+dir_name = "example"
 test_list = os.listdir(path="./input/{}".format(dir_name))
 #実行時間の合計
 sum = 0
@@ -106,6 +102,7 @@ for file_name in test_list:
 
         #SMTソルバに入力，出力を投げてNNA回路を得る．
         circuit = calc.calc(input_list[block],copy.copy(output_set[block]),n,num_of_var)
+        circuit = place_elementary_gate.place_gate(circuit, input_list[block], copy.copy(output_set[block]))
 
         for gate in circuit:
             decomposed_circuit.append(copy.copy(gate))
@@ -120,34 +117,7 @@ for file_name in test_list:
 
         gate = []
         display.display_circuit(circuit,x,input_list[block])
-        
-        #TODO 変換後回路を分析して論理関数が一致するところに単一量子ゲートを配置する
-        #要求出力が生成されているビットにelementary量子ゲートをつなげる
-
-        # TODO ここいらない説ある
-        # for i,bit in enumerate(x):
-        #     if(bit in output_set[block]):
-        #         if(output[i] < 0):
-        #             gate.append(" ")
-        #         else:
-        #             gate.append(const.HADAMARD_GATE)
-        #     else:
-        #         gate.append(" ")
-
-        place_elementary_gate()
         decomposed_circuit.append(copy.copy(gate))
-
-        # #Hゲートがない場合，出力を次の入力に更新
-        # if(gate_type != const.HADAMARD_GATE):
-        #     input_list[block + 1] = x
-        # else:
-        #     print(x)
-        #     for i,bit in enumerate(x):
-        #         #Hゲートがある場合，更新しなくていい
-        #         if(bit not in output):
-        #             #Hゲートがないbitは前回の回路の出力で更新
-                    # input_list[block + 1][i] = bit
-
 
     decomposed_circuit.pop(0)
     #出力の論理状態を取得
