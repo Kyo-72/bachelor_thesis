@@ -7,8 +7,9 @@ import desired_output as desired_output
 import read_file
 import os
 import aggregate
-import const
 import place_elementary_gate
+import bit_search
+import const
 
 
 
@@ -42,7 +43,7 @@ def end_config(num_of_circuit,file_name,sum,n):
 #テスト回路のリストを取得する
 print("実験用回路のディレクトリ名を入力してください")
 # dir_name = input()
-dir_name = "example"
+dir_name = "tekitou"
 test_list = os.listdir(path="./input/{}".format(dir_name))
 #実行時間の合計
 sum = 0
@@ -99,6 +100,16 @@ for file_name in test_list:
         #部分的な回路を生成し,decoposed_circuitにつなげる
         print("今回の回路の入力{}".format( input_list[block] ) )
         print("今回の回路の出力{}".format( output_set[block] ) )
+
+        bit_set = {}
+
+        #アウトプットを構成するため、必要な最小の量子ビットを計算する
+        for i,output_state in enumerate(output_set[block]):
+            if(output_state[1] == const.HADAMARD_GATE):
+                break
+            bit_set[i] = bit_search.min_quantum_bit(input_list[block], abs(output_state[0]))
+
+        
 
         #SMTソルバに入力，出力を投げてNNA回路を得る．
         circuit = calc.calc(input_list[block],copy.copy(output_set[block]),n,num_of_var)

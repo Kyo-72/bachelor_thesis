@@ -31,10 +31,9 @@ def append_last_gate(circuit, init_state):
 
 def place_gate(circuit,init_state, output):
 
-    global insert_gate, insert_last_gate, d, n
+    global insert_gate, insert_last_gate, d
 
     d = len(circuit)
-    n = len(circuit[0])
     insert_gate = {i:[] for i in range(d + 1)}
     last_gate = []
     
