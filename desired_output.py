@@ -101,10 +101,15 @@ def desired_output(init_state,circuit):
 
                     #次の入力を，今回の部分回路における出力で更新
                     init_state = x
+
                     #部分回路が必要とする論理関数と，それぞれに対応する量子ゲート
                     output_set.append(copy.copy(list(tuple_set)))
                     tuple_set.clear()
-          
+                
+    #部分回路が必要とする論理関数と，それぞれに対応する量子ゲート
+    output_set.append(copy.copy(list(tuple_set)))
+    tuple_set.clear()
+
                 
     #ガーベッジビット以外の量子ビットにおける論理状態を戻す
     tuple_set = []
@@ -116,10 +121,6 @@ def desired_output(init_state,circuit):
             tuple_set.append( (x[index],const.OUTPUT) )
         else:
             tuple_set.append( (x[index],const.GARBAGE_BIT) )
-
-    output_set.append(copy.copy(list(tuple_set)))
-    tuple_set.clear()
-
 
 
     print("---------------input------------------")
