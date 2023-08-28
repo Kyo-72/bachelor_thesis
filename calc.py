@@ -35,12 +35,11 @@ Optimized_nodes = []
 #     desired_output
 
 
-def nearest_neighbor(c_vec,t_vec,n,s):
+def nearest_neighbor(c_vec,t_vec,n,s,node):
     
     #使わないノードの情報を無くす(indexエラーを避ける)
-    Nodes = Q20_graph[0:n]
     
-    for list in Nodes:
+    for list in node:
         if(type(list) is int):
             break
         delete = []
@@ -231,7 +230,7 @@ def restrict_gate_order(H_gate_vec,T_gate_vec,d,n,s):
                         
             
 
-def calc(input_list,output_set,n,num_of_var):
+def calc(input_list,output_set,n,num_of_var,node):
 
     #TODO　outputからgatetypeと要求出力を取り出すor管理する
     # desired_output = extract_desired_set(output_set)
@@ -266,7 +265,7 @@ def calc(input_list,output_set,n,num_of_var):
 
             
             #NNA制約式の追加(使わなくていいかも)
-            nearest_neighbor(c_vec[i],t_vec[i],n,s)
+            nearest_neighbor(c_vec[i],t_vec[i],n,s,node)
             #同一ゲートはコントロールビットが一つしかない制約
             one_bit_per_gate(c_vec[i],n,s)
             one_bit_per_gate(t_vec[i],n,s)

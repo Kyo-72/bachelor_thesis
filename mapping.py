@@ -23,3 +23,7 @@ def calc_optimal_graph(nodes):
         mapped_bit.append([nodes[n + 1] for n in node])
 
     return nna_graph
+
+def bit_mapping(bit_num):
+    
+    return calc_optimal_graph(mapping_node[bit_num])

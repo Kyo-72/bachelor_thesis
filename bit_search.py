@@ -14,3 +14,5 @@ def min_quantum_bit(input_set, output_state):
             break
 
     return res_input_set
+
+

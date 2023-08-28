@@ -10,6 +10,7 @@ import aggregate
 import place_elementary_gate
 import bit_search
 import const
+import mapping
 
 
 
@@ -63,6 +64,8 @@ for file_name in test_list:
     #回路からビット数を読み込む
     n = len(circuit[0])
 
+    node = mapping.bit_mapping(n)
+
     #初期状態を設定
     init_state = init_config(n)
     #要求出力集合
@@ -112,7 +115,7 @@ for file_name in test_list:
         
 
         #SMTソルバに入力，出力を投げてNNA回路を得る．
-        circuit = calc.calc(input_list[block],copy.copy(output_set[block]),n,num_of_var)
+        circuit = calc.calc(input_list[block], copy.copy(output_set[block]), n, num_of_var, node)
         circuit = place_elementary_gate.place_gate(circuit, input_list[block], copy.copy(output_set[block]))
 
         for gate in circuit:
