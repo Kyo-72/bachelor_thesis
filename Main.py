@@ -65,6 +65,7 @@ for file_name in test_list:
     n = len(circuit[0])
 
     node = mapping.bit_mapping(n)
+    print(node)
 
     #初期状態を設定
     init_state = init_config(n)
@@ -108,11 +109,9 @@ for file_name in test_list:
 
         #アウトプットを構成するため、必要な最小の量子ビットを計算する
         for i,output_state in enumerate(output_set[block]):
-            if(output_state[1] == const.HADAMARD_GATE):
+            if(output_state[1] == const.HADAMARD_GATE or output_state[1] == const.OUTPUT):
                 break
             bit_set[i] = bit_search.min_quantum_bit(input_list[block], abs(output_state[0]))
-
-        
 
         #SMTソルバに入力，出力を投げてNNA回路を得る．
         circuit = calc.calc(input_list[block], copy.copy(output_set[block]), n, num_of_var, node)
