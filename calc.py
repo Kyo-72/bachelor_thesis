@@ -263,7 +263,6 @@ def calc(input_list,output_set,n,num_of_var,node):
         #ゲートごとに制約を追加
         for i in range(d):
 
-            
             #NNA制約式の追加(使わなくていいかも)
             nearest_neighbor(c_vec[i],t_vec[i],n,s,node)
             #同一ゲートはコントロールビットが一つしかない制約
