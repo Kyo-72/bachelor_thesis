@@ -1,7 +1,6 @@
 NUM_OF_SPACE = 10
 
 import const
-import pprint
 
 #circuitと出力outputを渡すと、回路を表示するプログラム
 def display_circuit(circuit,output=None,input=None):

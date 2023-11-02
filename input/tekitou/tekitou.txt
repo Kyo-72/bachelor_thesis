@@ -1,0 +1,47 @@
+# Function: くそ適当10bit回路　NNA満たしてるやつがないよ　CNOTとTだけだよ
+.version 1.0
+.numvars 10
+.variables a b c d e f g h i j
+.inputs a b c d e f g h i j
+.outputs a b c d e f g h i j
+.constants ----------
+.garbage ----------
+.begin
+t2 a f
+t2 f a
+t2 h b
+t2 d c
+t2 c j
+t2 e j
+t2 c g
+t2 j a
+t2 a c
+t2 d f
+t2 a f
+t2 f c
+t2 h f
+t2 g j
+t2 i b
+t2 d i
+t2 i b
+t2 b h
+t2 a i
+t2 a f
+T1 f
+t2 f c
+T1 c
+t2 h f
+t2 g c
+T1 c
+t2 j a
+T1 a
+T1 i
+t2 a h
+T1 h
+t2 h b
+T1 b
+t2 b i
+T1 i
+t2 i a
+T1 a
+.end

@@ -8,7 +8,6 @@ import const
 T_GATE_PROB = 5 #Tゲートが挿入されるまでのCNOTの数の期待値
 T_GATE_NUM = 3  #Tゲートの数
 
-
 def generate_gate(n,j,d):
     gate = []
     gate_type = random.randrange(T_GATE_PROB)
@@ -21,8 +20,6 @@ def generate_gate(n,j,d):
         gate = generate_cnot(n)
 
     return gate
-
-
 
 def generate_T_gate(n):
     gate = []
