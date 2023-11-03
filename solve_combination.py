@@ -123,27 +123,37 @@ def compute_cost_for_combi(trimmed_node, used_node, add_nodes=[]):
     return cost
 
 
-
+#bit_combinationを更新するとうまくいかない（続くやつが無理だから）
+#この関数でforループ回さん方がよくね？組み合わせ一つに対してノードを探索する方が直感的では
 def add_node_for_nna(node, bit_combination,max_num):
     for k,v in bit_combination.items():
         unused_node = [i for i in range(NUM_OF_NODE)]
         node_num = v['num_node']
+
         #すべてのノードと使われてるノードのbitXORを取って使ってないノードを求める
         unused_node = list(set(unused_node) ^ set(v['necessary_node']))
+
         #max_bitを超えないような追加ノードの選び方
         limit_addnode_num = max_num - node_num
-        cost = MAX_COST
+        min_cost = MAX_COST
+
         #limig_addnode_numに達するまで、追加するノードの数を増やし、NNAを満たす組み合わせを探索する
         if(limit_addnode_num > 0):
             for m in range(limit_addnode_num + 1)[1:]:
                 add_node_combi = list(itertools.combinations(unused_node, m))
+
                 for add_nodes in add_node_combi:
-                    necessary_node = v['necessary_node'] + list(add_nodes)
+                    necessary_node = v['used_node'] + list(add_nodes)
                     trimmed_node = remove_unused_node(node, necessary_node)
+
                     #検討しているノード群が連結ならコストを計算する
                     if(is_nna(necessary_node, node)):
-                        cost = min(cost, compute_cost_for_combi(trimmed_node, v['used_node'], add_nodes))
-                        pass
+                        #最小ならnecessary_setを更新
+                        cost = compute_cost_for_combi(trimmed_node, v['used_node'], add_nodes)
+                        if(min_cost > compute_cost_for_combi(trimmed_node, v['used_node'], add_nodes)):
+                            min_cost = cost
+                            v['necessary_node'] = v['used_node'] + list(add_nodes)
+                            pass
         else:
             return []
 
@@ -179,3 +189,4 @@ for key,v in bit_combination.items():
         un_nna_combination[key] = bit_combination[key]
 
 add_node_for_nna(node, un_nna_combination,8)
+
