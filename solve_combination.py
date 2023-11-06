@@ -197,7 +197,7 @@ add_node_for_nna(node, un_nna_combination,8)
 
 pass
 #TODO 
-#入力ビットの組み合わせごとのコスト計算　どれを採用するか決定する
+#全部falseの場合を考える
 adopted_combi = []
 max_score = 0
 for combi in bit_combination.values():
@@ -208,3 +208,5 @@ for combi in bit_combination.values():
 pass
 #全体に組み込む
 #add_node_for_nnaの返り値を見て、無理な場合を考える
+
+def solve_combination:

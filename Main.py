@@ -11,6 +11,7 @@ import place_elementary_gate
 import bit_search
 import const
 import mapping
+import generate_sub_circuit
 
 
 
@@ -103,21 +104,11 @@ for file_name in test_list:
     
         #部分的な回路を生成し,decoposed_circuitにつなげる
         print("今回の回路の入力{}".format( input_list[block] ) )
-        print("今回の回路の出力{}".format( output_set[block] ) )
+        print("今回の回路の出力{}".format( output_set[block] ) )        
 
-        bit_set = {}
+        sub_circuit = generate_sub_circuit.sub_circuit(input_list[block], output_set[block], n, num_of_var, node)
 
-        #アウトプットを構成するため、必要な最小の量子ビットを計算する
-        for i,output_state in enumerate(output_set[block]):
-            if(output_state[1] == const.HADAMARD_GATE or output_state[1] == const.OUTPUT):
-                break
-            bit_set[i] = bit_search.min_quantum_bit(input_list[block], abs(output_state[0]))
-
-        #SMTソルバに入力，出力を投げてNNA回路を得る．
-        circuit = calc.calc(input_list[block], copy.copy(output_set[block]), n, num_of_var, node)
-        circuit = place_elementary_gate.place_gate(circuit, input_list[block], copy.copy(output_set[block]))
-
-        for gate in circuit:
+        for gate in sub_circuit:
             decomposed_circuit.append(copy.copy(gate))
         
         if(len(circuit) != 0):
