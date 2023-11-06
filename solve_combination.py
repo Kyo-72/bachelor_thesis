@@ -4,7 +4,7 @@ import itertools
 import heapq
 
 NUM_OF_NODE = 20
-MAX_COST        = 1000000
+MAX_COST    = 1000000
 
 class bit_combination:
 
@@ -178,6 +178,11 @@ def compute_handle_bits_combi(bit_set, node):
 def find_optimal_combination(input, output, bit_set, node):
     bit_combination = compute_handle_bits_combi(bit_set, node)
 
+def calc_cost(bit_combination):
+    pass
+
+
+
 node = [[1, 5], [0, 2, 6, 7], [1, 3, 6, 7], [0, 6, 10, 11], [1, 2, 5, 7, 10, 11], [1, 2, 6, 8, 12, 13], [5, 6, 11, 15], [5, 6, 10, 12], [7, 8, 11, 13, 16, 17], [7, 8, 12, 14, 18, 19]]
 bit_set = [[0,1, 3],[0,1,2],[6,7,8]]
 node = mapping.bit_mapping(10)
@@ -190,3 +195,16 @@ for key,v in bit_combination.items():
 
 add_node_for_nna(node, un_nna_combination,8)
 
+pass
+#TODO 
+#入力ビットの組み合わせごとのコスト計算　どれを採用するか決定する
+adopted_combi = []
+max_score = 0
+for combi in bit_combination.values():
+    if(max_score < combi['num_combination']):
+        max_score = combi['num_combination']
+        adopted_combi = combi
+
+pass
+#全体に組み込む
+#add_node_for_nnaの返り値を見て、無理な場合を考える
