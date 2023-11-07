@@ -19,7 +19,7 @@ class bit_combination:
     def add_node(self, node):
         self.is_added  = True
         self.num_node += 1
-        self.used_node += node 
+        self.used_node += node
     
     def nna(self):
         self.is_nna = True
@@ -152,10 +152,13 @@ def add_node_for_nna(node, bit_combination,max_num):
                         cost = compute_cost_for_combi(trimmed_node, v['used_node'], add_nodes)
                         if(min_cost > compute_cost_for_combi(trimmed_node, v['used_node'], add_nodes)):
                             min_cost = cost
-                            v['necessary_node'] = v['used_node'] + list(add_nodes)
-                            pass
+                            v['necessary_node'] = v['used_node'] + list(add_nodes) 
+
+            #costが更新されていたら、bit_combinationを書き換え
+            if(cost != MAX_COST):
+                v['is_nna'] = True
         else:
-            return []
+            return
 
 
 def compute_handle_bits_combi(bit_set, node):
@@ -167,12 +170,12 @@ def compute_handle_bits_combi(bit_set, node):
         for i in range(n):
             if(bit & (1 << i)):
                 used_node = list(set(used_node) | set(bit_set[i]))
-        
+
         nna = is_nna(used_node, node)
         num_combi = bin(bit).count('1')
         #ビットの組み合わせのクラスのインスタンスを作成\234
         bit_combination[bit] = evaluate_bit_combi(nna, used_node, num_combi, False)
-                                
+
     return bit_combination
 
 def find_optimal_combination(input, output, bit_set, node):
@@ -209,4 +212,3 @@ pass
 #全体に組み込む
 #add_node_for_nnaの返り値を見て、無理な場合を考える
 
-def solve_combination:
