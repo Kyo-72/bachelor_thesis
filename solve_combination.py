@@ -71,7 +71,7 @@ def compute_nna(trimed_node, visited, node):
 def compute_cost_of_bit_combination():
     pass
 
-def evaluate_bit_combi(nna, used_node, num_combi, is_added):
+def evaluate_bit_combi(nna, used_node, num_combi, is_added, select_combi):
     #ノード追加処理を行っていない組み合わせ場合
     if(is_added == False):
         res = {
@@ -81,6 +81,7 @@ def evaluate_bit_combi(nna, used_node, num_combi, is_added):
             'is_added'        : False,          #ノード追加処理を行ったかどうか
             'num_node'        : len(used_node), #ノードの数
             'num_combination' : num_combi       #組み合わせ数
+            'select_combi'    : select_combi    #どのbit_setを解決してるか
         }
     #ノード追加処理を行った組み合わせの場合
     else:
@@ -160,12 +161,26 @@ def add_node_for_nna(node, bit_combination,max_num):
         else:
             return
 
+def bit_to_list(bit):
+    res = []
+    dig = 0
+
+    while(bit > (1 << dig)):
+        if(bit & (1 << dig)):
+            res.append(dig)
+
+        dig += 1
+
+    return res
 
 def compute_handle_bits_combi(bit_set, node):
     bit_combination = {}
     n = len(bit_set)
+
     for bit in range(1 << n)[1: ]:
         used_node = []
+        select_combi = bit_to_list(bit)
+
         #組み合わせで使用するノードを計算
         for i in range(n):
             if(bit & (1 << i)):
@@ -174,7 +189,7 @@ def compute_handle_bits_combi(bit_set, node):
         nna = is_nna(used_node, node)
         num_combi = bin(bit).count('1')
         #ビットの組み合わせのクラスのインスタンスを作成\234
-        bit_combination[bit] = evaluate_bit_combi(nna, used_node, num_combi, False)
+        bit_combination[bit] = evaluate_bit_combi(nna, used_node, num_combi, False, select_combi)
 
     return bit_combination
 
