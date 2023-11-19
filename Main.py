@@ -1,4 +1,3 @@
-import calc
 import logic
 import display
 import time
@@ -7,9 +6,6 @@ import desired_output as desired_output
 import read_file
 import os
 import aggregate
-import place_elementary_gate
-import bit_search
-import const
 import mapping
 import generate_sub_circuit
 
@@ -20,7 +16,7 @@ def inti_output(n):
     os.chdir("../../output")
     with open("my_{}bit_output.txt".format(n),"w") as output:
         output.write("ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間\n")
-        
+
     os.chdir("../")
 
 def init_config(n):
@@ -38,7 +34,7 @@ def end_config(num_of_circuit,file_name,sum,n):
     os.chdir("./output")
     with open("my_{}.txt".format(file_name),"a") as output:
         output.write("\n\n平均実行時間{}s\n".format(sum/num_of_circuit))
-        
+
     os.chdir("../")
 
 
@@ -57,7 +53,7 @@ for file_name in test_list:
 
     #テスト用回路のディレクトリ移動する
     os.chdir('./input/{}'.format(dir_name))
-    
+
     #ファイルから回路を読み込む
     source_circuit = read_file.read_file(file_name)
     circuit = copy.copy(source_circuit)
@@ -66,7 +62,6 @@ for file_name in test_list:
     n = len(circuit[0])
 
     node = mapping.bit_mapping(n)
-    print(node)
 
     #初期状態を設定
     init_state = init_config(n)
@@ -89,8 +84,6 @@ for file_name in test_list:
 
     #分解前回路ゲート数
     print("CNOTゲート数{}".format( aggregate.count_cnot(circuit) ) )
-    
-
 
     #開始時間
     start = time.time()
@@ -101,16 +94,16 @@ for file_name in test_list:
     for block in range( len(output_set) ):
         #各部分回路の 
         print(output_set)
-    
+
         #部分的な回路を生成し,decoposed_circuitにつなげる
         print("今回の回路の入力{}".format( input_list[block] ) )
-        print("今回の回路の出力{}".format( output_set[block] ) )        
+        print("今回の回路の出力{}".format( output_set[block] ) )
 
         sub_circuit = generate_sub_circuit.sub_circuit(input_list[block], output_set[block], n, num_of_var, node)
 
         for gate in sub_circuit:
             decomposed_circuit.append(copy.copy(gate))
-        
+
         if(len(circuit) != 0):
             x = logic.logical_state(input_list[block],circuit)
         else:
@@ -137,9 +130,7 @@ for file_name in test_list:
 
     print("所要時間:{}s".format(process_time))
     print("分割数:{}".format(divied_num))
-    
-    
-    
+
 end_config(num_of_circuit,file_name,sum,n)
 
 

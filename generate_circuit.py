@@ -6,7 +6,7 @@ import shutil
 import const
 
 T_GATE_PROB = 5 #Tゲートが挿入されるまでのCNOTの数の期待値
-T_GATE_NUM = 3  #Tゲートの数
+T_GATE_NUM  = 3  #Tゲートの数
 
 def generate_gate(n,j,d):
     gate = []
