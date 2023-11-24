@@ -29,7 +29,7 @@ def sub_circuit(input_list, necessary_set, n, num_of_var, node):
     bit_set = calc_bit_set(input_list, necessary_set)
 
     #bit_setがなくなるまで探索
-    while( len(bit_set) != 0):
+    while( len(necessary_set) != 0):
         #bit_setから最適な組み合わせを見つける
         bit_combination = solve_combination.compute_handle_bits_combi(bit_set, node)
         un_nna_combination = {}
@@ -62,14 +62,18 @@ def sub_circuit(input_list, necessary_set, n, num_of_var, node):
 
         #処理したbit_setを削除する
         new_bit_set = {}
+        new_necessary_set = []
         index = 0
 
         for n, state in bit_set.items():
             if(n not in adopted_combi['select_combi']):
+                #necessary_setを消す
+                new_necessary_set.append(necessary_set[n])
                 new_bit_set[index] = state
                 index += 1
 
         bit_set = new_bit_set
+        necessary_set = new_necessary_set
 
         #SMTソルバに入力，出力を投げてNNA回路を得る．
         sub_circuit = calc.virtualy_calc(copy.copy(adopted_bit_set), n, num_of_var, node, adopted_combi, const.T_GATE)
