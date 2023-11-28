@@ -6,7 +6,7 @@ import solve_combination
 import const
 import display
 import const
-import place_elementary_gate
+import logic
 
 #引数　　　　：　　　　部分回路ごとのnecessary_set input_list 量子ビット数 n 変数の数 num_of_var ノード　 node
 #返り値　: 　　NNA-compliantな部分回路
@@ -23,14 +23,16 @@ def calc_bit_set(input_list, necessary_set):
     return bit_set
 
 #部分ごとに分ける
-def sub_circuit(input_list, necessary_set, n, num_of_var, node):
+def sub_circuit(input_state, necessary_set, n, num_of_var, node):
     sub_circuit = []
-
-    bit_set = calc_bit_set(input_list, necessary_set)
+    bit_set = calc_bit_set(input_state, necessary_set)
 
     #bit_setがなくなるまで探索
     while( len(necessary_set) != 0):
+        #入力変数に応じて、bit_setを再計算する
+
         #bit_setから最適な組み合わせを見つける
+        #TODO bit_setとnecessary_setを紐づける
         bit_combination = solve_combination.compute_handle_bits_combi(bit_set, node)
         un_nna_combination = {}
 
@@ -57,31 +59,35 @@ def sub_circuit(input_list, necessary_set, n, num_of_var, node):
         #処理するbit_setを取り出す
         adopted_bit_set = []
 
-        for n in adopted_combi['select_combi']:
-            adopted_bit_set.append(bit_set[n])
+        for i in adopted_combi['select_combi']:
+            adopted_bit_set.append(bit_set[i])
 
         #処理したbit_setを削除する
         new_bit_set = {}
         new_necessary_set = []
         index = 0
 
-        for n, state in bit_set.items():
-            if(n not in adopted_combi['select_combi']):
+        for i, state in bit_set.items():
+            if(i not in adopted_combi['select_combi']):
                 #necessary_setを消す
-                new_necessary_set.append(necessary_set[n])
+                new_necessary_set.append(necessary_set[i])
                 new_bit_set[index] = state
                 index += 1
 
-        bit_set = new_bit_set
+        bit_set       = new_bit_set
         necessary_set = new_necessary_set
 
         #SMTソルバに入力，出力を投げてNNA回路を得る．
-        sub_circuit = calc.virtualy_calc(copy.copy(adopted_bit_set), n, num_of_var, node, adopted_combi, const.T_GATE)
-        # sub_circuit = place_elementary_gate.place_gate(sub_circuit, input_list, copy.copy(adopted_bit_set))
-        # display.display_circuit(sub_circuit)
+        sub_circuit += calc.virtualy_calc(copy.copy(adopted_bit_set), n, num_of_var, node, adopted_combi, const.T_GATE)
+        # sub_circuit = place_elementary_gate.place_gate(sub_circuit, input_state, copy.copy(adopted_bit_set))
+        display.display_circuit(sub_circuit)
         print('--------------------------')
-        print(f"""処理したnecessary_set :{adopted_combi["select_combi"]}""")
+        print(f"処理したnecessary_set :{necessary_set}")
         print(f'残りのnecessary_set :{new_bit_set}')
+
+        #TODO input_stateの更新
+        output = logic.logical_state(input_state, sub_circuit)
+        bit_set = calc_bit_set(output, necessary_set)
 
     return sub_circuit
 

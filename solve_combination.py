@@ -6,33 +6,13 @@ import heapq
 NUM_OF_NODE = 20
 MAX_COST    = 1000000
 
-class bit_combination:
-
-    def __init__(self, is_nna, necessary_node, usednode, is_added, num_node, num_combination):
-        self.is_nna          = is_nna
-        self.necessary_node  = necessary_node
-        self.used_node       = usednode
-        self.is_added        = is_added
-        self.num_node        = num_node
-        self.num_combination = num_combination
-
-    def add_node(self, node):
-        self.is_added  = True
-        self.num_node += 1
-        self.used_node += node
-    
-    def nna(self):
-        self.is_nna = True
-        
-
-
 def create_adjacency_matrix(nodes):
     adjacency_matrix = [[ 0 for i in range(len(nodes)) ] for j in range(len(nodes))]
     for bit,node in enumerate(nodes):
         for to_bit in node:
             adjacency_matrix[bit][to_bit] = 1
 
-    return adjacency_matrix        
+    return adjacency_matrix
 
 def remove_unused_node(nodes,used_node):
     used_node = {bit:[] for bit in used_node}
@@ -68,9 +48,6 @@ def compute_nna(trimed_node, visited, node):
 
     return res
 
-def compute_cost_of_bit_combination():
-    pass
-
 def evaluate_bit_combi(nna, used_node, num_combi, is_added, select_combi, bit):
     #ノード追加処理を行っていない組み合わせ場合
     if(is_added == False):
@@ -102,7 +79,7 @@ def calc_distance_on_graph(s, t, necessary_node,trimmed_node):
         present_cost = present_node[0]
 
         for adjacent in trimmed_node[present_node[1]]:
-            
+
             next_cost = present_cost + 1
 
             if(next_cost < visited[adjacent]):
@@ -115,7 +92,7 @@ def calc_distance_on_graph(s, t, necessary_node,trimmed_node):
 def compute_cost_for_combi(trimmed_node, used_node, add_nodes=[]):
     cost = 0
     necessary_node = used_node + list(add_nodes)
-    
+
     for s in used_node:
         for t in used_node:
             if(t == s):
@@ -123,7 +100,6 @@ def compute_cost_for_combi(trimmed_node, used_node, add_nodes=[]):
             cost += calc_distance_on_graph(s, t, necessary_node, trimmed_node)
 
     return cost
-
 
 #bit_combinationを更新するとうまくいかない（続くやつが無理だから）
 #この関数でforループ回さん方がよくね？組み合わせ一つに対してノードを探索する方が直感的では
@@ -159,8 +135,10 @@ def add_node_for_nna(node, bit_combination,max_num):
             #costが更新されていたら、bit_combinationを書き換え
             if(cost != MAX_COST):
                 v['is_nna'] = True
-        else:
-            return
+
+        #num_nodeを更新
+        v['num_node'] = len(v['necessary_node'])
+
 
 def bit_to_list(bit):
     res = []

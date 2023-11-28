@@ -14,7 +14,7 @@ def generate_gate(n,j,d):
     #gate_typeが0ならTゲート
     if(not gate_type or j == d - 1):
         gate = generate_T_gate(n)
-        
+
     #それ以外ならcnotゲート
     else:
         gate = generate_cnot(n)
@@ -28,12 +28,12 @@ def generate_T_gate(n):
             gate.append( i )
 
     num = len(gate)
-    
+
     if(not num):
         return None
-    
+
     gate.insert(0,"{}{}".format(const.T_GATE,num))
-            
+
     return gate
 
 def generate_cnot(n):
@@ -50,8 +50,6 @@ def generate_cnot(n):
             break
 
     return gate
-        
-    
 
 # (1/prob) で1を返す
 def custom_rand(prob):
@@ -64,8 +62,7 @@ def delete_redundant_gate(str,n):
     i = 0
     for name in os.listdir(path=str):
         i += 1
-        
-        
+
         #ファイル一つずつ調査
         os.chdir('/Users/DELL/ソースコード/input/{}'.format(str))
         with open(name) as f:
@@ -75,24 +72,17 @@ def delete_redundant_gate(str,n):
                 new_file.write("#my_test_circuit{}\n".format(i))
                 new_file.write(".numvars " + "{}\n".format(n))
                 new_file.write(".begin\n")
-                
-                
+
                 #ゲートをひとつづつ読み込む
                 for line in f:
                     gate = line.split(" ")
-                    
-                   
                     gate_type = gate[0][0]
                     num_of_io = int( gate[0][1] )
-                    
-       
 
                     #Tゲートの時
 
                     if(gate_type == const.T_GATE):
-                        
                         #直前のゲートと重複していないかチェック
-                        
                         delete = 0
                         for bit in gate[1:num_of_io + 1]:
                             

@@ -7,37 +7,17 @@ import display
 import solve_combination
 import copy
 import mapping
+import place_elementary_gate
 
 MAX_NUM_GATE = 20
 
 Q20_graph = [ [1,5],[0,2,6,7],[1,3,6,7],[2,4,8,9],[3,8,9],\
-             [0,6,10,11],[1,2,5,7,10,11],[1,2,6,8,12,13],[3,4,7,9,12,13],\
-             [3,4,8,14],[5,6,11,15],[5,6,10,12],\
-             [7,8,11,13,16,17],[7,8,12,14,18,19],[9,13,18,19],[10,16],\
-             [11,12,15,17],[11,12,16,18],[13,14,17,19],[13,14,18] ]
+            [0,6,10,11],[1,2,5,7,10,11],[1,2,6,8,12,13],[3,4,7,9,12,13],\
+            [3,4,8,14],[5,6,11,15],[5,6,10,12],\
+            [7,8,11,13,16,17],[7,8,12,14,18,19],[9,13,18,19],[10,16],\
+            [11,12,15,17],[11,12,16,18],[13,14,17,19],[13,14,18] ]
 
 Optimized_nodes = []
-
-
-# def extract_gate_type(output_set):
-
-#     gate_type = []
-
-#     for output in output_set:
-#         gate_type += output[1]
-
-
-#     return gate_type
-
-# def extract_desired_set(output_set):
-
-#     desired_output= []
-
-#     for output in output_set:
-#         desired_output += output[0]
-
-#     desired_output
-
 
 def nearest_neighbor(n, s, node):
 
@@ -224,7 +204,7 @@ def adopt_gate(gate, bit_set):
     return res
 
 #回路を仮想化　　NNA制約を適応
-def virtualy_calc(necessary_set,n,num_of_var, node, combi, gate):
+def virtualy_calc(necessary_set, n, num_of_var, node, combi, gate):
 
     #ビット削減に伴い、変数を振り直して仮想的に小さい回路として扱う
     link = {} # bit -> virtual
@@ -254,9 +234,27 @@ def virtualy_calc(necessary_set,n,num_of_var, node, combi, gate):
 
     #necessary_setをビット化しなあかん
     virtual_necessary_set_bit = adopt_gate(gate, virtual_necessary_set)
-
     virtual_circuit = calc(virtual_input, virtual_necessary_set_bit, combi['num_node'], combi['num_node'], virtual_node)
+    virtual_circuit = place_elementary_gate.place_gate(virtual_circuit, virtual_input, copy.copy(virtual_necessary_set_bit))
+
+    circuit = [ [const.EMPTY for i in range(n) ]for j in range(len(virtual_circuit))]
 
     #仮想化して計算した回路を元に戻す
+    for i in range(n):
+        if(i in link.keys()):
+            for j in range(len(virtual_circuit)):
+                circuit[j][i] = virtual_circuit[j][link[i]]
 
-    return virtual_circuit
+    display.display_circuit(virtual_circuit)
+    display.display_circuit(circuit)
+    print(f'link:{link}')
+
+    return circuit
+
+# input = [1, 2, 4, 8, 16, 32]
+# nce = [[29, 'T'], [32, 'T'], [17, 'T'], [19, 'T'], [51, 'T'], [50, 'T']]
+# n = 6
+# node = [[1, 2], [0, 3], [0, 4], [1, 5], [2, 5], [3, 4]]
+
+# circuit = calc(input, nce, n, n, node)
+# display.display_circuit(circuit)
