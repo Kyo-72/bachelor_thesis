@@ -15,7 +15,7 @@ def inti_output(n):
     print(os.getcwd())
     os.chdir("../../output")
     with open("my_{}bit_output.txt".format(n),"w") as output:
-        output.write("ファイル名　| 分解前ゲート数 | 分解後ゲート数 | 実行時間\n")
+        output.write("ファイル名 | 分解前ゲート数 | 分解後ゲート数 | 実行時間\n")
 
     os.chdir("../")
 

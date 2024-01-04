@@ -127,12 +127,6 @@ def desired_output(init_state,circuit):
     print(input_list)
     print("---------------output------------------")
     print(output_set)
-    
-    return input_list,output_set,num_of_var
-                
-                
-            
-            
-        
 
-    
+    return input_list,output_set,num_of_var
+

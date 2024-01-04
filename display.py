@@ -9,9 +9,6 @@ def display_circuit(circuit,output=None,input=None):
         return 0
     n = len(circuit[0])
 
-    print()
-    
-    
     for j in range(n):
 
         if(input != None):
