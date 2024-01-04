@@ -18,9 +18,9 @@ def display_circuit(circuit,output=None,input=None):
                 print(" ",end="")
 
             print(":",end="")
-    
+
         for i in range(d):
-            
+
             #空文字列の時の処理
             try:
                 print("ー",end="")
@@ -28,9 +28,6 @@ def display_circuit(circuit,output=None,input=None):
             except IndexError:
                 continue
 
-
-
-            
             if(gate == const.CONTROLL_BIT):
                 print("・",end="")
             elif(gate == const.TARGET_BIT):
