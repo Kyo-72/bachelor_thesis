@@ -26,13 +26,26 @@ def warshall_floyd(matrix):
             if(matrix[i][j] == 0 and i != j):
                 matrix[i][j] = INF
 
-    cost_matrix = copy.copy(matrix)
+    cost_matrix = copy.deepcopy(matrix)
     for k in range(n):
         for i in range(n):
             for j in range(n):
                 cost_matrix[i][j] = min(cost_matrix[i][j], cost_matrix[i][k] + cost_matrix[k][j])
 
     return cost_matrix
+
+def find_out_path(start, end, matrix, cost_matrix):
+    p = []
+    n = len(matrix)
+    curr = start
+    while(curr != end):
+        for k in range(n):
+            if(k != curr and (matrix[curr][k] + cost_matrix[k][end] == cost_matrix[curr][end])):
+                curr = k
+                p.append(k)
+                break
+
+    return p
 
 def map_graph(optimal_graph, nodes):
 
@@ -70,4 +83,5 @@ def virtual_mapping(trimed_node, link):
 
 matrix = create_adjacency_matrix(Q20_graph)
 cost_matrix = warshall_floyd(matrix)
-print(cost_matrix)
+p = find_out_path(15, 8, matrix, cost_matrix)
+print(p)
