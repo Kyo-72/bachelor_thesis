@@ -6,14 +6,6 @@ import heapq
 NUM_OF_NODE = 20
 MAX_COST    = 1000000
 
-def create_adjacency_matrix(nodes):
-    adjacency_matrix = [[ 0 for i in range(len(nodes)) ] for j in range(len(nodes))]
-    for bit,node in enumerate(nodes):
-        for to_bit in node:
-            adjacency_matrix[bit][to_bit] = 1
-
-    return adjacency_matrix
-
 def remove_unused_node(nodes,used_node):
     used_node = {bit:[] for bit in used_node}
     for bit,adjacent_list in enumerate(nodes):

@@ -1,3 +1,7 @@
+import copy
+
+INF =10000
+
 Q20_graph = [ [1,5],[0,2,6,7],[1,3,6,7],[2,4,8,9],[3,8,9],\
             [0,6,10,11],[1,2,5,7,10,11],[1,2,6,8,12,13],[3,4,7,9,12,13],\
             [3,4,8,14],[5,6,11,15],[5,6,10,12],\
@@ -5,6 +9,30 @@ Q20_graph = [ [1,5],[0,2,6,7],[1,3,6,7],[2,4,8,9],[3,8,9],\
             [11,12,15,17],[11,12,16,18],[13,14,17,19],[13,14,18] ]
 #key 指定ビット数　value (from,to) from node to bit　 0-index
 mapping_node = {10:{0:0, 1:1, 2:2, 5:3, 6:4, 7:5, 10:6, 11:7, 12:8, 13:9}}
+
+def create_adjacency_matrix(nodes):
+    adjacency_matrix = [[ 0 for i in range(len(nodes)) ] for j in range(len(nodes))]
+    for bit,node in enumerate(nodes):
+        for to_bit in node:
+            adjacency_matrix[bit][to_bit] = 1
+
+    return adjacency_matrix
+
+def warshall_floyd(matrix):
+    n = len(matrix)
+    #前処理 0をINFにかえる
+    for i in range(n):
+        for j in range(n):
+            if(matrix[i][j] == 0 and i != j):
+                matrix[i][j] = INF
+
+    cost_matrix = copy.copy(matrix)
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                cost_matrix[i][j] = min(cost_matrix[i][j], cost_matrix[i][k] + cost_matrix[k][j])
+
+    return cost_matrix
 
 def map_graph(optimal_graph, nodes):
 
@@ -39,3 +67,7 @@ def virtual_mapping(trimed_node, link):
         optimal_graph.append(node)
 
     return map_graph(optimal_graph, link)
+
+matrix = create_adjacency_matrix(Q20_graph)
+cost_matrix = warshall_floyd(matrix)
+print(cost_matrix)
