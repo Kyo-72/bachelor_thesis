@@ -81,7 +81,16 @@ def virtual_mapping(trimed_node, link):
 
     return map_graph(optimal_graph, link)
 
-matrix = create_adjacency_matrix(Q20_graph)
-cost_matrix = warshall_floyd(matrix)
-p = find_out_path(15, 8, matrix, cost_matrix)
-print(p)
+def convert_copling(node):
+    coupling = []
+    invert_coupling = []
+    for bit,list in enumerate(node):
+        for adjacent_bit in list:
+            if([bit, adjacent_bit] not in invert_coupling):
+                coupling.append([bit, adjacent_bit])
+                invert_coupling.append([adjacent_bit, bit])
+
+    return coupling
+
+node = [[1, 3], [0, 2, 4, 5], [1, 4, 5], [0, 4, 6, 7], [1, 2, 3, 5, 6, 7], [1, 2, 4, 8, 9], [3, 4, 7], [3, 4, 6, 8], [5, 7, 9], [5, 8]]
+print(convert_copling(node))
