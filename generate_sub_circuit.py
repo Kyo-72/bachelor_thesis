@@ -94,7 +94,7 @@ def sub_circuit(input_state, necessary_set, n, num_of_var, node):
                     adopted_combi = combi
                     break
 
-            logical_state = bit_set[ combi['select_combi'] ]
+            logical_state = bit_set[ combi['select_combi'][0] ]
             subcircuit += except_over.handling_over_bit_circuit(node, adopted_combi, logical_state)
 
         display.display_circuit(sub_circuit)

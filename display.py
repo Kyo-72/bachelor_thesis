@@ -41,12 +41,10 @@ def display_circuit(circuit,output=None,input=None):
             else:
                 print("ー",end="")
 
-        
-        
         if(output != None):
             print(":%d"%(output[j]),end="")
 
         print()
 
     print()
-        
+

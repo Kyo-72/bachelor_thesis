@@ -30,9 +30,6 @@ def add_elementary_gate(type_of_gate,gate,n,input):
 
     return gate_list
 
-
-
-
 def convert_to_list(n,line,input):
     gate_list = [" " for i in range(n)]
     

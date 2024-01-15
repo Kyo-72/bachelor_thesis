@@ -8,8 +8,9 @@ import os
 import aggregate
 import mapping
 import generate_sub_circuit
+import sys
 
-
+print(os.getcwd())
 
 def inti_output(n):
     print(os.getcwd())
@@ -20,7 +21,6 @@ def inti_output(n):
     os.chdir("../")
 
 def init_config(n):
-
 
     init_state = []
     inti_output(n)

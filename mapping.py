@@ -91,6 +91,3 @@ def convert_copling(node):
                 invert_coupling.append([adjacent_bit, bit])
 
     return coupling
-
-node = [[1, 3], [0, 2, 4, 5], [1, 4, 5], [0, 4, 6, 7], [1, 2, 3, 5, 6, 7], [1, 2, 4, 8, 9], [3, 4, 7], [3, 4, 6, 8], [5, 7, 9], [5, 8]]
-print(convert_copling(node))

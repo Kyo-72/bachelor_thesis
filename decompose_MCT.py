@@ -93,19 +93,18 @@ def decompose(file_name):
     flag = 0
 
     with open(file_name) as f:
-        
-        
+
         for line in f:
- 
+
             if(".numvars" in line):
-               n = int( line.split(" ")[1] )
+                n = int( line.split(" ")[1] )
 
             if(".variables" in line):
                 #量子ビットの上位からinputに入れる
                 input = line.split(" ")[1:n + 1]
                 #改行文字処理
                 input[n - 1] = input[n - 1].split("\n")[0]
-        
+
             #beginからゲートを読み始める(flag = 1)
             if(".begin" in line):
                 flag = 1
@@ -123,11 +122,11 @@ def decompose(file_name):
                 num_of_io = int( gate[0][1] )
                 #MCT,NTCを分解する
                 if(type_of_gate == const.TARGET_BIT):
-                    
+
                     #Toffoliゲート分解.
                     if(num_of_io == 3):
                         line = convert_toffoli_into_cnot(line)
-                        
+
                     #MTCゲートをtoffoliに分解後,clifford+tゲート群に分解
                     elif(num_of_io > 3):
                         gate = convert_mct_into_toffoli(line,num_of_io,n,input)
@@ -137,16 +136,9 @@ def decompose(file_name):
                             g += "\n"
                             print(g)
                             line += convert_toffoli_into_cnot(g)
-                            
-
-                
 
             #ゲートを追加
-            new_circuit += line 
-                    
-
-
-            
+            new_circuit += line
 
     with open(file_name,mode="w") as f:
         f.write(new_circuit)

@@ -2,9 +2,9 @@ import copy
 import mapping
 import itertools
 import heapq
+import const
 
-NUM_OF_NODE = 20
-MAX_COST    = 1000000
+MAX_COST = 1000000
 
 def remove_unused_node(nodes,used_node):
     used_node = {bit:[] for bit in used_node}
@@ -21,7 +21,7 @@ def remove_unused_node(nodes,used_node):
 #与えられたノード群が連結か判定する
 def is_nna(used_node, node):
     trimmed_nodes = remove_unused_node(node, used_node)
-    visited = [0 for i in range(NUM_OF_NODE)]
+    visited = [0 for i in range(const.NUM_OF_NODE)]
     start   = used_node[0]
 
     return compute_nna(trimmed_nodes, visited, start)
@@ -97,7 +97,7 @@ def compute_cost_for_combi(trimmed_node, used_node, add_nodes=[]):
 #この関数でforループ回さん方がよくね？組み合わせ一つに対してノードを探索する方が直感的では
 def add_node_for_nna(node, bit_combination,max_num):
     for k,v in bit_combination.items():
-        unused_node = [i for i in range(NUM_OF_NODE)]
+        unused_node = [i for i in range(const.NUM_OF_NODE)]
         node_num = v['num_node']
 
         #すべてのノードと使われてるノードのbitXORを取って使ってないノードを求める
@@ -169,7 +169,6 @@ def find_optimal_combination(input, output, bit_set, node):
 
 def calc_cost(bit_combination):
     pass
-
 
 
 node = [[1, 5], [0, 2, 6, 7], [1, 3, 6, 7], [0, 6, 10, 11], [1, 2, 5, 7, 10, 11], [1, 2, 6, 8, 12, 13], [5, 6, 11, 15], [5, 6, 10, 12], [7, 8, 11, 13, 16, 17], [7, 8, 12, 14, 18, 19]]

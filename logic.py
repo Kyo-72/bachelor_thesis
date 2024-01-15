@@ -17,7 +17,7 @@ def logical_state(init_state,circuit):
         #iゲート目のコントロールビットを見つける
         if "c" not in circuit[i]:
             continue
-        
+
         for j in range(n):
             if(circuit[i][j] == const.CONTROLL_BIT):
                 c_bit = j
@@ -27,5 +27,4 @@ def logical_state(init_state,circuit):
                 x[j] = x[c_bit] ^ x[j]
 
     return x
-            
-    
+

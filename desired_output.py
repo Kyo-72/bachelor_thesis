@@ -22,15 +22,14 @@ def desired_output(init_state,circuit):
     tuple_set = []
     #変数の数　量子ビットの数で初期化．Hゲートが出てくると増やす
     num_of_var = n
-    
-    
+
     #elementary量子ゲートがあるなら要求出力を生成
     for i in range(d):
-        
+
         gate = circuit[i]
-        
+
         #elementary量子ビットの論理状態を要求出力集合へ
-        
+
         gate_itr = []
         gate_type = " "
         #bitごとにelementaryゲートがないか探索
@@ -50,11 +49,10 @@ def desired_output(init_state,circuit):
 
         #単一量子ゲートがあればその直前の論理関数を計算する
         if(len(gate_itr) != 0):
-            
-            
+
             #部分回路だけに変更
             sub_circuit = circuit[pre_gate_depth:i]
-            
+
             if( len(sub_circuit) != 0):
                 x = logic.logical_state(init_state,sub_circuit)
                 print("ここやで")
@@ -68,11 +66,7 @@ def desired_output(init_state,circuit):
 
             #今回の部分回路の末尾が何ゲート目かを保存
             pre_gate_depth = i + 1
-            
-            
-            
-            
-           #Tゲートなら要求出力は集合
+            #Tゲートなら要求出力は集合
             if(gate_type != const.HADAMARD_GATE):
                 for t in gate_itr:
                     tuple_set.append( (x[t],gate_type) )
@@ -92,7 +86,7 @@ def desired_output(init_state,circuit):
                     new_var = (1 << num_of_var) 
                     #更新した変数で，xを更新
                     x[t] = new_var
-           
+
                     #変数の数を更新
                     num_of_var += 1
 
@@ -105,12 +99,11 @@ def desired_output(init_state,circuit):
                     #部分回路が必要とする論理関数と，それぞれに対応する量子ゲート
                     output_set.append(copy.copy(list(tuple_set)))
                     tuple_set.clear()
-                
+
     #部分回路が必要とする論理関数と，それぞれに対応する量子ゲート
     output_set.append(copy.copy(list(tuple_set)))
     tuple_set.clear()
 
-                
     #ガーベッジビット以外の量子ビットにおける論理状態を戻す
     tuple_set = []
     last_output = circuit[len(circuit) - 1]
