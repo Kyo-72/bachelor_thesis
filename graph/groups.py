@@ -19,14 +19,12 @@ def calc_groups(nodes, necessary_bit):
         start_node = necessary_bit[0]
         group = []
         calc_neighbor_node(nodes, necessary_bit, not_calclated_nodes, group, start_node)
-        groups.append(group)
+        #隣接するノードがなければ，探索するノードを次に進める
+        if(group == []):
+            groups.append([start_node])
+            not_calclated_nodes.remove(start_node)
+        else:
+            groups.append(group)
 
     return groups
 
-nodes = [[1, 3], [0, 2, 4, 5], [1, 4, 5], [0, 4, 6, 7], [1, 2, 3, 5, 6, 7], [1, 2, 4, 8, 9], [3, 4, 7], [3, 4, 6, 8], [5, 7, 9], [5, 8]]
-necessary_bit = [0, 1, 3, 4, 6, 7, 8]
-expect_count = 3
-expect_groups = [[1, 2], [3, 6], [8, 9]]
-
-groups = calc_groups(nodes, necessary_bit)
-print(groups)

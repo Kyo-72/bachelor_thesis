@@ -10,7 +10,3 @@ def generate_circuit(bit_set, n):
         circuit[i][target]   = const.TARGET_BIT
 
     return circuit
-
-bit_set = [0, 3, 5, 7]
-circuit = generate_circuit(bit_set, 10)
-display.display_circuit(circuit)

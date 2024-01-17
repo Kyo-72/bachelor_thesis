@@ -1,12 +1,13 @@
 import sys
 import copy
-
 sys.path.append('/Users/kyo72/Program/lab/m2')
 
 import const
 import display
 from solve_combination import remove_unused_node
 from graph.groups import calc_groups
+from generate_circuit_by_bitset import generate_circuit
+from sabreSWAP import insert_swap_by_sabre
 
 def convert_dici_to_circuit(circuit_list, n):
     circuit = [[const.EMPTY for i in range(n)] for j in range(len(circuit_list))]
@@ -20,10 +21,14 @@ def convert_dici_to_circuit(circuit_list, n):
     return circuit
 
 
-def one_group_circuit(nodes, used_node):
+def one_group_circuit(nodes, used_node, init_node=None):
     #[[0,1], [0、2] qubit0->qubit1 qubit0->qubit2へのCNOT(qubit0がターゲットビット)
     circuit_list = []
-    visited = [used_node[0]]
+    visited = []
+    #中央値をしない場合、適当な位置を設定
+    if(init_node == None):
+        visited.append(used_node[0])
+
     queue = [copy.copy(used_node[0])]
     while( len(queue) != 0 ):
         node = queue.pop()
@@ -38,6 +43,10 @@ def one_group_circuit(nodes, used_node):
 
     return circuit_list
 
+def two_group_circuit(node, bit_set, n):
+    circuit = generate_circuit(bit_set, n)
+
+    return insert_swap_by_sabre(circuit, node)
 
 def handling_over_bit_circuit(node, necessary_node, n):
     groups     = calc_groups(node, copy.copy(necessary_node))
@@ -45,22 +54,18 @@ def handling_over_bit_circuit(node, necessary_node, n):
     used_node = remove_unused_node(node, necessary_node)
 
     circuit_list = []
+    circuit = []
 
-    #グループが1だった時の処理
+    #グループが1時の処理
     if(group_size == 1):
         circuit_list = one_group_circuit(used_node, necessary_node)
-    else:
-        pass
+        circuit = convert_dici_to_circuit(circuit_list, n)
+    elif(group_size >= 2):
+        circuit = two_group_circuit(node, necessary_node, n)
+        print('--------------------------------')
+        print(circuit)
+        print('--------------------------------')
 
-    circuit = convert_dici_to_circuit(circuit_list, n)
-    display.display_circuit(circuit, [0,1,2,3,4,5,6,7,8,9,])
-    print(circuit_list)
-
-
-n = 10
-nodes = [[1, 3], [0, 2, 4, 5], [1, 4, 5], [0, 4, 6, 7], [1, 2, 3, 5, 6, 7], [1, 2, 4, 8, 9], [3, 4, 7], [3, 4, 6, 8], [5, 7, 9], [5, 8]]
-combi = {'is_nna': True, 'necessary_node': [2, 3, 5, 6, 7, 8, 9], 'used_node': [0, 3, 5, 7], 'is_added': False, 'num_node': 6, 'num_combination': 1, 'select_combi': [0], 'select_combi_bit': 1}
-
-handling_over_bit_circuit(nodes, combi['necessary_node'], n)
+    return circuit
 
 

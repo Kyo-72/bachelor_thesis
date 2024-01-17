@@ -67,26 +67,10 @@ def sub_circuit(input_state, necessary_set, n, num_of_var, node):
             for i in adopted_combi['select_combi']:
                 adopted_bit_set.append(bit_set[i])
 
-            #処理したbit_setを削除する
-            new_bit_set = {}
-            new_necessary_set = []
-            index = 0
-
-            for i, state in bit_set.items():
-                if(i not in adopted_combi['select_combi']):
-                    #necessary_setを消す
-                    new_necessary_set.append(necessary_set[i])
-                    new_bit_set[index] = state
-                    index += 1
-
-            bit_set       = new_bit_set
-            necessary_set = new_necessary_set
-
             #SMTソルバに入力，出力を投げてNNA回路を得る．
             sub_circuit += calc.virtualy_calc(copy.copy(adopted_bit_set), n, num_of_var, node, adopted_combi, const.T_GATE)
         # sub_circuit = place_elementary_gate.place_gate(sub_circuit, input_state, copy.copy(adopted_bit_set))
         else:
-            #TODO ここに処理をかく
             #bit_setが1のやつを処理する #TODO 優先順位を考える(necessary_node少ないやつの方が良さそう)
 
             for combi in bit_combination.values():
@@ -95,11 +79,27 @@ def sub_circuit(input_state, necessary_set, n, num_of_var, node):
                     break
 
             logical_state = bit_set[ combi['select_combi'][0] ]
-            subcircuit += except_over.handling_over_bit_circuit(node, adopted_combi, logical_state)
+            sub_circuit += except_over.handling_over_bit_circuit(node, logical_state, n)
 
-        display.display_circuit(sub_circuit)
+        #処理したbit_setを削除する
+        new_bit_set = {}
+        new_necessary_set = []
+        index = 0
+
+        for i, state in bit_set.items():
+            if(i not in adopted_combi['select_combi']):
+                #necessary_setを消す
+                new_necessary_set.append(necessary_set[i])
+                new_bit_set[index] = state
+                index += 1
+
         print('--------------------------')
         print(f"処理したnecessary_set :{necessary_set}")
+        bit_set       = new_bit_set
+        necessary_set = new_necessary_set
+
+        display.display_circuit(sub_circuit)
+
         print(f'残りのnecessary_set :{new_bit_set}')
 
         #input_stateの更新

@@ -86,6 +86,8 @@ def convert_array_to_qiskit(array):
             gate_type = const.T_DAGGER_GATE
         elif(const.HADAMARD_GATE in qubits):
             gate_type = const.HADAMARD_GATE
+        else:
+            continue
 
         insert_qiskit_object(qc, gate_type, qubits)
 
