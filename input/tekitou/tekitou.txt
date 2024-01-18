@@ -44,4 +44,13 @@ t2 b i
 T1 i
 t2 i a
 T1 a
+t2 d e
+t2 h e
+t2 h a
+t2 f b
+t2 a f
+t2 g d
+t2 g b
+t2 d j
+H2 a c
 .end

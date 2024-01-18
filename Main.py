@@ -2,13 +2,14 @@ import logic
 import display
 import time
 import copy
-import desired_output as desired_output
+import desired_output
 import read_file
 import os
 import aggregate
 import mapping
 import generate_sub_circuit
 import sys
+import const
 
 print(os.getcwd())
 
@@ -69,7 +70,7 @@ for file_name in test_list:
     output_set = [init_state]
 
     #回路からゲートの種類と要求出力集合を得る
-    subircuits_output_info = desired_output.desired_output(init_state,circuit)
+    subircuits_output_info = desired_output.divide_circuit(init_state,circuit)
     input_list = subircuits_output_info[0]
     output_set = subircuits_output_info[1]
     num_of_var = subircuits_output_info[2]
@@ -114,6 +115,11 @@ for file_name in test_list:
 
         gate = []
         display.display_circuit(circuit,x,input_list[block])
+        if(block < len(output_set) - 1):
+            for qubit, gate_type in enumerate(circuit[-1]):
+                if(gate_type == const.HADAMARD_GATE or qubit == const.OUTPUT):
+                    continue
+                input_list[block + 1][qubit] = copy.copy(x[qubit])
         decomposed_circuit.append(copy.copy(gate))
 
     decomposed_circuit.pop(0)

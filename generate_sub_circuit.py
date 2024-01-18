@@ -17,8 +17,8 @@ def calc_bit_set(input_list, necessary_set):
 
     #アウトプットを構成するため、必要な最小の量子ビットを計算する
     for i,output_state in enumerate(necessary_set):
-        if(output_state[1] == const.HADAMARD_GATE or output_state[1] == const.OUTPUT):
-            break
+        # if(output_state[1] == const.HADAMARD_GATE or output_state[1] == const.OUTPUT):
+        #     break
         bit_set[i] = bit_search.min_quantum_bit(input_list, abs(output_state[0]))
 
     return bit_set

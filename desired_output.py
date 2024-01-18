@@ -123,3 +123,27 @@ def desired_output(init_state,circuit):
 
     return input_list,output_set,num_of_var
 
+def divide_circuit(init_state,circuit):
+    res_circuit = []
+    subcircuits_info = desired_output(init_state,circuit)
+    subcircuits      = subcircuits_info[1]
+    for circuit in subcircuits:
+        if(circuit == []):
+            continue
+
+        gate = circuit[0][1]
+        if(gate == const.T_GATE or gate == const.T_DAGGER_GATE):
+            t_subcircuit = []
+            h_subcircuit = []
+            for subcircuit in circuit:
+                if(subcircuit[1] == const.HADAMARD_GATE):
+                    h_subcircuit.append(subcircuit)
+                else:
+                    t_subcircuit.append(subcircuit)
+
+            res_circuit.append(t_subcircuit)
+            res_circuit.append(h_subcircuit)
+        else:
+            res_circuit.append(circuit)
+
+    return subcircuits_info[0], res_circuit, subcircuits_info[2]
